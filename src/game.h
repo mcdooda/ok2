@@ -22,10 +22,7 @@ class Game : public flat::Game
 		flat::video::Render renderProgram;
 		
 		// attributes & uniforms
-		flat::video::Attribute levelPositionAttribute;
-		flat::video::Attribute levelUvAttribute;
-		flat::video::Uniform levelVpMatrixUniform;
-		flat::video::Uniform levelTextureUniform;
+		flat::util::RenderSettings levelRenderSettings;
 		
 		flat::video::Attribute renderPositionAttribute;
 		flat::video::Attribute renderUvAttribute;

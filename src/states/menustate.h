@@ -3,9 +3,11 @@
 
 #include <flat.h>
 
-#include "game.h"
+#include "../game.h"
 
 namespace game
+{
+namespace states
 {
 
 class MenuState : public flat::state::State
@@ -16,16 +18,17 @@ class MenuState : public flat::state::State
 		virtual void exit(flat::state::Agent* agent);
 		
 	private:
-		void update(game::Game* game);
-		void draw(game::Game* game);
+		void update(Game* game);
+		void draw(Game* game);
 		
 	private:
 		flat::audio::Music* m_music;
 		flat::video::FileTexture* m_logoTexture;
-		flat::video::Sprite* m_logoSprite;
+		flat::util::Sprite* m_logoSprite;
 };
 
-}
+} // states
+} // game
 
 #endif // GAME_MENUSTATE_H
 

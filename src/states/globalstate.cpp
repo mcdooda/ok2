@@ -1,7 +1,9 @@
+#include "../game.h"
 #include "globalstate.h"
-#include "game.h"
 
 namespace game
+{
+namespace states
 {
 
 void GlobalState::enter(flat::state::Agent* agent)
@@ -15,10 +17,11 @@ void GlobalState::enter(flat::state::Agent* agent)
 	game->renderProgram.load("rsrc/shaders/renderprogram.frag", "rsrc/shaders/renderprogram.vert");
 	game->renderProgram.addInputTexture(screenTexture);
 	
-	game->levelPositionAttribute = game->levelPass.getAttribute("position");
-	game->levelUvAttribute = game->levelPass.getAttribute("uv");
-	game->levelVpMatrixUniform = game->levelPass.getUniform("vpMatrix");
-	game->levelTextureUniform = game->levelPass.getUniform("objectTexture");
+	game->levelRenderSettings.textureUniform     = game->levelPass.getUniform("objectTexture");
+	game->levelRenderSettings.modelMatrixUniform = game->levelPass.getUniform("modelMatrix");
+	game->levelRenderSettings.vpMatrixUniform    = game->levelPass.getUniform("vpMatrix");
+	game->levelRenderSettings.positionAttribute  = game->levelPass.getAttribute("position");
+	game->levelRenderSettings.uvAttribute        = game->levelPass.getAttribute("uv");
 	
 	game->renderPositionAttribute = game->renderProgram.getAttribute("position");
 	game->renderUvAttribute = game->renderProgram.getAttribute("uv");
@@ -32,6 +35,9 @@ void GlobalState::execute(flat::state::Agent* agent)
 	
 	if (game->input->keyboard->isJustPressed(K(ESCAPE)))
 		game->stop();
+		
+	if (game->input->keyboard->isJustPressed(K(P)))
+		game->time->togglePause();
 		
 	if (game->input->window->isResized())
 		resetViews(game);
@@ -54,6 +60,7 @@ void GlobalState::resetViews(game::Game* game)
 	game->interfaceView.updateProjection(windowSize);
 }
 
+} // states
 } // game
 
 

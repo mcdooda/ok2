@@ -1,24 +1,27 @@
+#include "../game.h"
 #include "menustate.h"
 #include "gamestate.h"
-#include "game.h"
 
 namespace game
+{
+namespace states
 {
 
 void MenuState::enter(flat::state::Agent* agent)
 {
-	game::Game* game = (game::Game*) agent;
+	Game* game = (Game*) agent;
 	
 	m_music = game->audio->loadMusic("rsrc/sounds/music/a_war_without_weapons.ogg");
 	m_music->play();
 	
 	m_logoTexture = new flat::video::FileTexture("rsrc/images/logo.png");
-	m_logoSprite = new flat::video::Sprite(m_logoTexture);
+	m_logoSprite = new flat::util::Sprite();
+	m_logoSprite->setTexture(m_logoTexture);
 }
 
 void MenuState::execute(flat::state::Agent* agent)
 {
-	game::Game* game = (game::Game*) agent;
+	Game* game = (Game*) agent;
 	update(game);
 	draw(game);
 	
@@ -33,25 +36,26 @@ void MenuState::exit(flat::state::Agent* agent)
 	delete m_logoSprite;
 }
 
-void MenuState::update(game::Game* game)
+void MenuState::update(Game* game)
 {
-	m_logoSprite->setPosition(flat::geometry::Vector2(0, sin(game->time->getTime()) * 10.f));
+	m_logoSprite->setPosition(flat::geometry::Vector2(0, sin(game->time->getTime() * 1.5f) * 10.f));
 }
 
-void MenuState::draw(game::Game* game)
+void MenuState::draw(Game* game)
 {
 	game->levelPass.use();
 	game->video->setClearColor(flat::video::Color::BLUE);
 	game->video->clear();
 	
-	game->levelVpMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
+	game->levelRenderSettings.vpMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
 	
-	m_logoSprite->draw(game->levelTextureUniform, game->levelPositionAttribute, game->levelUvAttribute);
+	m_logoSprite->draw(game->levelRenderSettings);
 	
 	game->renderProgram.use(game->video->window);
 	game->renderProgram.draw();
 }
 
+} // states
 } // game
 
 

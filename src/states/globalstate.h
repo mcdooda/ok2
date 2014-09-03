@@ -3,9 +3,11 @@
 
 #include <flat.h>
 
-#include "game.h"
+#include "../game.h"
 
 namespace game
+{
+namespace states
 {
 
 class GlobalState : public flat::state::State
@@ -19,7 +21,8 @@ class GlobalState : public flat::state::State
 		void resetViews(game::Game* game);
 };
 
-}
+} // states
+} // game
 
 #endif // GAME_GLOBALSTATE_H
 
