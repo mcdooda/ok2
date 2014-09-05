@@ -14,20 +14,12 @@ void GameState::enter(flat::state::Agent* agent)
 	m_music = game->audio->loadMusic("rsrc/sounds/music/musique_d_ailleurs.ogg");
 	m_music->play();
 	
-	entities::PlayerEntity* ship = new entities::PlayerEntity();
-	
-	entities::EntityTemplate* shipTemplate = new entities::EntityTemplate();
-	shipTemplate->setSpeed(300.0f);
-	
-	flat::util::Sprite* shipSprite = new flat::util::Sprite();
-	shipSprite->setTexture(new flat::video::FileTexture("rsrc/images/units/ship/blue/texture.png"));
-	//shipSprite->setHeightMap(new flat::video::FileTexture("rsrc/images/units/ship/blue/heightmap.png"));
-	
-	ship->setTemplate(shipTemplate);
-	ship->setSprite(shipSprite);
-	
-	ship->setRotationZ(M_PI / 2.f);
-	m_entities.push_back(ship);
+	addShip("blue", flat::geometry::Vector2(-250, 0));
+	addShip("gray", flat::geometry::Vector2(-150, 0));
+	addShip("green", flat::geometry::Vector2(-50, 0));
+	addShip("pink", flat::geometry::Vector2(50, 0));
+	addShip("red", flat::geometry::Vector2(150, 0));
+	addShip("yellow", flat::geometry::Vector2(250, 0));
 }
 
 void GameState::execute(flat::state::Agent* agent)
@@ -57,6 +49,25 @@ void GameState::draw(Game* game)
 	
 	game->renderProgram.use(game->video->window);
 	game->renderProgram.draw();
+}
+
+void GameState::addShip(std::string color, flat::geometry::Vector2 position)
+{
+	entities::PlayerEntity* ship = new entities::PlayerEntity();
+	
+	entities::EntityTemplate* shipTemplate = new entities::EntityTemplate();
+	shipTemplate->setSpeed(500.0f);
+	
+	flat::util::HeightMap* shipSprite = new flat::util::HeightMap();
+	shipSprite->setPosition(position);
+	shipSprite->setTexture(new flat::video::FileTexture("rsrc/images/units/ship/" + color + "/texture.png"));
+	shipSprite->setHeightMap(new flat::video::FileTexture("rsrc/images/units/ship/" + color + "/heightmap.png"));
+	
+	ship->setTemplate(shipTemplate);
+	ship->setSprite(shipSprite);
+	
+	ship->setRotationZ(M_PI / 2.f);
+	m_entities.push_back(ship);
 }
 
 void GameState::exit(flat::state::Agent* agent)

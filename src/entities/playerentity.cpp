@@ -68,7 +68,7 @@ void PlayerEntity::update(Game* game, float elapsedTime)
 	}
 	else
 	{
-		rotation.setY(rotation.getY() - elapsedTime * direction.getX() * fastRotationSpeed);
+		rotation.setY(rotation.getY() + elapsedTime * direction.getX() * fastRotationSpeed);
 		
 		if (rotation.getY() < -pi6)
 			rotation.setY(-pi6);
