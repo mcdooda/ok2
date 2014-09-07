@@ -11,17 +11,19 @@ void GlobalState::enter(flat::state::Agent* agent)
 	game::Game* game = (game::Game*) agent;
 	game->video->window->setTitle("Ocean's Keeper 2");
 	
-	game->levelPass.load(game->video->window->getSize(), "rsrc/shaders/levelpass.frag", "rsrc/shaders/levelpass.vert");
-	const flat::video::Texture& screenTexture = game->levelPass.addOutputTexture("screen");
+	game->heightMapPass.load(game->video->window->getSize(), "rsrc/shaders/heightmap.frag", "rsrc/shaders/heightmap.vert");
+	const flat::video::Texture& screenTexture = game->heightMapPass.addOutputTexture("screen");
+	
+	game->heightMapRenderSettings.textureUniform     = game->heightMapPass.getUniform("objectTexture");
+	game->heightMapRenderSettings.bumpMapUniform     = game->heightMapPass.getUniform("objectBumpMap");
+	game->heightMapRenderSettings.modelMatrixUniform = game->heightMapPass.getUniform("modelMatrix");
+	game->heightMapRenderSettings.vpMatrixUniform    = game->heightMapPass.getUniform("vpMatrix");
+	game->heightMapRenderSettings.positionAttribute  = game->heightMapPass.getAttribute("position");
+	game->heightMapRenderSettings.normalAttribute    = game->heightMapPass.getAttribute("normal");
+	game->heightMapRenderSettings.uvAttribute        = game->heightMapPass.getAttribute("uv");
 	
 	game->renderProgram.load("rsrc/shaders/renderprogram.frag", "rsrc/shaders/renderprogram.vert");
 	game->renderProgram.addInputTexture(screenTexture);
-	
-	game->levelRenderSettings.textureUniform     = game->levelPass.getUniform("objectTexture");
-	game->levelRenderSettings.modelMatrixUniform = game->levelPass.getUniform("modelMatrix");
-	game->levelRenderSettings.vpMatrixUniform    = game->levelPass.getUniform("vpMatrix");
-	game->levelRenderSettings.positionAttribute  = game->levelPass.getAttribute("position");
-	game->levelRenderSettings.uvAttribute        = game->levelPass.getAttribute("uv");
 	
 	game->renderPositionAttribute = game->renderProgram.getAttribute("position");
 	game->renderUvAttribute = game->renderProgram.getAttribute("uv");

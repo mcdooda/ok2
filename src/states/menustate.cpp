@@ -43,13 +43,13 @@ void MenuState::update(Game* game)
 
 void MenuState::draw(Game* game)
 {
-	game->levelPass.use();
+	game->heightMapPass.use();
 	game->video->setClearColor(flat::video::Color::BLUE);
 	game->video->clear();
 	
-	game->levelRenderSettings.vpMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
+	game->heightMapRenderSettings.vpMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
 	
-	m_logoSprite->draw(game->levelRenderSettings);
+	m_logoSprite->draw(game->heightMapRenderSettings);
 	
 	game->renderProgram.use(game->video->window);
 	game->renderProgram.draw();

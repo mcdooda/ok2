@@ -12,17 +12,21 @@ class Game : public flat::Game
 		Game(const std::vector<std::string>& args);
 		virtual ~Game();
 		
+		virtual void openWindow();
+		
 	public:
 		// views
 		flat::video::View gameView;
 		flat::video::View interfaceView;
 		
 		// passes
-		flat::video::Pass levelPass;
+		flat::video::Pass heightMapPass;
+		//flat::video::Pass spritePass;
 		flat::video::Render renderProgram;
 		
 		// attributes & uniforms
-		flat::util::RenderSettings levelRenderSettings;
+		flat::util::RenderSettings heightMapRenderSettings;
+		flat::util::RenderSettings spriteRenderSettings;
 		
 		flat::video::Attribute renderPositionAttribute;
 		flat::video::Attribute renderUvAttribute;
