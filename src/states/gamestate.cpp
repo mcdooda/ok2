@@ -44,7 +44,7 @@ void GameState::draw(Game* game)
 	
 	game->heightMapRenderSettings.viewProjectionMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
 	flat::video::Uniform lightUniform = game->heightMapPass.getUniform("light");
-	lightUniform.setVector3(flat::geometry::Vector3(cos(game->time->getTime()), sin(game->time->getTime()), 0));
+	lightUniform.setVector3(flat::geometry::Vector3(cos(game->time->getRealTime()), sin(game->time->getRealTime()), 0));
 	
 	for (std::vector<entities::Entity*>::iterator it = m_entities.begin(); it != m_entities.end(); it++)
 		(*it)->draw(game->heightMapRenderSettings, game->gameView.getViewMatrix());

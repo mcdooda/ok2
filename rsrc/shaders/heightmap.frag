@@ -30,7 +30,7 @@ void main()
 {
 	vec4 textureColor = texture(objectTexture, vec2(uv2.x, 1 - uv2.y));
 	vec4 normal3 = normalMatrix * normalize(normalize(normal2) + getNormalFromBumpMap(vec2(uv2.x, 1 - uv2.y)));
-	outColor = textureColor + vec4(vec3(dot(normal3.xyz, light)), 1.0) * textureColor.a;
+	outColor = textureColor + vec4(vec3(clamp(-1, 0, dot(normal3.xyz, light))), 1.0) * textureColor.a;
 	//outColor = vec4(light, 1);
 	//outColor = vec4((normal3 / 2.0 + 0.5).xyz, 1.0);
 }
