@@ -49,7 +49,7 @@ void MenuState::draw(Game* game)
 	
 	game->heightMapRenderSettings.viewProjectionMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
 	
-	m_logoSprite->draw(game->heightMapRenderSettings);
+	m_logoSprite->draw(game->heightMapRenderSettings, game->gameView.getViewMatrix());
 	
 	game->renderProgram.use(game->video->window);
 	game->renderProgram.draw();

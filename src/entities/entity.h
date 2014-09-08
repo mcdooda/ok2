@@ -23,7 +23,7 @@ class Entity
 		inline void setRotationZ(float rotationZ) { m_sprite->setRotationZ(rotationZ); }
 		
 		virtual void update(Game* game, float elapsedTime);
-		void draw(const flat::util::RenderSettings& renderSettings);
+		void draw(const flat::util::RenderSettings& renderSettings, const flat::geometry::Matrix4& viewMatrix);
 		
 	protected:
 		flat::util::Sprite* m_sprite;

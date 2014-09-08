@@ -1,6 +1,7 @@
 #version 130
 
 uniform mat4 normalMatrix;
+uniform vec3 light;
 uniform sampler2D objectTexture;
 uniform sampler2D objectBumpMap;
 
@@ -17,8 +18,8 @@ float getHeightFromColor(vec4 c)
 vec4 getNormalFromBumpMap(vec2 uv)
 {
 	vec2 bumpMapSize = textureSize(objectBumpMap, 1);
-	vec2 px = vec2((1.0 / bumpMapSize.x) / 2.0, 0);
-	vec2 py = vec2(0, (1.0 / bumpMapSize.y) / 2.0);
+	vec2 px = vec2((1.0 / bumpMapSize.x) / 4.0, 0);
+	vec2 py = vec2(0, (1.0 / bumpMapSize.y) / 4.0);
 	vec3 dx = vec3(px.x * 2.0, 0, getHeightFromColor(texture(objectBumpMap, uv + px)) - getHeightFromColor(texture(objectBumpMap, uv - px)));
 	vec3 dy = vec3(0, py.y * 2.0, getHeightFromColor(texture(objectBumpMap, uv + py)) - getHeightFromColor(texture(objectBumpMap, uv - py)));
 	vec3 normal = cross(dx, dy);
@@ -27,9 +28,11 @@ vec4 getNormalFromBumpMap(vec2 uv)
 
 void main()
 {
-	//outColor = texture(objectTexture, vec2(uv2.x, 1 - uv2.y));
+	vec4 textureColor = texture(objectTexture, vec2(uv2.x, 1 - uv2.y));
 	vec4 normal3 = normalMatrix * normalize(normalize(normal2) + getNormalFromBumpMap(vec2(uv2.x, 1 - uv2.y)));
-	outColor = vec4((normal3 / 2.0 + 0.5).xyz, 1.0);
+	outColor = textureColor + vec4(vec3(dot(normal3.xyz, light)), 1.0) * textureColor.a;
+	//outColor = vec4(light, 1);
+	//outColor = vec4((normal3 / 2.0 + 0.5).xyz, 1.0);
 }
 
 
