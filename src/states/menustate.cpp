@@ -47,7 +47,7 @@ void MenuState::draw(Game* game)
 	game->video->setClearColor(flat::video::Color::BLUE);
 	game->video->clear();
 	
-	game->heightMapRenderSettings.vpMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
+	game->heightMapRenderSettings.viewProjectionMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
 	
 	m_logoSprite->draw(game->heightMapRenderSettings);
 	

@@ -42,7 +42,8 @@ void GameState::draw(Game* game)
 	game->video->setClearColor(flat::video::Color::BLUE);
 	game->video->clear();
 	
-	game->heightMapRenderSettings.vpMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
+	game->heightMapRenderSettings.viewProjectionMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
+	game->heightMapRenderSettings.normalMatrixUniform.setMatrix4(game->gameView.getNormalMatrix());
 	
 	for (std::vector<entities::Entity*>::iterator it = m_entities.begin(); it != m_entities.end(); it++)
 		(*it)->draw(game->heightMapRenderSettings);

@@ -14,13 +14,14 @@ void GlobalState::enter(flat::state::Agent* agent)
 	game->heightMapPass.load(game->video->window->getSize(), "rsrc/shaders/heightmap.frag", "rsrc/shaders/heightmap.vert");
 	const flat::video::Texture& screenTexture = game->heightMapPass.addOutputTexture("screen");
 	
-	game->heightMapRenderSettings.textureUniform     = game->heightMapPass.getUniform("objectTexture");
-	game->heightMapRenderSettings.bumpMapUniform     = game->heightMapPass.getUniform("objectBumpMap");
-	game->heightMapRenderSettings.modelMatrixUniform = game->heightMapPass.getUniform("modelMatrix");
-	game->heightMapRenderSettings.vpMatrixUniform    = game->heightMapPass.getUniform("vpMatrix");
-	game->heightMapRenderSettings.positionAttribute  = game->heightMapPass.getAttribute("position");
-	game->heightMapRenderSettings.normalAttribute    = game->heightMapPass.getAttribute("normal");
-	game->heightMapRenderSettings.uvAttribute        = game->heightMapPass.getAttribute("uv");
+	game->heightMapRenderSettings.textureUniform              = game->heightMapPass.getUniform("objectTexture");
+	game->heightMapRenderSettings.bumpMapUniform              = game->heightMapPass.getUniform("objectBumpMap");
+	game->heightMapRenderSettings.modelMatrixUniform          = game->heightMapPass.getUniform("modelMatrix");
+	game->heightMapRenderSettings.normalMatrixUniform         = game->heightMapPass.getUniform("normalMatrix");
+	game->heightMapRenderSettings.viewProjectionMatrixUniform = game->heightMapPass.getUniform("vpMatrix");
+	game->heightMapRenderSettings.positionAttribute           = game->heightMapPass.getAttribute("position");
+	game->heightMapRenderSettings.normalAttribute             = game->heightMapPass.getAttribute("normal");
+	game->heightMapRenderSettings.uvAttribute                 = game->heightMapPass.getAttribute("uv");
 	
 	game->renderProgram.load("rsrc/shaders/renderprogram.frag", "rsrc/shaders/renderprogram.vert");
 	game->renderProgram.addInputTexture(screenTexture);

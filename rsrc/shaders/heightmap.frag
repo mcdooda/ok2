@@ -1,5 +1,6 @@
 #version 130
 
+uniform mat4 normalMatrix;
 uniform sampler2D objectTexture;
 uniform sampler2D objectBumpMap;
 
@@ -22,13 +23,12 @@ vec4 getNormalFromBumpMap(vec2 uv)
 	vec3 dy = vec3(0, py.y * 2.0, getHeightFromColor(texture(objectBumpMap, uv + py)) - getHeightFromColor(texture(objectBumpMap, uv - py)));
 	vec3 normal = cross(dx, dy);
 	return vec4(normalize(normal), 1.0);
-	
 }
 
 void main()
 {
 	//outColor = texture(objectTexture, vec2(uv2.x, 1 - uv2.y));
-	vec4 normal3 = normalize(normalize(normal2) + getNormalFromBumpMap(vec2(uv2.x, 1 - uv2.y)));
+	vec4 normal3 = normalMatrix * normalize(normalize(normal2) + getNormalFromBumpMap(vec2(uv2.x, 1 - uv2.y)));
 	outColor = vec4((normal3 / 2.0 + 0.5).xyz, 1.0);
 }
 
