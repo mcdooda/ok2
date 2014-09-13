@@ -21,6 +21,7 @@ Game::~Game()
 void Game::openWindow()
 {
 	video->window->open(video->window->getDesktopSize() / 2, false, true);
+	video->window->hideCursor();
 }
 
 } // game

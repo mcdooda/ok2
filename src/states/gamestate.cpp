@@ -20,6 +20,7 @@ void GameState::enter(flat::state::Agent* agent)
 	addShip("pink", flat::geometry::Vector2(50, 0));
 	addShip("red", flat::geometry::Vector2(150, 0));
 	addShip("yellow", flat::geometry::Vector2(250, 0));
+	addEnemy(flat::geometry::Vector2(0, -150));
 }
 
 void GameState::execute(flat::state::Agent* agent)
@@ -43,8 +44,6 @@ void GameState::draw(Game* game)
 	game->video->clear();
 	
 	game->heightMapRenderSettings.viewProjectionMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
-	flat::video::Uniform lightUniform = game->heightMapPass.getUniform("light");
-	lightUniform.setVector3(flat::geometry::Vector3(cos(game->time->getRealTime()), sin(game->time->getRealTime()), 0));
 	
 	for (std::vector<entities::Entity*>::iterator it = m_entities.begin(); it != m_entities.end(); it++)
 		(*it)->draw(game->heightMapRenderSettings, game->gameView.getViewMatrix());
@@ -58,19 +57,37 @@ void GameState::addShip(std::string color, flat::geometry::Vector2 position)
 	entities::PlayerEntity* ship = new entities::PlayerEntity();
 	
 	entities::EntityTemplate* shipTemplate = new entities::EntityTemplate();
-	shipTemplate->setSpeed(500.0f);
+	shipTemplate->setSpeed(500.f);
 	
 	flat::util::HeightMap* shipSprite = new flat::util::HeightMap();
 	shipSprite->setPosition(position);
-	shipSprite->setTexture(new flat::video::FileTexture("rsrc/images/units/ship/" + color + "/texture.png"));
-	shipSprite->setHeightMap(new flat::video::FileTexture("rsrc/images/units/ship/" + color + "/heightmap.png"));
-	shipSprite->setBumpMap(new flat::video::FileTexture("rsrc/images/units/ship/" + color + "/bumpmap.png"));
+	shipSprite->setTexture(new flat::video::FileTexture("rsrc/images/units/ships/" + color + "/texture.png"));
+	shipSprite->setHeightMap(new flat::video::FileTexture("rsrc/images/units/ships/" + color + "/heightmap.png"));
+	shipSprite->setBumpMap(new flat::video::FileTexture("rsrc/images/units/ships/" + color + "/bumpmap.png"));
 	
 	ship->setTemplate(shipTemplate);
 	ship->setSprite(shipSprite);
 	
 	ship->setRotationZ(M_PI / 2.f);
 	m_entities.push_back(ship);
+}
+
+void GameState::addEnemy(flat::geometry::Vector2 position)
+{
+	entities::Entity* enemy = new entities::Entity();
+	
+	entities::EntityTemplate* enemyTemplate = new entities::EntityTemplate();
+	enemyTemplate->setSpeed(100.f);
+	
+	flat::util::Sprite* enemySprite = new flat::util::Sprite();
+	enemySprite->setPosition(position);
+	enemySprite->setTexture(new flat::video::FileTexture("rsrc/images/units/enemies/enemy1/texture.png"));
+	
+	enemy->setTemplate(enemyTemplate);
+	enemy->setSprite(enemySprite);
+	
+	enemy->setRotationZ(-M_PI / 2.f);
+	m_entities.push_back(enemy);
 }
 
 void GameState::exit(flat::state::Agent* agent)

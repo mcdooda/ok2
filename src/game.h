@@ -12,7 +12,7 @@ class Game : public flat::Game
 		Game(const std::vector<std::string>& args);
 		virtual ~Game();
 		
-		virtual void openWindow();
+		void openWindow();
 		
 	public:
 		// views

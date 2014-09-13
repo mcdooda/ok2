@@ -17,6 +17,7 @@ class Entity
 		Entity();
 		virtual ~Entity();
 		
+		inline void setPass(flat::video::Pass* pass) { m_pass = pass; }
 		inline void setSprite(flat::util::Sprite* sprite) { m_sprite = sprite; }
 		inline void setTemplate(EntityTemplate* template_) { m_template = template_; }
 		
@@ -27,6 +28,7 @@ class Entity
 		
 	protected:
 		flat::util::Sprite* m_sprite;
+		flat::video::Pass* m_pass;
 		EntityTemplate* m_template;
 };
 

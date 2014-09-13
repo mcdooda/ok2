@@ -22,6 +22,7 @@ class GameState : public flat::state::State
 		void draw(Game* game);
 		
 		void addShip(std::string color, flat::geometry::Vector2 position);
+		void addEnemy(flat::geometry::Vector2 position);
 		
 	private:
 		flat::audio::Music* m_music;
