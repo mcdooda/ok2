@@ -3,8 +3,9 @@
 
 #include <flat.h>
 
-#include "../entities/entity.h"
+#include "../entities/ship.h"
 #include "../entities/shiptemplate.h"
+#include "../entities/missile.h"
 #include "../entities/missiletemplate.h"
 
 namespace game
@@ -25,15 +26,17 @@ class GameState : public flat::state::State
 		
 		skills::SkillTemplate* getSkillTemplate(const std::string& skillName);
 		
+		void addShip(const std::string& name, const flat::geometry::Vector2& position, float orientationZ, entities::Ship* ship1 = NULL);
+		void addMissile(const std::string& name, const flat::geometry::Vector2& position, float orientationZ);
+		
 	private:
 		void initMusic(Game* game);
 		
+		void loadLuaLibraries(Game* game);
 		void loadTemplates(Game* game);
 		
 		void update(Game* game);
 		void draw(Game* game);
-		
-		void addShip(const std::string& name, const flat::geometry::Vector2& position);
 		
 	private:
 		flat::audio::Music* m_music;
@@ -41,8 +44,8 @@ class GameState : public flat::state::State
 		std::map<std::string, entities::ShipTemplate*> m_shipTemplates;
 		std::map<std::string, entities::MissileTemplate*> m_missileTemplates;
 		std::map<std::string, skills::SkillTemplate*> m_skillTemplates;
-		std::vector<entities::Entity*> m_ships;
-		std::vector<entities::Entity*> m_missiles;
+		std::vector<entities::Ship*> m_ships;
+		std::vector<entities::Missile*> m_missiles;
 };
 
 } // states

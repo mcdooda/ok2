@@ -10,20 +10,13 @@ namespace templates
 
 void open(lua_State* L, states::GameState* gameState)
 {
-	// ship()
-	lua_pushlightuserdata(L, gameState);
-	lua_pushcclosure(L, l_ship, 1);
-	lua_setglobal(L, "ship");
-	
-	// missile()
-	lua_pushlightuserdata(L, gameState);
-	lua_pushcclosure(L, l_missile, 1);
-	lua_setglobal(L, "missile");
-	
-	// skill()
-	lua_pushlightuserdata(L, gameState);
-	lua_pushcclosure(L, l_skill, 1);
-	lua_setglobal(L, "skill");
+	const luaL_Reg funcs[] = {
+		{"ship",    l_ship},
+		{"missile", l_missile},
+		{"skill",   l_skill},
+		{NULL, NULL}
+	};
+	registerGameStateClosures(L, gameState, funcs);
 }
 	
 int l_ship(lua_State* L)

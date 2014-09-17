@@ -1,7 +1,7 @@
 #ifndef GAME_LUA_TEMPLATES_H
 #define GAME_LUA_TEMPLATES_H
 
-#include <flat.h>
+#include "lua.h"
 #include "../states/gamestate.h"
 
 namespace game

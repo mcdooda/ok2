@@ -1,3 +1,4 @@
+#include <iostream>
 #include "entity.h"
 
 namespace game

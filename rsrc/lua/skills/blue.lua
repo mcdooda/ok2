@@ -1,14 +1,13 @@
 local cos = math.cos
 local sin = math.sin
+local pi = math.pi
 
 skill {
 	name     = 'blue',
-	cooldown = 0.2,
+	cooldown = 1,
 	trigger  = function(ship)
-		--[[local rotation = ship:getRotationZ();
-		local x, y = ship:getPosition()
-		fireMissile('blue', x + cos(rotation) * 20, y + sin(rotation) * 20)
-		]]
+		popMissile('blue', 0, 0, pi / 2)
+		--popShip('blue', 0, 0, pi / 2)
 		print 'BLUE SKILL'
 	end
 }

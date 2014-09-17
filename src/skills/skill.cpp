@@ -8,7 +8,8 @@ namespace skills
 Skill::Skill(SkillTemplate* skillTemplate) :
 	m_template(skillTemplate)
 {
-	
+	// make it ready
+	m_lastTriggered = -getCooldown();
 }
 
 Skill::~Skill()
