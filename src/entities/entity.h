@@ -14,11 +14,20 @@ namespace entities
 class Entity
 {
 	public:
+		enum Side
+		{
+			ALLY,
+			ENEMY,
+			NUM_SIDES
+		};
+		
+	public:
 		Entity();
 		virtual ~Entity();
 		
 		inline void setPass(flat::video::Pass* pass) { m_pass = pass; }
-		void setTemplate(EntityTemplate* entityTemplate);
+		
+		virtual void setTemplate(EntityTemplate* entityTemplate);
 		
 		void setRotationZ(float rotationZ);
 		void setPosition(const flat::geometry::Vector2& position);

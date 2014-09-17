@@ -2,29 +2,37 @@
 #define GAME_SKILLS_SKILL_H
 
 #include "../game.h"
+#include "../entities/ship.h"
+#include "skilltemplate.h"
 
 namespace game
 {
+
+namespace entities
+{
+class Ship;
+}
+
 namespace skills
 {
 
 class Skill
 {
 	public:
-		Skill();
+		Skill(SkillTemplate* skillTemplate);
 		virtual ~Skill();
 		
 		bool isReady(float time);
 		float getRemainingCoolDownRatio(float time);
 		
-		inline float getCoolDown() const { return m_coolDown; }
-		inline void setCoolDown(float coolDown) { m_coolDown = coolDown; }
-		
-		virtual void trigger(Game* game, float time);
+		void trigger(Game* game, entities::Ship* ship, float time);
 		
 	protected:
-		float m_coolDown;
+		float getCooldown();
+		
+	protected:
 		float m_lastTriggered;
+		SkillTemplate* m_template;
 };
 
 } // skills

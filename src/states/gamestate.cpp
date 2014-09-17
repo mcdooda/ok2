@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../game.h"
-#include "../entities/playerentity.h"
-#include "../entities/lua/entities.h"
+#include "../entities/playership.h"
+#include "../lua/templates.h"
 #include "gamestate.h"
 
 namespace game
@@ -15,7 +15,7 @@ void GameState::enter(flat::state::Agent* agent)
 	
 	initMusic(game);
 	
-	loadShips(game);
+	loadTemplates(game);
 	
 	addShip("blue", flat::geometry::Vector2(-250, 0));
 	addShip("gray", flat::geometry::Vector2(-150, 0));
@@ -31,15 +31,30 @@ void GameState::initMusic(Game* game)
 	m_music->play();
 }
 
-void GameState::loadShips(Game* game)
+void GameState::loadTemplates(Game* game)
 {
-	entities::lua::open(game->luaState, this);
-	flat::lua::doFile(game->luaState, "rsrc/lua/ships.lua");
+	lua::templates::open(game->luaState, this);
+	flat::lua::doFile(game->luaState, "rsrc/lua/templates.lua");
 }
 
-void GameState::storeShipTemplate(entities::EntityTemplate* shipTemplate)
+void GameState::addShipTemplate(entities::ShipTemplate* shipTemplate)
 {
-	m_templates[shipTemplate->getName()] = shipTemplate;
+	m_shipTemplates[shipTemplate->getName()] = shipTemplate;
+}
+
+void GameState::addMissileTemplate(entities::MissileTemplate* missileTemplate)
+{
+	m_missileTemplates[missileTemplate->getName()] = missileTemplate;
+}
+
+void GameState::addSkillTemplate(skills::SkillTemplate* skillTemplate)
+{
+	m_skillTemplates[skillTemplate->getName()] = skillTemplate;
+}
+
+skills::SkillTemplate* GameState::getSkillTemplate(const std::string& skillName)
+{
+	return m_skillTemplates[skillName];
 }
 
 void GameState::execute(flat::state::Agent* agent)
@@ -52,7 +67,7 @@ void GameState::execute(flat::state::Agent* agent)
 void GameState::update(Game* game)
 {
 	float elapsedTime = game->time->getFrameTime();
-	for (std::vector<entities::Entity*>::iterator it = m_entities.begin(); it != m_entities.end(); it++)
+	for (std::vector<entities::Entity*>::iterator it = m_ships.begin(); it != m_ships.end(); it++)
 		(*it)->update(game, elapsedTime);
 }
 
@@ -64,7 +79,7 @@ void GameState::draw(Game* game)
 	
 	game->heightMapRenderSettings.viewProjectionMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
 	
-	for (std::vector<entities::Entity*>::iterator it = m_entities.begin(); it != m_entities.end(); it++)
+	for (std::vector<entities::Entity*>::iterator it = m_ships.begin(); it != m_ships.end(); it++)
 		(*it)->draw(game->heightMapRenderSettings, game->gameView.getViewMatrix());
 	
 	game->renderProgram.use(game->video->window);
@@ -73,9 +88,9 @@ void GameState::draw(Game* game)
 
 void GameState::addShip(const std::string& name, const flat::geometry::Vector2& position)
 {
-	entities::PlayerEntity* ship = new entities::PlayerEntity();
+	entities::PlayerShip* ship = new entities::PlayerShip();
 	
-	entities::EntityTemplate* shipTemplate = m_templates[name];
+	entities::EntityTemplate* shipTemplate = m_shipTemplates[name];
 	
 	if (shipTemplate == NULL)
 	{
@@ -87,7 +102,7 @@ void GameState::addShip(const std::string& name, const flat::geometry::Vector2& 
 	
 	ship->setPosition(position);
 	ship->setRotationZ(M_PI / 2.f);
-	m_entities.push_back(ship);
+	m_ships.push_back(ship);
 }
 
 void GameState::exit(flat::state::Agent* agent)

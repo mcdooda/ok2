@@ -10,4 +10,3 @@ loadShip 'pink'
 loadShip 'red'
 loadShip 'yellow'
 
-print 'ships loaded ...'

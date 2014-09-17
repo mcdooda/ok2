@@ -1,22 +1,24 @@
-#ifndef GAME_ENTITIES_LUA_ENTITIES_H
-#define GAME_ENTITIES_LUA_ENTITIES_H
+#ifndef GAME_LUA_TEMPLATES_H
+#define GAME_LUA_TEMPLATES_H
 
 #include <flat.h>
-#include "../../states/gamestate.h"
+#include "../states/gamestate.h"
 
 namespace game
 {
-namespace entities
-{
 namespace lua
+{
+namespace templates
 {
 
 void open(lua_State* L, states::GameState* gameState);
 
 int l_ship(lua_State* L);
+int l_missile(lua_State* L);
+int l_skill(lua_State* L);
 
+} // templates
 } // lua
-} // entities
 } // game
 
 #endif // GAME_ENTITIES_LUA_ENTITIES_H

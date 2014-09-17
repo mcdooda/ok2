@@ -4,6 +4,8 @@
 #include <flat.h>
 
 #include "../entities/entity.h"
+#include "../entities/shiptemplate.h"
+#include "../entities/missiletemplate.h"
 
 namespace game
 {
@@ -17,12 +19,16 @@ class GameState : public flat::state::State
 		virtual void execute(flat::state::Agent* agent);
 		virtual void exit(flat::state::Agent* agent);
 		
-		void storeShipTemplate(entities::EntityTemplate* shipTemplate);
+		void addShipTemplate(entities::ShipTemplate* shipTemplate);
+		void addMissileTemplate(entities::MissileTemplate* missileTemplate);
+		void addSkillTemplate(skills::SkillTemplate* skillTemplate);
+		
+		skills::SkillTemplate* getSkillTemplate(const std::string& skillName);
 		
 	private:
 		void initMusic(Game* game);
 		
-		void loadShips(Game* game);
+		void loadTemplates(Game* game);
 		
 		void update(Game* game);
 		void draw(Game* game);
@@ -32,8 +38,11 @@ class GameState : public flat::state::State
 	private:
 		flat::audio::Music* m_music;
 		
-		std::map<std::string, entities::EntityTemplate*> m_templates;
-		std::vector<entities::Entity*> m_entities;
+		std::map<std::string, entities::ShipTemplate*> m_shipTemplates;
+		std::map<std::string, entities::MissileTemplate*> m_missileTemplates;
+		std::map<std::string, skills::SkillTemplate*> m_skillTemplates;
+		std::vector<entities::Entity*> m_ships;
+		std::vector<entities::Entity*> m_missiles;
 };
 
 } // states

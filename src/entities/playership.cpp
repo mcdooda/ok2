@@ -1,23 +1,37 @@
-#include "playerentity.h"
+#include "playership.h"
 
 namespace game
 {
 namespace entities
 {
 
-PlayerEntity::PlayerEntity()
+PlayerShip::PlayerShip() :
+	m_level(1),
+	m_experience(0)
 {
 
 }
 
-PlayerEntity::~PlayerEntity()
+PlayerShip::~PlayerShip()
 {
 
 }
 
-void PlayerEntity::update(Game* game, float elapsedTime)
+void PlayerShip::setLevel(unsigned int level)
+{
+	if (level != m_level)
+	{
+		m_level = level;
+		setTemplateSkills(level);
+	}
+}
+
+void PlayerShip::update(Game* game, float elapsedTime)
 {
 	const flat::input::Keyboard* keyboard = game->input->keyboard;
+	
+	// move ship
+	
 	bool leftPressed  = keyboard->isPressed(K(LEFT))  || keyboard->isPressed(K(A));
 	bool rightPressed = keyboard->isPressed(K(RIGHT)) || keyboard->isPressed(K(D));
 	bool upPressed    = keyboard->isPressed(K(UP))    || keyboard->isPressed(K(W));
@@ -43,7 +57,6 @@ void PlayerEntity::update(Game* game, float elapsedTime)
 	
 	m_sprite->moveBy(direction * speed * elapsedTime);
 	
-	//static const float pi8 = M_PI / 8.f;
 	static const float pi6 = M_PI / 6.f;
 	static const float epsilon = 0.001f;
 	float slowRotationSpeed = speed / 150.f;
@@ -105,6 +118,25 @@ void PlayerEntity::update(Game* game, float elapsedTime)
 	}
 	
 	m_sprite->setRotation(rotation);
+	
+	// trigger skills
+	
+	bool primaryFirePressed   = keyboard->isPressed(K(LCTRL)) || keyboard->isPressed(K(RCTRL));
+	bool secondaryFirePressed = keyboard->isPressed(K(SPACE)) || keyboard->isPressed(K(SPACE));
+	
+	float time = game->time->getTime();
+	
+	if (primaryFirePressed)
+	{
+		if (m_primarySkill != NULL && m_primarySkill->isReady(time))
+			m_primarySkill->trigger(game, this, time);
+	}
+	
+	if (secondaryFirePressed)
+	{
+		if (m_secondarySkill != NULL && m_secondarySkill->isReady(time))
+			m_secondarySkill->trigger(game, this, time);
+	}
 }
 
 } // entities
