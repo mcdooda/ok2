@@ -1,3 +1,4 @@
+#include <iostream>
 #include "../game.h"
 #include "globalstate.h"
 
@@ -30,6 +31,8 @@ void GlobalState::enter(flat::state::Agent* agent)
 	game->renderUvAttribute = game->renderProgram.getAttribute("uv");
 	
 	resetViews(game);
+	
+	game->luaState = flat::lua::open();
 }
 
 void GlobalState::execute(flat::state::Agent* agent)
@@ -48,7 +51,9 @@ void GlobalState::execute(flat::state::Agent* agent)
 
 void GlobalState::exit(flat::state::Agent* agent)
 {
+	game::Game* game = (game::Game*) agent;
 	
+	flat::lua::close(game->luaState);
 }
 
 void GlobalState::resetViews(game::Game* game)

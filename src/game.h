@@ -30,6 +30,9 @@ class Game : public flat::Game
 		
 		flat::video::Attribute renderPositionAttribute;
 		flat::video::Attribute renderUvAttribute;
+		
+		// lua
+		lua_State* luaState;
 };
 
 } // game

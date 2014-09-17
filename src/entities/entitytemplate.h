@@ -14,14 +14,18 @@ class EntityTemplate
 		EntityTemplate();
 		virtual ~EntityTemplate();
 		
-		inline void setTexture(flat::video::Texture* texture) { m_texture = texture; }
-		inline flat::video::Texture* getTexture() const { return m_texture; }
+		inline void setName(const std::string& name) { m_name = name; }
+		inline const std::string& getName() const { return m_name; }
+		
+		inline void setSprite(flat::util::Sprite* sprite) { m_sprite = sprite; }
+		inline flat::util::Sprite* getSprite() const { return m_sprite; }
 		
 		inline void setSpeed(float speed) { m_speed = speed; }
 		inline float getSpeed() const { return m_speed; }
 		
 	protected:
-		flat::video::Texture* m_texture;
+		flat::util::Sprite* m_sprite;
+		std::string m_name;
 		float m_speed;
 };
 

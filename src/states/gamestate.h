@@ -17,16 +17,22 @@ class GameState : public flat::state::State
 		virtual void execute(flat::state::Agent* agent);
 		virtual void exit(flat::state::Agent* agent);
 		
+		void storeShipTemplate(entities::EntityTemplate* shipTemplate);
+		
 	private:
+		void initMusic(Game* game);
+		
+		void loadShips(Game* game);
+		
 		void update(Game* game);
 		void draw(Game* game);
 		
-		void addShip(std::string color, flat::geometry::Vector2 position);
-		void addEnemy(flat::geometry::Vector2 position);
+		void addShip(const std::string& name, const flat::geometry::Vector2& position);
 		
 	private:
 		flat::audio::Music* m_music;
 		
+		std::map<std::string, entities::EntityTemplate*> m_templates;
 		std::vector<entities::Entity*> m_entities;
 };
 

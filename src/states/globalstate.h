@@ -19,6 +19,9 @@ class GlobalState : public flat::state::State
 		
 	private:
 		void resetViews(game::Game* game);
+		
+		void loadGame(game::Game* game);
+		void loadShips(game::Game* game);
 };
 
 } // states

@@ -18,10 +18,10 @@ class Entity
 		virtual ~Entity();
 		
 		inline void setPass(flat::video::Pass* pass) { m_pass = pass; }
-		inline void setSprite(flat::util::Sprite* sprite) { m_sprite = sprite; }
-		inline void setTemplate(EntityTemplate* template_) { m_template = template_; }
+		void setTemplate(EntityTemplate* entityTemplate);
 		
-		inline void setRotationZ(float rotationZ) { m_sprite->setRotationZ(rotationZ); }
+		void setRotationZ(float rotationZ);
+		void setPosition(const flat::geometry::Vector2& position);
 		
 		virtual void update(Game* game, float elapsedTime);
 		void draw(const flat::util::RenderSettings& renderSettings, const flat::geometry::Matrix4& viewMatrix);
