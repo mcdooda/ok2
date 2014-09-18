@@ -11,7 +11,7 @@ namespace lua
 namespace templates
 {
 
-void open(lua_State* L, states::GameState* gameState);
+void open(lua_State* L, states::GameState* gameState, Game* game);
 
 int l_ship(lua_State* L);
 int l_missile(lua_State* L);

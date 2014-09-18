@@ -3,7 +3,9 @@ local function loadMissile(name)
 	print('missile: ' .. name .. ' [OK]')
 end
 
-loadMissile 'blue'
+loadMissile 'blue1'
+loadMissile 'specialblue1'
+
 loadMissile 'gray'
 loadMissile 'green'
 loadMissile 'pink'

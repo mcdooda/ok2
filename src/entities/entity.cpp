@@ -6,14 +6,15 @@ namespace entities
 {
 
 Entity::Entity() :
-	m_sprite(NULL)
+	m_sprite(NULL),
+	m_dataRef(LUA_NOREF)
 {
 	
 }
 
 Entity::~Entity()
 {
-	
+	// TODO unref m_dataRef
 }
 
 void Entity::setTemplate(EntityTemplate* entityTemplate)
@@ -65,6 +66,16 @@ void Entity::update(Game* game, float elapsedTime)
 void Entity::draw(const flat::util::RenderSettings& renderSettings, const flat::geometry::Matrix4& viewMatrix)
 {
 	m_sprite->draw(renderSettings, viewMatrix);
+}
+
+int Entity::getPopFunctionRef() const
+{
+	return m_template->getPopFunctionRef();
+}
+
+int Entity::getUpdateFunctionRef() const
+{
+	return m_template->getUpdateFunctionRef();
 }
 
 } // entities

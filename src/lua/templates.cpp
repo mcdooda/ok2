@@ -8,7 +8,7 @@ namespace lua
 namespace templates
 {
 
-void open(lua_State* L, states::GameState* gameState)
+void open(lua_State* L, states::GameState* gameState, Game* game)
 {
 	const luaL_Reg funcs[] = {
 		{"ship",    l_ship},
@@ -16,7 +16,7 @@ void open(lua_State* L, states::GameState* gameState)
 		{"skill",   l_skill},
 		{NULL, NULL}
 	};
-	registerGameStateClosures(L, gameState, funcs);
+	registerGameStateClosures(L, gameState, game, funcs);
 }
 	
 int l_ship(lua_State* L)
@@ -46,9 +46,21 @@ int l_ship(lua_State* L)
 		bumpmap = luaL_checkstring(L, -1);
 	}
 	
+	lua_getfield(L, 1, "pop");
+	int popFunctionRef = LUA_NOREF;
+	if (lua_type(L, -1) == LUA_TFUNCTION)
+		popFunctionRef = luaL_ref(L, LUA_REGISTRYINDEX);
+	
+	lua_getfield(L, 1, "update");
+	int updateFunctionRef = LUA_NOREF;
+	if (lua_type(L, -1) == LUA_TFUNCTION)
+		updateFunctionRef = luaL_ref(L, LUA_REGISTRYINDEX);
+	
 	entities::ShipTemplate* shipTemplate = new entities::ShipTemplate();
 	shipTemplate->setName(name);
 	shipTemplate->setSpeed(speed);
+	shipTemplate->setPopFunctionRef(popFunctionRef);
+	shipTemplate->setUpdateFunctionRef(updateFunctionRef);
 	
 	flat::util::Sprite* shipSprite;
 	
@@ -105,6 +117,16 @@ int l_missile(lua_State* L)
 	
 	lua_getfield(L, 1, "texture");
 	std::string texture = luaL_checkstring(L, -1);
+	
+	lua_getfield(L, 1, "pop");
+	int popFunctionRef = LUA_NOREF;
+	if (lua_type(L, -1) == LUA_TFUNCTION)
+		popFunctionRef = luaL_ref(L, LUA_REGISTRYINDEX);
+	
+	lua_getfield(L, 1, "update");
+	int updateFunctionRef = LUA_NOREF;
+	if (lua_type(L, -1) == LUA_TFUNCTION)
+		updateFunctionRef = luaL_ref(L, LUA_REGISTRYINDEX);
 
 	flat::util::Sprite* missileSprite = new flat::util::Sprite();
 	
@@ -113,6 +135,8 @@ int l_missile(lua_State* L)
 	entities::MissileTemplate* missileTemplate = new entities::MissileTemplate();
 	missileTemplate->setName(name);
 	missileTemplate->setSpeed(speed);
+	missileTemplate->setPopFunctionRef(popFunctionRef);
+	missileTemplate->setUpdateFunctionRef(updateFunctionRef);
 	
 	missileTemplate->setSprite(missileSprite);
 	

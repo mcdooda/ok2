@@ -48,10 +48,18 @@ class Entity
 		virtual void update(Game* game, float elapsedTime);
 		void draw(const flat::util::RenderSettings& renderSettings, const flat::geometry::Matrix4& viewMatrix);
 		
+		// lua callbacks
+		int getPopFunctionRef() const;
+		int getUpdateFunctionRef() const;
+		
+		inline void setDataRef(int dataRef) { m_dataRef = dataRef; }
+		inline int getDataRef() { return m_dataRef; }
+		
 	protected:
 		flat::util::Sprite* m_sprite;
 		flat::video::Pass* m_pass;
 		EntityTemplate* m_template;
+		int m_dataRef;
 };
 
 }

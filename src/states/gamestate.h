@@ -26,8 +26,8 @@ class GameState : public flat::state::State
 		
 		skills::SkillTemplate* getSkillTemplate(const std::string& skillName);
 		
-		void addShip(const std::string& name, const flat::geometry::Vector2& position, float rotationZ, entities::Ship* ship1 = NULL);
-		void addMissile(const std::string& name, const flat::geometry::Vector2& position, float rotationZ);
+		entities::Ship* addShip(const std::string& name, const flat::geometry::Vector2& position, float rotationZ, entities::Ship* ship1 = NULL);
+		entities::Missile* addMissile(const std::string& name, const flat::geometry::Vector2& position, float rotationZ);
 		
 	private:
 		void initMusic(Game* game);

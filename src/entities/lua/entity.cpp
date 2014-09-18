@@ -35,6 +35,8 @@ void open(lua_State* L)
 		{"getPositionX", l_Entity_getPositionX},
 		{"getPositionY", l_Entity_getPositionY},
 		
+		{"data",         l_Entity_data},
+		
 		{NULL, NULL}
 	};
 	
@@ -54,6 +56,31 @@ void pushEntity(lua_State* L, entities::Entity* entity)
 entities::Entity* getEntity(lua_State* L, int index)
 {
 	return *(entities::Entity**) luaL_checkudata(L, index, "OK2.Ship");
+}
+
+void initEntity(lua_State* L, entities::Entity* entity, float time)
+{
+	createEntityData(L, entity);
+	triggerEntityPopFunction(L, entity, time);
+}
+
+void createEntityData(lua_State* L, entities::Entity* entity)
+{
+	lua_newtable(L);
+	int dataRef = luaL_ref(L, LUA_REGISTRYINDEX);
+	entity->setDataRef(dataRef);
+}
+
+void triggerEntityPopFunction(lua_State* L, entities::Entity* entity, float time)
+{
+	int popFunctionRef = entity->getPopFunctionRef();
+	if (popFunctionRef != LUA_NOREF)
+	{
+		lua_rawgeti(L, LUA_REGISTRYINDEX, popFunctionRef);
+		entities::lua::pushEntity(L, entity);
+		lua_pushnumber(L, time);
+		lua_call(L, 2, 0);
+	}
 }
 
 int l_Entity_setRotationZ(lua_State* L)
@@ -145,6 +172,13 @@ int l_Entity_getPositionY(lua_State* L)
 	entities::Entity* entity = getEntity(L);
 	const flat::geometry::Vector2& position = entity->getPosition();
 	lua_pushnumber(L, position.getY());
+	return 1;
+}
+
+int l_Entity_data(lua_State* L)
+{
+	entities::Entity* entity = getEntity(L);
+	lua_rawgeti(L, LUA_REGISTRYINDEX, entity->getDataRef());
 	return 1;
 }
 

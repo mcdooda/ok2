@@ -10,7 +10,7 @@ namespace lua
 namespace pop
 {
 
-void open(lua_State* L, states::GameState* gameState);
+void open(lua_State* L, states::GameState* gameState, Game* game);
 
 int l_popShip(lua_State* L);
 int l_popMissile(lua_State* L);

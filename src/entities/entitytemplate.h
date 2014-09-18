@@ -23,14 +23,22 @@ class EntityTemplate
 		inline void setSpeed(float speed) { m_speed = speed; }
 		inline float getSpeed() const { return m_speed; }
 		
+		inline void setPopFunctionRef(int popFunctionRef) { m_popFunctionRef = popFunctionRef; }
+		inline int getPopFunctionRef() const { return m_popFunctionRef; }
+		
+		inline void setUpdateFunctionRef(int updateFunctionRef) { m_updateFunctionRef = updateFunctionRef; }
+		inline int getUpdateFunctionRef() const { return m_updateFunctionRef; }
+		
 	protected:
 		flat::util::Sprite* m_sprite;
 		std::string m_name;
 		float m_speed;
+		int m_popFunctionRef;
+		int m_updateFunctionRef;
 };
 
-}
-}
+} // entities
+} // game
 
 #endif // GAME_ENTITIES_ENTITYTEMPLATE_H
 

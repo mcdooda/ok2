@@ -3,7 +3,9 @@ local function loadSkill(name)
 	print('skill: ' .. name .. ' [OK]')
 end
 
-loadSkill 'blue'
+loadSkill 'blue1'
+loadSkill 'specialblue1'
+
 loadSkill 'gray'
 loadSkill 'green'
 loadSkill 'pink'

@@ -5,6 +5,6 @@ ship {
 	heightmap = 'rsrc/images/units/ships/blue/heightmap.png',
 	bumpmap   = 'rsrc/images/units/ships/blue/bumpmap.png',
 	skills    = {
-		{'blue', 'blue'}
+		{'blue1', 'specialblue1'}
 	}
 }
