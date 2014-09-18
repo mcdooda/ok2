@@ -83,6 +83,19 @@ void triggerEntityPopFunction(lua_State* L, entities::Entity* entity, float time
 	}
 }
 
+void triggerEntityUpdateFunction(lua_State* L, entities::Entity* entity, float time, float elapsedTime)
+{
+	int updateFunctionRef = entity->getUpdateFunctionRef();
+	if (updateFunctionRef != LUA_NOREF)
+	{
+		lua_rawgeti(L, LUA_REGISTRYINDEX, updateFunctionRef);
+		entities::lua::pushEntity(L, entity);
+		lua_pushnumber(L, time);
+		lua_pushnumber(L, elapsedTime);
+		lua_call(L, 3, 0);
+	}
+}
+
 int l_Entity_setRotationZ(lua_State* L)
 {
 	entities::Entity* entity = getEntity(L);

@@ -124,17 +124,25 @@ void GameState::execute(flat::state::Agent* agent)
 
 void GameState::update(Game* game)
 {
+	float time = game->time->getTime();
 	float elapsedTime = game->time->getFrameTime();
+	lua_State* L = game->luaState;
 	
 	// creates a copy in order to allow skills to create new ships
 	std::vector<entities::Ship*> ships = m_ships;
 	std::vector<entities::Missile*> missiles = m_missiles;
 	
 	for (std::vector<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
+	{
 		(*it)->update(game, elapsedTime);
+		entities::lua::triggerEntityUpdateFunction(L, *it, time, elapsedTime);
+	}
 		
 	for (std::vector<entities::Missile*>::iterator it = missiles.begin(); it != missiles.end(); it++)
+	{
 		(*it)->update(game, elapsedTime);
+		entities::lua::triggerEntityUpdateFunction(L, *it, time, elapsedTime);
+	}
 }
 
 void GameState::draw(Game* game)
