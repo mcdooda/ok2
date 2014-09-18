@@ -2,9 +2,9 @@ local cos = math.cos
 local sin = math.sin
 
 skill {
-	name     = 'gray',
+	name     = 'green1',
 	cooldown = 0.2,
 	trigger  = function(ship)
-		print 'GRAY SKILL'
+		popShipMissiles(ship, 'green', 2, 0, 40)
 	end
 }

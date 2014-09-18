@@ -1,0 +1,13 @@
+local cos = math.cos
+local sin = math.sin
+local pi = math.pi
+local pi6 = pi / 6
+
+skill {
+	name     = 'specialyellow1',
+	cooldown = 1,
+	trigger  = function(ship)
+		popShipMissiles(ship, 'yellow', 4, 0, 40)
+		popShipMissiles(ship, 'yellow', 4, 0, 40, pi6)
+	end
+}

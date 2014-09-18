@@ -1,6 +1,6 @@
 local function loadMissile(name)
 	dofile('rsrc/lua/missiles/' .. name .. '.lua')
-	print('missile: ' .. name .. ' [OK]')
+	--print('missile: ' .. name .. ' [OK]')
 end
 
 loadMissile 'blue1'

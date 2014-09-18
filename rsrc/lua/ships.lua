@@ -1,6 +1,6 @@
 local function loadShip(name)
 	dofile('rsrc/lua/ships/' .. name .. '.lua')
-	print('ship: ' .. name .. ' [OK]')
+	--print('ship: ' .. name .. ' [OK]')
 end
 
 loadShip 'blue'
