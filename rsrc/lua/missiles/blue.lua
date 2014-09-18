@@ -1,5 +1,5 @@
 missile {
 	name    = 'blue',
-	speed   = 1000,
+	speed   = 1500,
 	texture = 'rsrc/images/missiles/missile1.png'
 }

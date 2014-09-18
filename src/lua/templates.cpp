@@ -134,12 +134,12 @@ int l_skill(lua_State* L)
 	
 	lua_getfield(L, 1, "trigger");
 	luaL_checktype(L, -1, LUA_TFUNCTION);
-	int triggerFunction = luaL_ref(L, LUA_REGISTRYINDEX);
+	int triggerFunctionRef = luaL_ref(L, LUA_REGISTRYINDEX);
 	
 	skills::SkillTemplate* skillTemplate = new skills::SkillTemplate();
 	skillTemplate->setName(name);
 	skillTemplate->setCooldown(cooldown);
-	skillTemplate->setTriggerFunction(triggerFunction);
+	skillTemplate->setTriggerFunctionRef(triggerFunctionRef);
 	
 	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
 	gameState->addSkillTemplate(skillTemplate);

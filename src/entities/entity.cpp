@@ -1,4 +1,3 @@
-#include <iostream>
 #include "entity.h"
 
 namespace game
@@ -28,9 +27,34 @@ void Entity::setRotationZ(float rotationZ)
 	m_sprite->setRotationZ(rotationZ);
 }
 
+const flat::geometry::Vector3& Entity::getRotation() const
+{
+	return m_sprite->getRotation();
+}
+
 void Entity::setPosition(const flat::geometry::Vector2& position)
 {
 	m_sprite->setPosition(position);
+}
+
+void Entity::setPositionX(float x)
+{
+	m_sprite->setPositionX(x);
+}
+
+void Entity::setPositionY(float y)
+{
+	m_sprite->setPositionY(y);
+}
+
+const flat::geometry::Vector2& Entity::getPosition() const
+{
+	return m_sprite->getPosition();
+}
+
+const flat::geometry::Matrix4& Entity::getModelMatrix()
+{
+	return m_sprite->getModelMatrix();
 }
 
 void Entity::update(Game* game, float elapsedTime)

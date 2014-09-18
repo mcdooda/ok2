@@ -28,9 +28,6 @@ class Skill
 		void trigger(Game* game, entities::Ship* ship, float time);
 		
 	protected:
-		float getCooldown();
-		
-	protected:
 		float m_lastTriggered;
 		SkillTemplate* m_template;
 };

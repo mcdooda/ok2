@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../game.h"
 #include "../entities/playership.h"
+#include "../entities/lua/entity.h"
 #include "../lua/templates.h"
 #include "../lua/pop.h"
 #include "gamestate.h"
@@ -35,8 +36,10 @@ void GameState::initMusic(Game* game)
 
 void GameState::loadLuaLibraries(Game* game)
 {
-	lua::templates::open(game->luaState, this);
-	lua::pop::open(game->luaState, this);
+	lua_State* L = game->luaState;
+	entities::lua::open(L);
+	lua::templates::open(L, this);
+	lua::pop::open(L, this);
 }
 
 void GameState::loadTemplates(Game* game)
@@ -64,7 +67,7 @@ skills::SkillTemplate* GameState::getSkillTemplate(const std::string& skillName)
 	return m_skillTemplates[skillName];
 }
 
-void GameState::addShip(const std::string& name, const flat::geometry::Vector2& position, float orientationZ, entities::Ship* existingShip)
+void GameState::addShip(const std::string& name, const flat::geometry::Vector2& position, float rotationZ, entities::Ship* existingShip)
 {
 	entities::Ship* ship;
 	
@@ -85,11 +88,11 @@ void GameState::addShip(const std::string& name, const flat::geometry::Vector2& 
 	ship->setTemplate(shipTemplate);
 	
 	ship->setPosition(position);
-	ship->setRotationZ(orientationZ);
+	ship->setRotationZ(rotationZ);
 	m_ships.push_back(ship);
 }
 
-void GameState::addMissile(const std::string& name, const flat::geometry::Vector2& position, float orientationZ)
+void GameState::addMissile(const std::string& name, const flat::geometry::Vector2& position, float rotationZ)
 {
 	entities::Missile* missile = new entities::Missile();
 	
@@ -104,7 +107,7 @@ void GameState::addMissile(const std::string& name, const flat::geometry::Vector
 	missile->setTemplate(missileTemplate);
 	
 	missile->setPosition(position);
-	missile->setRotationZ(orientationZ);
+	missile->setRotationZ(rotationZ);
 	m_missiles.push_back(missile);
 }
 

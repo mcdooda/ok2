@@ -29,9 +29,22 @@ class Entity
 		
 		virtual void setTemplate(EntityTemplate* entityTemplate);
 		
+		// rotation
 		void setRotationZ(float rotationZ);
-		void setPosition(const flat::geometry::Vector2& position);
 		
+		const flat::geometry::Vector3& getRotation() const;
+		
+		// position
+		void setPosition(const flat::geometry::Vector2& position);
+		void setPositionX(float x);
+		void setPositionY(float y);
+		
+		const flat::geometry::Vector2& getPosition() const;
+		
+		// matrix
+		const flat::geometry::Matrix4& getModelMatrix();
+		
+		// update & draw
 		virtual void update(Game* game, float elapsedTime);
 		void draw(const flat::util::RenderSettings& renderSettings, const flat::geometry::Matrix4& viewMatrix);
 		

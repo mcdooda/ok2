@@ -4,10 +4,10 @@ local pi = math.pi
 
 skill {
 	name     = 'blue',
-	cooldown = 1,
+	cooldown = 0.05,
 	trigger  = function(ship)
-		popMissile('blue', 0, 0, pi / 2)
-		--popShip('blue', 0, 0, pi / 2)
-		print 'BLUE SKILL'
+		popShipMissiles(ship, 'blue', 2, 18, 30, pi / 8)
+		popShipMissiles(ship, 'blue', 2, 18, 30, -pi / 8)
+		popShipMissiles(ship, 'blue', 2, 18, 30)
 	end
 }

@@ -14,6 +14,7 @@ void open(lua_State* L, states::GameState* gameState);
 
 int l_popShip(lua_State* L);
 int l_popMissile(lua_State* L);
+int l_popShipMissiles(lua_State* L);
 
 } // pop
 } // lua

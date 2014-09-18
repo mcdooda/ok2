@@ -20,13 +20,13 @@ class SkillTemplate
 		inline void setCooldown(float cooldown) { m_cooldown = cooldown; }
 		inline float getCooldown() const { return m_cooldown; }
 		
-		inline void setTriggerFunction(int triggerFunction) { m_triggerFunction = triggerFunction; }
-		inline int getTriggerFunction() const { return m_triggerFunction; }
+		inline void setTriggerFunctionRef(int triggerFunctionRef) { m_triggerFunctionRef = triggerFunctionRef; }
+		inline int getTriggerFunctionRef() const { return m_triggerFunctionRef; }
 		
 	protected:
 		std::string m_name;
 		float m_cooldown;
-		int m_triggerFunction;
+		int m_triggerFunctionRef;
 };
 
 } // skills

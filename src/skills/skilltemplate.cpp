@@ -8,14 +8,14 @@ namespace skills
 
 SkillTemplate::SkillTemplate() :
 	m_cooldown(0.f),
-	m_triggerFunction(LUA_NOREF)
+	m_triggerFunctionRef(LUA_NOREF)
 {
 	
 }
 
 SkillTemplate::~SkillTemplate()
 {
-	
+	// TODO unref m_triggerFunctionRef
 }
 
 } // skills
