@@ -67,12 +67,22 @@ int l_popShipMissiles(lua_State* L)
 	Game* game = (Game*) lua_touserdata(L, lua_upvalueindex(2));
 	float time = game->time->getTime();
 	
-	for (int i = 0; i < numMissiles; i++)
+	if (numMissiles == 1)
 	{
-		flat::geometry::Vector2 position = shipModelMatrix * flat::geometry::Vector2(dx, -dy / 2 + ((float) i / (numMissiles - 1)) * dy);
-		float rotationZ = shipRotationZ - drz / 2 + ((float) i / (numMissiles - 1)) * drz;
+		flat::geometry::Vector2 position = shipModelMatrix * flat::geometry::Vector2(dx, dy);
+		float rotationZ = shipRotationZ + drz;
 		entities::Missile* missile = gameState->addMissile(name, position, rotationZ);
 		entities::lua::initEntity(L, missile, time);
+	}
+	else if (numMissiles > 1)
+	{
+		for (int i = 0; i < numMissiles; i++)
+		{
+			flat::geometry::Vector2 position = shipModelMatrix * flat::geometry::Vector2(dx, -dy / 2 + ((float) i / (numMissiles - 1)) * dy);
+			float rotationZ = shipRotationZ - drz / 2 + ((float) i / (numMissiles - 1)) * drz;
+			entities::Missile* missile = gameState->addMissile(name, position, rotationZ);
+			entities::lua::initEntity(L, missile, time);
+		}
 	}
 	
 	return 0;

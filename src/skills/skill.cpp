@@ -41,7 +41,8 @@ void Skill::trigger(Game* game, entities::Ship* ship, float time)
 		lua_pushinteger(L, triggerFunctionRef);
 		lua_gettable(L, LUA_REGISTRYINDEX);
 		entities::lua::pushEntity(L, ship);
-		lua_call(L, 1, 0);
+		lua_pushnumber(L, time);
+		lua_call(L, 2, 0);
 	}
 }
 

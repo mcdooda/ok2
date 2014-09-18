@@ -20,7 +20,12 @@ void GameState::enter(flat::state::Agent* agent)
 	loadLuaLibraries(game);
 	loadTemplates(game);
 	
-	addShip("blue", flat::geometry::Vector2(-250, 0), M_PI / 2, new entities::PlayerShip());
+	lua_State* L = game->luaState;
+	float time = game->time->getTime();
+	
+	entities::Ship* ship = addShip("blue", flat::geometry::Vector2(-250, 0), M_PI / 2, new entities::PlayerShip());
+	entities::lua::initEntity(L, ship, time);
+	
 	/*addShip("gray", flat::geometry::Vector2(-150, 0), M_PI / 2, new entities::PlayerShip());
 	addShip("green", flat::geometry::Vector2(-50, 0), M_PI / 2, new entities::PlayerShip());
 	addShip("pink", flat::geometry::Vector2(50, 0), M_PI / 2, new entities::PlayerShip());
