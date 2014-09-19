@@ -169,6 +169,8 @@ void GameState::draw(Game* game)
 	
 	for (std::vector<entities::Missile*>::iterator it = m_missiles.begin(); it != m_missiles.end(); it++)
 		(*it)->draw(game->heightMapRenderSettings, game->gameView.getViewMatrix());
+		
+	game->spritePass.use();
 	
 	for (std::vector<entities::Ship*>::iterator it = m_ships.begin(); it != m_ships.end(); it++)
 		(*it)->draw(game->heightMapRenderSettings, game->gameView.getViewMatrix());

@@ -12,8 +12,6 @@ class Game : public flat::Game
 		Game(const std::vector<std::string>& args);
 		virtual ~Game();
 		
-		void openWindow();
-		
 	public:
 		// views
 		flat::video::View gameView;
@@ -21,7 +19,7 @@ class Game : public flat::Game
 		
 		// passes
 		flat::video::Pass heightMapPass;
-		//flat::video::Pass spritePass;
+		flat::video::Pass spritePass;
 		flat::video::Render renderProgram;
 		
 		// attributes & uniforms

@@ -25,8 +25,6 @@ class Entity
 		Entity();
 		virtual ~Entity();
 		
-		inline void setPass(flat::video::Pass* pass) { m_pass = pass; }
-		
 		virtual void setTemplate(EntityTemplate* entityTemplate);
 		
 		// rotation
@@ -57,7 +55,6 @@ class Entity
 		
 	protected:
 		flat::util::Sprite* m_sprite;
-		flat::video::Pass* m_pass;
 		EntityTemplate* m_template;
 		int m_dataRef;
 };

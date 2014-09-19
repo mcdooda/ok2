@@ -24,6 +24,18 @@ void GlobalState::enter(flat::state::Agent* agent)
 	game->heightMapRenderSettings.normalAttribute             = game->heightMapPass.getAttribute("normal");
 	game->heightMapRenderSettings.uvAttribute                 = game->heightMapPass.getAttribute("uv");
 	
+	/*game->spritePass.load(game->video->window->getSize(), "rsrc/shaders/sprite.frag", "rsrc/shaders/sprite.vert");
+	//game->heightMapPass.addOutputTexture(screenTexture);
+	
+	game->spriteRenderSettings.textureUniform              = game->spritePass.getUniform("objectTexture");
+	game->spriteRenderSettings.modelMatrixUniform          = game->spritePass.getUniform("modelMatrix");
+	game->spriteRenderSettings.viewProjectionMatrixUniform = game->spritePass.getUniform("vpMatrix");
+	game->spriteRenderSettings.positionAttribute           = game->spritePass.getAttribute("position");
+	game->spriteRenderSettings.uvAttribute                 = game->spritePass.getAttribute("uv");*/
+	
+	game->spritePass = game->heightMapPass;
+	game->spriteRenderSettings = game->heightMapRenderSettings;
+	
 	game->renderProgram.load("rsrc/shaders/renderprogram.frag", "rsrc/shaders/renderprogram.vert");
 	game->renderProgram.addInputTexture(screenTexture);
 	
