@@ -12,8 +12,12 @@ void GlobalState::enter(flat::state::Agent* agent)
 	game::Game* game = (game::Game*) agent;
 	game->video->window->setTitle("Ocean's Keeper 2");
 	
-	game->heightMapPass.load(game->video->window->getSize(), "rsrc/shaders/heightmap.frag", "rsrc/shaders/heightmap.vert");
-	const flat::video::Texture& screenTexture = game->heightMapPass.addOutputTexture("screen");
+	// frame buffer
+	game->frameBuffer.setSize(game->video->window->getSize());
+	const flat::video::Texture& screenTexture = game->frameBuffer.addTexture("screen");
+	
+	// height map pass
+	game->heightMapPass.load(&game->frameBuffer, "rsrc/shaders/heightmap.frag", "rsrc/shaders/heightmap.vert");
 	
 	game->heightMapRenderSettings.textureUniform              = game->heightMapPass.getUniform("objectTexture");
 	game->heightMapRenderSettings.bumpMapUniform              = game->heightMapPass.getUniform("objectBumpMap");
@@ -24,18 +28,16 @@ void GlobalState::enter(flat::state::Agent* agent)
 	game->heightMapRenderSettings.normalAttribute             = game->heightMapPass.getAttribute("normal");
 	game->heightMapRenderSettings.uvAttribute                 = game->heightMapPass.getAttribute("uv");
 	
-	/*game->spritePass.load(game->video->window->getSize(), "rsrc/shaders/sprite.frag", "rsrc/shaders/sprite.vert");
-	//game->heightMapPass.addOutputTexture(screenTexture);
+	// sprite pass
+	game->spritePass.load(&game->frameBuffer, "rsrc/shaders/sprite.frag", "rsrc/shaders/sprite.vert");
 	
 	game->spriteRenderSettings.textureUniform              = game->spritePass.getUniform("objectTexture");
 	game->spriteRenderSettings.modelMatrixUniform          = game->spritePass.getUniform("modelMatrix");
 	game->spriteRenderSettings.viewProjectionMatrixUniform = game->spritePass.getUniform("vpMatrix");
 	game->spriteRenderSettings.positionAttribute           = game->spritePass.getAttribute("position");
-	game->spriteRenderSettings.uvAttribute                 = game->spritePass.getAttribute("uv");*/
+	game->spriteRenderSettings.uvAttribute                 = game->spritePass.getAttribute("uv");
 	
-	game->spritePass = game->heightMapPass;
-	game->spriteRenderSettings = game->heightMapRenderSettings;
-	
+	// show texture pass
 	game->renderProgram.load("rsrc/shaders/renderprogram.frag", "rsrc/shaders/renderprogram.vert");
 	game->renderProgram.addInputTexture(screenTexture);
 	

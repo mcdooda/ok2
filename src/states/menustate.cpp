@@ -44,6 +44,7 @@ void MenuState::update(Game* game)
 void MenuState::draw(Game* game)
 {
 	game->spritePass.use();
+	
 	game->video->setClearColor(flat::video::Color::BLUE);
 	game->video->clear();
 	

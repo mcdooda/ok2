@@ -6,7 +6,7 @@ namespace game
 namespace entities
 {
 
-Ship::Ship() :
+Ship::Ship() : Entity(),
 	m_primarySkill(NULL),
 	m_secondarySkill(NULL)
 {

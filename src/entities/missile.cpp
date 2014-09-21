@@ -5,7 +5,7 @@ namespace game
 namespace entities
 {
 
-Missile::Missile()
+Missile::Missile() : Entity()
 {
 	
 }

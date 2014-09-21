@@ -5,7 +5,7 @@ namespace game
 namespace entities
 {
 
-ShipTemplate::ShipTemplate()
+ShipTemplate::ShipTemplate() : EntityTemplate()
 {
 
 }

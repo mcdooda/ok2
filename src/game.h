@@ -18,6 +18,7 @@ class Game : public flat::Game
 		flat::video::View interfaceView;
 		
 		// passes
+		flat::video::FrameBuffer frameBuffer;
 		flat::video::Pass heightMapPass;
 		flat::video::Pass spritePass;
 		flat::video::Render renderProgram;

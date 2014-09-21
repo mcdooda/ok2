@@ -161,20 +161,26 @@ void GameState::update(Game* game)
 
 void GameState::draw(Game* game)
 {
-	game->heightMapPass.use();
+	// sprites
+	game->spritePass.use();
+	
 	game->video->setClearColor(flat::video::Color::BLUE);
 	game->video->clear();
 	
-	game->heightMapRenderSettings.viewProjectionMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
+	game->spriteRenderSettings.viewProjectionMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
 	
 	for (std::vector<entities::Missile*>::iterator it = m_missiles.begin(); it != m_missiles.end(); it++)
-		(*it)->draw(game->heightMapRenderSettings, game->gameView.getViewMatrix());
+		(*it)->draw(game->spriteRenderSettings, game->gameView.getViewMatrix());
 		
-	game->spritePass.use();
+	// heightmaps
+	game->heightMapPass.use();
+	
+	game->heightMapRenderSettings.viewProjectionMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
 	
 	for (std::vector<entities::Ship*>::iterator it = m_ships.begin(); it != m_ships.end(); it++)
 		(*it)->draw(game->heightMapRenderSettings, game->gameView.getViewMatrix());
 	
+	// final texture
 	game->renderProgram.use(game->video->window);
 	game->renderProgram.draw();
 }

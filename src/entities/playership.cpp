@@ -5,7 +5,7 @@ namespace game
 namespace entities
 {
 
-PlayerShip::PlayerShip() :
+PlayerShip::PlayerShip() : Ship(),
 	m_level(1),
 	m_experience(0)
 {
