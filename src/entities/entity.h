@@ -41,6 +41,7 @@ class Entity
 		
 		// matrix
 		const flat::geometry::Matrix4& getModelMatrix();
+		flat::geometry::Vector2 getAbsolutePosition(const flat::geometry::Vector2& relativePosition);
 		
 		// update & draw
 		virtual void update(Game* game, float elapsedTime);
@@ -55,11 +56,15 @@ class Entity
 		
 		inline const flat::geometry::Vector2& getSpeed() const { return m_speed; }
 		
+		virtual void setPopTime(float popTime);
+		inline float getPopTime() const { return m_popTime; }
+		
 	protected:
 		flat::util::Sprite* m_sprite;
 		EntityTemplate* m_template;
 		int m_dataRef;
 		flat::geometry::Vector2 m_speed;
+		float m_popTime;
 };
 
 }

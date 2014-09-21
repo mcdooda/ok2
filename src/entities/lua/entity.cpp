@@ -19,26 +19,30 @@ void open(lua_State* L)
 	
 	static const luaL_Reg entitylib_m[] = {
 		// rotation
-		{"setRotationZ", l_Entity_setRotationZ},
+		{"setRotationZ",        l_Entity_setRotationZ},
 		
-		{"getRotation",  l_Entity_getRotation},
-		{"getRotationX", l_Entity_getRotationX},
-		{"getRotationY", l_Entity_getRotationY},
-		{"getRotationZ", l_Entity_getRotationZ},
+		{"getRotation",         l_Entity_getRotation},
+		{"getRotationX",        l_Entity_getRotationX},
+		{"getRotationY",        l_Entity_getRotationY},
+		{"getRotationZ",        l_Entity_getRotationZ},
 		
 		// position
-		{"setPosition",  l_Entity_setPosition},
-		{"setPositionX", l_Entity_setPositionX},
-		{"setPositionY", l_Entity_setPositionY},
+		{"setPosition",         l_Entity_setPosition},
+		{"setPositionX",        l_Entity_setPositionX},
+		{"setPositionY",        l_Entity_setPositionY},
 		
-		{"getPosition",  l_Entity_getPosition},
-		{"getPositionX", l_Entity_getPositionX},
-		{"getPositionY", l_Entity_getPositionY},
+		{"getPosition",         l_Entity_getPosition},
+		{"getPositionX",        l_Entity_getPositionX},
+		{"getPositionY",        l_Entity_getPositionY},
+		
+		{"getAbsolutePosition", l_Entity_getAbsolutePosition},
 		
 		// speed
-		{"getSpeed", l_Entity_getSpeed},
+		{"getSpeed",            l_Entity_getSpeed},
+		{"getSpeedX",           l_Entity_getSpeedX},
+		{"getSpeedY",           l_Entity_getSpeedY},
 		
-		{"data",         l_Entity_data},
+		{"data",                l_Entity_data},
 		
 		{NULL, NULL}
 	};
@@ -97,6 +101,11 @@ void triggerEntityUpdateFunction(lua_State* L, Entity* entity, float time, float
 		lua_pushnumber(L, elapsedTime);
 		lua_call(L, 3, 0);
 	}
+}
+
+void destroyEntityState(lua_State* L, Entity* entity)
+{
+	luaL_unref(L, LUA_REGISTRYINDEX, entity->getDataRef());
 }
 
 int l_Entity_setRotationZ(lua_State* L)
@@ -191,6 +200,18 @@ int l_Entity_getPositionY(lua_State* L)
 	return 1;
 }
 
+int l_Entity_getAbsolutePosition(lua_State* L)
+{
+	Entity* entity = getEntity(L);
+	float x = luaL_checknumber(L, 2);
+	float y = luaL_checknumber(L, 3);
+	flat::geometry::Vector2 relativePosition(x, y);
+	flat::geometry::Vector2 absolutePosition = entity->getAbsolutePosition(relativePosition);
+	lua_pushnumber(L, absolutePosition.getX());
+	lua_pushnumber(L, absolutePosition.getY());
+	return 2;
+}
+
 int l_Entity_getSpeed(lua_State* L)
 {
 	Entity* entity = getEntity(L);
@@ -198,6 +219,22 @@ int l_Entity_getSpeed(lua_State* L)
 	lua_pushnumber(L, speed.getX());
 	lua_pushnumber(L, speed.getY());
 	return 2;
+}
+
+int l_Entity_getSpeedX(lua_State* L)
+{
+	Entity* entity = getEntity(L);
+	const flat::geometry::Vector2& speed = entity->getSpeed();
+	lua_pushnumber(L, speed.getX());
+	return 1;
+}
+
+int l_Entity_getSpeedY(lua_State* L)
+{
+	Entity* entity = getEntity(L);
+	const flat::geometry::Vector2& speed = entity->getSpeed();
+	lua_pushnumber(L, speed.getY());
+	return 1;
 }
 
 int l_Entity_data(lua_State* L)

@@ -4,9 +4,15 @@ local function loadShip(name)
 end
 
 loadShip 'blue'
+
 loadShip 'gray'
+
 loadShip 'green'
+
 loadShip 'pink'
+
 loadShip 'red'
+loadShip 'red_specialred1'
+
 loadShip 'yellow'
 

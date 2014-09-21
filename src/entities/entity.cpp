@@ -14,7 +14,7 @@ Entity::Entity() :
 
 Entity::~Entity()
 {
-	// TODO unref m_dataRef
+	
 }
 
 void Entity::setTemplate(EntityTemplate* entityTemplate)
@@ -59,6 +59,11 @@ const flat::geometry::Matrix4& Entity::getModelMatrix()
 	return m_sprite->getModelMatrix();
 }
 
+flat::geometry::Vector2 Entity::getAbsolutePosition(const flat::geometry::Vector2& relativePosition)
+{
+	return getModelMatrix() * relativePosition;
+}
+
 void Entity::update(Game* game, float elapsedTime)
 {
 	m_sprite->moveBy(m_speed * elapsedTime);
@@ -77,6 +82,11 @@ int Entity::getPopFunctionRef() const
 int Entity::getUpdateFunctionRef() const
 {
 	return m_template->getUpdateFunctionRef();
+}
+
+void Entity::setPopTime(float popTime)
+{
+	m_popTime = popTime;
 }
 
 } // entities

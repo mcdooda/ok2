@@ -15,7 +15,8 @@ Ship::Ship() : Entity(),
 
 Ship::~Ship()
 {
-	
+	delete m_primarySkill;
+	delete m_secondarySkill;
 }
 
 void Ship::setTemplate(EntityTemplate* entityTemplate)
@@ -54,6 +55,17 @@ void Ship::update(Game* game, float elapsedTime)
 		
 	if (m_secondarySkill != NULL && m_secondarySkill->isReady(time))
 		m_secondarySkill->trigger(game, this, time);
+}
+
+void Ship::setPopTime(float popTime)
+{
+	Entity::setPopTime(popTime);
+	
+	if (m_primarySkill != NULL)
+		m_primarySkill->setLastTriggeredTime(popTime);
+		
+	if (m_secondarySkill != NULL)
+		m_secondarySkill->setLastTriggeredTime(popTime);
 }
 
 } // entities

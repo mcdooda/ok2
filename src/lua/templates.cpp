@@ -90,14 +90,26 @@ int l_ship(lua_State* L)
 	for (int i = 1; i <= numSkills; i++)
 	{
 		lua_rawgeti(L, -1, i);
+		
 		lua_rawgeti(L, -1, 1);
-		std::string primarySkillName = luaL_checkstring(L, -1);
+		skills::SkillTemplate* primarySkillTemplate = NULL;
+		if (!lua_isnil(L, -1))
+		{
+			std::string primarySkillName = luaL_checkstring(L, -1);
+			primarySkillTemplate = gameState->getSkillTemplate(primarySkillName);
+		}
+		
 		lua_rawgeti(L, -2, 2);
-		std::string secondarySkillName = luaL_checkstring(L, -1);
-		lua_pop(L, 3);
-		skills::SkillTemplate* primarySkillTemplate = gameState->getSkillTemplate(primarySkillName);
-		skills::SkillTemplate* secondarySkillTemplate = gameState->getSkillTemplate(secondarySkillName);
+		skills::SkillTemplate* secondarySkillTemplate = NULL;
+		if (!lua_isnil(L, -1))
+		{
+			std::string secondarySkillName = luaL_checkstring(L, -1);
+			secondarySkillTemplate = gameState->getSkillTemplate(secondarySkillName);
+		}
+		
 		shipTemplate->addSkillTemplates(primarySkillTemplate, secondarySkillTemplate);
+		
+		lua_pop(L, 3);
 	}
 
 	gameState->addShipTemplate(shipTemplate);

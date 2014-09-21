@@ -24,15 +24,19 @@ int l_popShip(lua_State* L)
 	std::string name = luaL_checkstring(L, 1);
 	float x = luaL_checknumber(L, 2);
 	float y = luaL_checknumber(L, 3);
-	float orientationZ = luaL_checknumber(L, 4);
+	float rotationZ = luaL_checknumber(L, 4);
 	
 	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
-	entities::Ship* ship = gameState->addShip(name, flat::geometry::Vector2(x, y), orientationZ);
-	
 	Game* game = (Game*) lua_touserdata(L, lua_upvalueindex(2));
-	entities::lua::initEntity(L, ship, game->time->getTime());
+	float time = game->time->getTime();
 	
-	return 0;
+	entities::Ship* ship = gameState->addShip(name, flat::geometry::Vector2(x, y), rotationZ);
+	ship->setPopTime(time);
+	entities::lua::initEntity(L, ship, time);
+	
+	entities::lua::pushEntity(L, ship);
+	
+	return 1;
 }
 
 int l_popMissile(lua_State* L)
@@ -40,15 +44,19 @@ int l_popMissile(lua_State* L)
 	std::string name = luaL_checkstring(L, 1);
 	float x = luaL_checknumber(L, 2);
 	float y = luaL_checknumber(L, 3);
-	float orientationZ = luaL_checknumber(L, 4);
+	float rotationZ = luaL_checknumber(L, 4);
 	
 	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
-	entities::Missile* missile = gameState->addMissile(name, flat::geometry::Vector2(x, y), orientationZ);
-	
 	Game* game = (Game*) lua_touserdata(L, lua_upvalueindex(2));
-	entities::lua::initEntity(L, missile, game->time->getTime());
+	float time = game->time->getTime();
 	
-	return 0;
+	entities::Missile* missile = gameState->addMissile(name, flat::geometry::Vector2(x, y), rotationZ);
+	missile->setPopTime(time);
+	entities::lua::initEntity(L, missile, time);
+	
+	entities::lua::pushEntity(L, missile);
+	
+	return 1;
 }
 
 int l_popShipMissiles(lua_State* L)

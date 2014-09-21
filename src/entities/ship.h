@@ -26,6 +26,8 @@ class Ship : public Entity
 		
 		virtual void update(Game* game, float elapsedTime);
 		
+		virtual void setPopTime(float popTime);
+		
 	protected:
 		void setTemplateSkills(unsigned int level = 1);
 		void setSkill(skills::Skill*& skill, skills::SkillTemplate* skillTemplate);

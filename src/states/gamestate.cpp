@@ -24,22 +24,30 @@ void GameState::enter(flat::state::Agent* agent)
 	lua_State* L = game->luaState;
 	float time = game->time->getTime();
 	
-	entities::Ship* ship = addShip("blue", flat::geometry::Vector2(-250, 0), M_PI / 2, new entities::PlayerShip());
+	entities::Ship* ship;
+	
+	ship = addShip("blue", flat::geometry::Vector2(-250, 0), M_PI / 2, new entities::PlayerShip());
+	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
 	
 	ship = addShip("gray", flat::geometry::Vector2(-150, 0), M_PI / 2, new entities::PlayerShip());
+	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
 	
 	ship = addShip("green", flat::geometry::Vector2(-50, 0), M_PI / 2, new entities::PlayerShip());
+	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
 	
 	ship = addShip("pink", flat::geometry::Vector2(50, 0), M_PI / 2, new entities::PlayerShip());
+	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
 	
 	ship = addShip("red", flat::geometry::Vector2(150, 0), M_PI / 2, new entities::PlayerShip());
+	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
 	
 	ship = addShip("yellow", flat::geometry::Vector2(250, 0), M_PI / 2, new entities::PlayerShip());
+	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
 }
 
@@ -200,8 +208,9 @@ void GameState::updateTimers(Game* game)
 	float time = game->time->getTime();
 	
 	std::set<timers::Timer*> stoppedTimers;
+	std::set<timers::Timer*> timers = m_timers; // allows timers to add new timers!
 	
-	for (std::set<timers::Timer*>::iterator it = m_timers.begin(); it != m_timers.end(); it++)
+	for (std::set<timers::Timer*>::iterator it = timers.begin(); it != timers.end(); it++)
 	{
 		timers::Timer* timer = *it;
 		timer->updateTime(time);

@@ -7,7 +7,7 @@ skill {
 	name     = 'specialblue1',
 	cooldown = 3,
 	trigger  = function(ship)
-		local sx = ship:getSpeed()
+		local sx = ship:getSpeedX()
 		if sx < 0 then
 			timer(0.5, function(t)
 				ship:setRotationZ(t:getProgression() * pi * 2 + pi / 2)

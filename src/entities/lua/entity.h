@@ -20,6 +20,8 @@ void createEntityData(lua_State* L, Entity* entity);
 void triggerEntityPopFunction(lua_State* L, Entity* entity, float time);
 void triggerEntityUpdateFunction(lua_State* L, Entity* entity, float time, float elapsedTime);
 
+void destroyEntityState(lua_State* L, Entity* entity);
+
 // rotation
 int l_Entity_setRotationZ(lua_State* L);
 		
@@ -37,8 +39,12 @@ int l_Entity_getPosition(lua_State* L);
 int l_Entity_getPositionX(lua_State* L);
 int l_Entity_getPositionY(lua_State* L);
 
+int l_Entity_getAbsolutePosition(lua_State* L);
+
 // speed
 int l_Entity_getSpeed(lua_State* L);
+int l_Entity_getSpeedX(lua_State* L);
+int l_Entity_getSpeedY(lua_State* L);
 
 // lua data
 int l_Entity_data(lua_State* L);

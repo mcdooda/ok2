@@ -27,8 +27,10 @@ class Skill
 		
 		void trigger(Game* game, entities::Ship* ship, float time);
 		
+		inline void setLastTriggeredTime(float lastTriggeredTime) { m_lastTriggeredTime = lastTriggeredTime; }
+		
 	protected:
-		float m_lastTriggered;
+		float m_lastTriggeredTime;
 		SkillTemplate* m_template;
 };
 
