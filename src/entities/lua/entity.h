@@ -12,13 +12,13 @@ namespace lua
 
 void open(lua_State* L);
 
-void pushEntity(lua_State* L, entities::Entity* entity);
-entities::Entity* getEntity(lua_State* L, int index = 1);
+void pushEntity(lua_State* L, Entity* entity);
+Entity* getEntity(lua_State* L, int index = 1);
 
-void initEntity(lua_State* L, entities::Entity* entity, float time);
-void createEntityData(lua_State* L, entities::Entity* entity);
-void triggerEntityPopFunction(lua_State* L, entities::Entity* entity, float time);
-void triggerEntityUpdateFunction(lua_State* L, entities::Entity* entity, float time, float elapsedTime);
+void initEntity(lua_State* L, Entity* entity, float time);
+void createEntityData(lua_State* L, Entity* entity);
+void triggerEntityPopFunction(lua_State* L, Entity* entity, float time);
+void triggerEntityUpdateFunction(lua_State* L, Entity* entity, float time, float elapsedTime);
 
 // rotation
 int l_Entity_setRotationZ(lua_State* L);
@@ -36,6 +36,9 @@ int l_Entity_setPositionY(lua_State* L);
 int l_Entity_getPosition(lua_State* L);
 int l_Entity_getPositionX(lua_State* L);
 int l_Entity_getPositionY(lua_State* L);
+
+// speed
+int l_Entity_getSpeed(lua_State* L);
 
 // lua data
 int l_Entity_data(lua_State* L);

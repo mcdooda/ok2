@@ -2,6 +2,7 @@
 #include "../game.h"
 #include "../entities/playership.h"
 #include "../entities/lua/entity.h"
+#include "../timers/lua/timer.h"
 #include "../lua/templates.h"
 #include "../lua/pop.h"
 #include "gamestate.h"
@@ -52,6 +53,7 @@ void GameState::loadLuaLibraries(Game* game)
 {
 	lua_State* L = game->luaState;
 	entities::lua::open(L);
+	timers::lua::open(L, this, game);
 	lua::templates::open(L, this, game);
 	lua::pop::open(L, this, game);
 }
@@ -129,6 +131,11 @@ entities::Missile* GameState::addMissile(const std::string& name, const flat::ge
 	return missile;
 }
 
+void GameState::addTimer(timers::Timer* timer)
+{
+	m_timers.insert(timer);
+}
+
 void GameState::execute(flat::state::Agent* agent)
 {
 	Game* game = (Game*) agent;
@@ -157,6 +164,8 @@ void GameState::update(Game* game)
 		(*it)->update(game, elapsedTime);
 		entities::lua::triggerEntityUpdateFunction(L, *it, time, elapsedTime);
 	}
+	
+	updateTimers(game);
 }
 
 void GameState::draw(Game* game)
@@ -183,6 +192,30 @@ void GameState::draw(Game* game)
 	// final texture
 	game->renderProgram.use(game->video->window);
 	game->renderProgram.draw();
+}
+
+void GameState::updateTimers(Game* game)
+{
+	lua_State* L = game->luaState;
+	float time = game->time->getTime();
+	
+	std::set<timers::Timer*> stoppedTimers;
+	
+	for (std::set<timers::Timer*>::iterator it = m_timers.begin(); it != m_timers.end(); it++)
+	{
+		timers::Timer* timer = *it;
+		timer->updateTime(time);
+		timers::lua::triggerTimerUpdateFunction(L, timer);
+		if (timer->isStopped() || timer->isFinished())
+			stoppedTimers.insert(timer);
+	}
+	
+	for (std::set<timers::Timer*>::iterator it = stoppedTimers.begin(); it != stoppedTimers.end(); it++)
+	{
+		timers::Timer* timer = *it;
+		m_timers.erase(timer);
+		timers::lua::triggerTimerEndFunction(L, timer);
+	}
 }
 
 void GameState::exit(flat::state::Agent* agent)

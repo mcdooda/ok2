@@ -6,6 +6,11 @@
 
 namespace game
 {
+namespace states
+{
+class GameState;
+}
+
 namespace lua
 {
 

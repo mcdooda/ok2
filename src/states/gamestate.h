@@ -1,12 +1,14 @@
 #ifndef GAME_GAMESTATE_H
 #define GAME_GAMESTATE_H
 
+#include <set>
 #include <flat.h>
 
 #include "../entities/ship.h"
 #include "../entities/shiptemplate.h"
 #include "../entities/missile.h"
 #include "../entities/missiletemplate.h"
+#include "../timers/timer.h"
 
 namespace game
 {
@@ -29,6 +31,8 @@ class GameState : public flat::state::State
 		entities::Ship* addShip(const std::string& name, const flat::geometry::Vector2& position, float rotationZ, entities::Ship* ship1 = NULL);
 		entities::Missile* addMissile(const std::string& name, const flat::geometry::Vector2& position, float rotationZ);
 		
+		void addTimer(timers::Timer* timer);
+		
 	private:
 		void initMusic(Game* game);
 		
@@ -38,6 +42,8 @@ class GameState : public flat::state::State
 		void update(Game* game);
 		void draw(Game* game);
 		
+		void updateTimers(Game* game);
+		
 	private:
 		flat::audio::Music* m_music;
 		
@@ -46,6 +52,7 @@ class GameState : public flat::state::State
 		std::map<std::string, skills::SkillTemplate*> m_skillTemplates;
 		std::vector<entities::Ship*> m_ships;
 		std::vector<entities::Missile*> m_missiles;
+		std::set<timers::Timer*> m_timers;
 };
 
 } // states

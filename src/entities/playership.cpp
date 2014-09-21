@@ -54,8 +54,9 @@ void PlayerShip::update(Game* game, float elapsedTime)
 	direction = direction.normalize();
 	
 	float speed = m_template->getSpeed();
+	m_speed = direction * speed;
 	
-	m_sprite->moveBy(direction * speed * elapsedTime);
+	m_sprite->moveBy(m_speed * elapsedTime);
 	
 	static const float pi6 = M_PI / 6.f;
 	static const float epsilon = 0.001f;

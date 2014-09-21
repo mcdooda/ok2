@@ -26,6 +26,7 @@ void Entity::setTemplate(EntityTemplate* entityTemplate)
 void Entity::setRotationZ(float rotationZ)
 {
 	m_sprite->setRotationZ(rotationZ);
+	m_speed = flat::geometry::Vector2(m_sprite->getRotation().getZ()) * m_template->getSpeed();
 }
 
 const flat::geometry::Vector3& Entity::getRotation() const
@@ -60,7 +61,7 @@ const flat::geometry::Matrix4& Entity::getModelMatrix()
 
 void Entity::update(Game* game, float elapsedTime)
 {
-	m_sprite->moveBy(flat::geometry::Vector2(m_sprite->getRotation().getZ()) * m_template->getSpeed() * elapsedTime);
+	m_sprite->moveBy(m_speed * elapsedTime);
 }
 
 void Entity::draw(const flat::util::RenderSettings& renderSettings, const flat::geometry::Matrix4& viewMatrix)

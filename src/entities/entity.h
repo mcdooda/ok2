@@ -28,7 +28,7 @@ class Entity
 		virtual void setTemplate(EntityTemplate* entityTemplate);
 		
 		// rotation
-		void setRotationZ(float rotationZ);
+		virtual void setRotationZ(float rotationZ);
 		
 		const flat::geometry::Vector3& getRotation() const;
 		
@@ -53,10 +53,13 @@ class Entity
 		inline void setDataRef(int dataRef) { m_dataRef = dataRef; }
 		inline int getDataRef() { return m_dataRef; }
 		
+		inline const flat::geometry::Vector2& getSpeed() const { return m_speed; }
+		
 	protected:
 		flat::util::Sprite* m_sprite;
 		EntityTemplate* m_template;
 		int m_dataRef;
+		flat::geometry::Vector2 m_speed;
 };
 
 }
