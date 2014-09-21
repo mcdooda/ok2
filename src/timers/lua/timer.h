@@ -18,6 +18,8 @@ Timer* getTimer(lua_State* L, int index = 1);
 void triggerTimerUpdateFunction(lua_State* L, Timer* timer);
 void triggerTimerEndFunction(lua_State* L, Timer* timer);
 
+void destroyTimerState(lua_State* L, Timer* timer);
+
 int l_timer(lua_State* L);
 
 int l_Timer_getDuration(lua_State* L);

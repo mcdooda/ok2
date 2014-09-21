@@ -17,7 +17,7 @@ Timer::Timer() :
 
 Timer::~Timer()
 {
-	// TODO unref
+	
 }
 
 void Timer::updateTime(float time)

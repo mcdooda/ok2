@@ -215,6 +215,8 @@ void GameState::updateTimers(Game* game)
 		timers::Timer* timer = *it;
 		m_timers.erase(timer);
 		timers::lua::triggerTimerEndFunction(L, timer);
+		timers::lua::destroyTimerState(L, timer);
+		delete timer;
 	}
 }
 

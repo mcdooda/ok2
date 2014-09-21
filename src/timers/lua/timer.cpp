@@ -71,6 +71,12 @@ void triggerTimerEndFunction(lua_State* L, Timer* timer)
 	}
 }
 
+void destroyTimerState(lua_State* L, Timer* timer)
+{
+	luaL_unref(L, LUA_REGISTRYINDEX, timer->getUpdateFunctionRef());
+	luaL_unref(L, LUA_REGISTRYINDEX, timer->getEndFunctionRef());
+}
+
 int l_timer(lua_State* L)
 {
 	float duration = luaL_checknumber(L, 1);
