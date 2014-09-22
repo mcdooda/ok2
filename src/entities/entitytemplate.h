@@ -17,7 +17,7 @@ class EntityTemplate
 		inline void setName(const std::string& name) { m_name = name; }
 		inline const std::string& getName() const { return m_name; }
 		
-		inline void setSprite(flat::util::Sprite* sprite) { m_sprite = sprite; }
+		void setSprite(flat::util::Sprite* sprite);
 		inline flat::util::Sprite* getSprite() const { return m_sprite; }
 		
 		inline void setSpeed(float speed) { m_speed = speed; }
@@ -29,8 +29,11 @@ class EntityTemplate
 		inline void setUpdateFunctionRef(int updateFunctionRef) { m_updateFunctionRef = updateFunctionRef; }
 		inline int getUpdateFunctionRef() const { return m_updateFunctionRef; }
 		
+		inline float getRadius() const { return m_radius; }
+		
 	protected:
 		flat::util::Sprite* m_sprite;
+		float m_radius;
 		std::string m_name;
 		float m_speed;
 		int m_popFunctionRef;

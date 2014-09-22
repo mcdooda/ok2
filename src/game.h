@@ -13,22 +13,8 @@ class Game : public flat::Game
 		virtual ~Game();
 		
 	public:
-		// views
-		flat::video::View gameView;
+		// view
 		flat::video::View interfaceView;
-		
-		// passes
-		flat::video::FrameBuffer frameBuffer;
-		flat::video::Pass heightMapPass;
-		flat::video::Pass spritePass;
-		flat::video::Render renderProgram;
-		
-		// attributes & uniforms
-		flat::util::RenderSettings heightMapRenderSettings;
-		flat::util::RenderSettings spriteRenderSettings;
-		
-		flat::video::Attribute renderPositionAttribute;
-		flat::video::Attribute renderUvAttribute;
 		
 		// lua
 		lua_State* luaState;

@@ -5,7 +5,6 @@
 
 namespace game
 {
-
 namespace entities
 {
 

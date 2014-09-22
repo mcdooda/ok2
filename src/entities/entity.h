@@ -5,9 +5,16 @@
 
 #include "../game.h"
 #include "entitytemplate.h"
+#include "../arena/cell.h"
 
 namespace game
 {
+
+namespace arena
+{
+class Cell;
+}
+
 namespace entities
 {
 
@@ -59,12 +66,18 @@ class Entity
 		virtual void setPopTime(float popTime);
 		inline float getPopTime() const { return m_popTime; }
 		
+		inline void setCell(arena::Cell* cell) { m_cell = cell; }
+		inline arena::Cell* getCell() const { return m_cell; }
+		
+		inline float getRadius() const { return m_template->getRadius(); }
+		
 	protected:
 		flat::util::Sprite* m_sprite;
 		EntityTemplate* m_template;
 		int m_dataRef;
 		flat::geometry::Vector2 m_speed;
 		float m_popTime;
+		arena::Cell* m_cell;
 };
 
 }

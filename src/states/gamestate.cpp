@@ -16,7 +16,13 @@ void GameState::enter(flat::state::Agent* agent)
 {
 	Game* game = (Game*) agent;
 	
+	static const float arenaWidth = 600;
+	static const float arenaHeight = 1080;
+	flat::geometry::Vector2 arenaSize = flat::geometry::Vector2(arenaWidth, arenaHeight);
+	m_arena = new arena::Arena(arenaSize, 100);
+	
 	initMusic(game);
+	initGraphics(game);
 	
 	loadLuaLibraries(game);
 	loadTemplates(game);
@@ -55,6 +61,41 @@ void GameState::initMusic(Game* game)
 {
 	m_music = game->audio->loadMusic("rsrc/sounds/music/musique_d_ailleurs.ogg");
 	m_music->play();
+}
+
+void GameState::initGraphics(Game* game)
+{
+	m_view.reset();
+	m_view.updateProjection(m_arena->getSize());
+	
+	// frame buffer
+	m_frameBuffer.setSize(m_arena->getSize() * (game->video->window->getSize().getY() / m_arena->getSize().getY()));
+	const flat::video::Texture& screenTexture = m_frameBuffer.addTexture("screen");
+	
+	// height map pass
+	m_heightMapPass.load(&m_frameBuffer, "rsrc/shaders/heightmap.frag", "rsrc/shaders/heightmap.vert");
+	
+	m_heightMapRenderSettings.textureUniform              = m_heightMapPass.getUniform("objectTexture");
+	m_heightMapRenderSettings.bumpMapUniform              = m_heightMapPass.getUniform("objectBumpMap");
+	m_heightMapRenderSettings.modelMatrixUniform          = m_heightMapPass.getUniform("modelMatrix");
+	m_heightMapRenderSettings.normalMatrixUniform         = m_heightMapPass.getUniform("normalMatrix");
+	m_heightMapRenderSettings.viewProjectionMatrixUniform = m_heightMapPass.getUniform("vpMatrix");
+	m_heightMapRenderSettings.positionAttribute           = m_heightMapPass.getAttribute("position");
+	m_heightMapRenderSettings.normalAttribute             = m_heightMapPass.getAttribute("normal");
+	m_heightMapRenderSettings.uvAttribute                 = m_heightMapPass.getAttribute("uv");
+	
+	// sprite pass
+	m_spritePass.load(&m_frameBuffer, "rsrc/shaders/sprite.frag", "rsrc/shaders/sprite.vert");
+	
+	m_spriteRenderSettings.textureUniform              = m_spritePass.getUniform("objectTexture");
+	m_spriteRenderSettings.modelMatrixUniform          = m_spritePass.getUniform("modelMatrix");
+	m_spriteRenderSettings.viewProjectionMatrixUniform = m_spritePass.getUniform("vpMatrix");
+	m_spriteRenderSettings.positionAttribute           = m_spritePass.getAttribute("position");
+	m_spriteRenderSettings.uvAttribute                 = m_spritePass.getAttribute("uv");
+	
+	// show texture pass
+	m_renderProgram.load("rsrc/shaders/renderprogram.frag", "rsrc/shaders/renderprogram.vert");
+	m_renderProgram.addInputTexture(screenTexture);
 }
 
 void GameState::loadLuaLibraries(Game* game)
@@ -179,27 +220,34 @@ void GameState::update(Game* game)
 void GameState::draw(Game* game)
 {
 	// sprites
-	game->spritePass.use();
+	m_spritePass.use();
 	
 	game->video->setClearColor(flat::video::Color::BLUE);
 	game->video->clear();
 	
-	game->spriteRenderSettings.viewProjectionMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
+	m_spriteRenderSettings.viewProjectionMatrixUniform.setMatrix4(m_view.getViewProjectionMatrix());
 	
 	for (std::vector<entities::Missile*>::iterator it = m_missiles.begin(); it != m_missiles.end(); it++)
-		(*it)->draw(game->spriteRenderSettings, game->gameView.getViewMatrix());
+		(*it)->draw(m_spriteRenderSettings, m_view.getViewMatrix());
 		
 	// heightmaps
-	game->heightMapPass.use();
+	m_heightMapPass.use();
 	
-	game->heightMapRenderSettings.viewProjectionMatrixUniform.setMatrix4(game->gameView.getViewProjectionMatrix());
+	m_heightMapRenderSettings.viewProjectionMatrixUniform.setMatrix4(m_view.getViewProjectionMatrix());
 	
 	for (std::vector<entities::Ship*>::iterator it = m_ships.begin(); it != m_ships.end(); it++)
-		(*it)->draw(game->heightMapRenderSettings, game->gameView.getViewMatrix());
+		(*it)->draw(m_heightMapRenderSettings, m_view.getViewMatrix());
 	
 	// final texture
-	game->renderProgram.use(game->video->window);
-	game->renderProgram.draw();
+	m_renderProgram.use(game->video->window);
+	
+	m_renderProgram.getUniform("screenSize").setVector2(game->video->window->getSize());
+	m_renderProgram.getUniform("arenaSize").setVector2(m_arena->getSize());
+	
+	game->video->setClearColor(flat::video::Color::BLACK);
+	game->video->clear();
+	
+	m_renderProgram.draw();
 }
 
 void GameState::updateTimers(Game* game)
@@ -231,6 +279,7 @@ void GameState::updateTimers(Game* game)
 
 void GameState::exit(flat::state::Agent* agent)
 {
+	delete m_arena;
 	delete m_music;
 }
 

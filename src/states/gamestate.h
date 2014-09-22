@@ -9,6 +9,7 @@
 #include "../entities/missile.h"
 #include "../entities/missiletemplate.h"
 #include "../timers/timer.h"
+#include "../arena/arena.h"
 
 namespace game
 {
@@ -35,6 +36,7 @@ class GameState : public flat::state::State
 		
 	private:
 		void initMusic(Game* game);
+		void initGraphics(Game* game);
 		
 		void loadLuaLibraries(Game* game);
 		void loadTemplates(Game* game);
@@ -50,9 +52,30 @@ class GameState : public flat::state::State
 		std::map<std::string, entities::ShipTemplate*> m_shipTemplates;
 		std::map<std::string, entities::MissileTemplate*> m_missileTemplates;
 		std::map<std::string, skills::SkillTemplate*> m_skillTemplates;
+		
 		std::vector<entities::Ship*> m_ships;
 		std::vector<entities::Missile*> m_missiles;
+		
 		std::set<timers::Timer*> m_timers;
+		
+		arena::Arena* m_arena;
+		
+		// GRAPHICS
+		
+		// view
+		flat::video::View m_view;
+		
+		// passes
+		flat::video::FrameBuffer m_frameBuffer;
+		flat::video::Pass m_heightMapPass;
+		flat::video::Pass m_spritePass;
+		flat::video::Render m_renderProgram;
+		
+		// attributes & uniforms
+		flat::util::RenderSettings m_heightMapRenderSettings;
+		flat::util::RenderSettings m_spriteRenderSettings;
+		flat::video::Uniform m_arenaSizeUniform;
+		flat::video::Uniform m_screenSizeUniform;
 };
 
 } // states

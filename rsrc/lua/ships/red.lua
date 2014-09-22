@@ -1,6 +1,6 @@
 ship {
 	name      = 'red',
-	speed     = 500,
+	speed     = 300,
 	texture   = 'rsrc/images/units/ships/red/texture.png',
 	heightmap = 'rsrc/images/units/ships/red/heightmap.png',
 	bumpmap   = 'rsrc/images/units/ships/red/bumpmap.png',

@@ -25,6 +25,9 @@ class MenuState : public flat::state::State
 		flat::audio::Music* m_music;
 		flat::video::FileTexture* m_logoTexture;
 		flat::util::Sprite* m_logoSprite;
+		
+		flat::video::Program m_program;
+		flat::util::RenderSettings m_programRenderSettings;
 };
 
 } // states

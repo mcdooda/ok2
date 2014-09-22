@@ -17,6 +17,13 @@ EntityTemplate::~EntityTemplate()
 	// TODO unref
 }
 
+void EntityTemplate::setSprite(flat::util::Sprite* sprite)
+{
+	m_sprite = sprite;
+	const flat::geometry::Vector2& textureSize = m_sprite->getTexture()->getSize();
+	m_radius = (textureSize.getX() + textureSize.getY()) / 4.f;
+}
+
 } // entities
 } // game
 

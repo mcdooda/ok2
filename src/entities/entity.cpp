@@ -7,7 +7,8 @@ namespace entities
 
 Entity::Entity() :
 	m_sprite(NULL),
-	m_dataRef(LUA_NOREF)
+	m_dataRef(LUA_NOREF),
+	m_cell(NULL)
 {
 	
 }
