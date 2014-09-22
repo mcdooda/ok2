@@ -15,14 +15,24 @@ Cell::~Cell()
 	
 }
 
-void Cell::addEntity(entities::Entity* entity)
+void Cell::addShip(entities::Ship* ship)
 {
-	m_entities.insert(entity);
+	m_ships.insert(ship);
 }
 
-void Cell::removeEntity(entities::Entity* entity)
+void Cell::removeShip(entities::Ship* ship)
 {
-	m_entities.erase(entity);
+	m_ships.erase(ship);
+}
+
+void Cell::addMissile(entities::Missile* missile)
+{
+	m_missiles.insert(missile);
+}
+
+void Cell::removeMissile(entities::Missile* missile)
+{
+	m_missiles.erase(missile);
 }
 
 } // arena

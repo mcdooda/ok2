@@ -5,11 +5,9 @@
 
 #include "../game.h"
 #include "entitytemplate.h"
-#include "../arena/cell.h"
 
 namespace game
 {
-
 namespace arena
 {
 class Cell;

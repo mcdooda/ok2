@@ -69,7 +69,7 @@ void GameState::initGraphics(Game* game)
 	m_view.updateProjection(m_arena->getSize());
 	
 	// frame buffer
-	m_frameBuffer.setSize(m_arena->getSize() * (game->video->window->getSize().getY() / m_arena->getSize().getY()));
+	m_frameBuffer.setSize(m_arena->getSize() * (game->video->window->getDesktopSize().getY() / m_arena->getSize().getY()));
 	const flat::video::Texture& screenTexture = m_frameBuffer.addTexture("screen");
 	
 	// height map pass

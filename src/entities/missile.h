@@ -7,6 +7,7 @@ namespace game
 {
 namespace entities
 {
+class Entity;
 
 class Missile : public Entity
 {

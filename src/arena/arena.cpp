@@ -8,49 +8,81 @@ namespace arena
 Arena::Arena(const flat::geometry::Vector2& size, float cellSize) :
 	m_size(size),
 	m_cellSize(cellSize),
-	m_boundingBox(flat::geometry::Vector2(), size)
+	m_boundingBox(flat::geometry::Vector2() - size / 2, size)
 {
 	m_numCellsX = ceil(size.getX() / cellSize);
 	m_numCellsY = ceil(size.getY() / cellSize);
 	
 	m_cells = new Cell*[m_numCellsX];
-	for (unsigned int x = 0; x < m_numCellsX; x++)
+	for (int x = 0; x < m_numCellsX; x++)
 		m_cells[x] = new Cell[m_numCellsY];
 }
 
 Arena::~Arena()
 {
-	for (unsigned int x = 0; x < m_numCellsX; x++)
+	for (int x = 0; x < m_numCellsX; x++)
 		delete m_cells[x];
 		
 	delete m_cells;
 }
 
-void Arena::addEntity(entities::Entity* entity)
+void Arena::addShip(entities::Ship* ship)
 {
-	Cell* cell = getEntityPositionCell(entity);
-	cell->addEntity(entity);
+	Cell* cell = getEntityPositionCell(ship);
+	cell->addShip(ship);
+	m_ships.insert(ship);
 }
 
-void Arena::removeEntity(entities::Entity* entity)
+void Arena::removeShip(entities::Ship* ship)
 {
-	Cell* cell = entity->getCell();
-	cell->removeEntity(entity);
-	entity->setCell(NULL);
+	Cell* cell = ship->getCell();
+	cell->removeShip(ship);
+	ship->setCell(NULL);
+	m_ships.erase(ship);
 }
 
-void Arena::moveEntity(entities::Entity* entity)
+void Arena::moveShip(entities::Ship* ship)
 {
-	Cell* oldCell = entity->getCell();
-	Cell* newCell = getEntityPositionCell(entity);
+	Cell* oldCell = ship->getCell();
+	Cell* newCell = getEntityPositionCell(ship);
 	if (newCell != oldCell)
 	{
-		oldCell->removeEntity(entity);
+		oldCell->removeShip(ship);
 		
 		if (newCell != NULL)
-			newCell->addEntity(entity);
+			newCell->addShip(ship);
 			
-		entity->setCell(newCell);
+		ship->setCell(newCell);
+	}
+}
+
+void Arena::addMissile(entities::Missile* missile)
+{
+	Cell* cell = getEntityPositionCell(missile);
+	cell->addMissile(missile);
+	m_missiles.insert(missile);
+}
+
+void Arena::removeMissile(entities::Missile* missile)
+{
+	Cell* cell = missile->getCell();
+	cell->removeMissile(missile);
+	missile->setCell(NULL);
+	m_missiles.erase(missile);
+}
+
+void Arena::moveMissile(entities::Missile* missile)
+{
+	Cell* oldCell = missile->getCell();
+	Cell* newCell = getEntityPositionCell(missile);
+	if (newCell != oldCell)
+	{
+		oldCell->removeMissile(missile);
+		
+		if (newCell != NULL)
+			newCell->addMissile(missile);
+			
+		missile->setCell(newCell);
 	}
 }
 
@@ -69,14 +101,40 @@ bool Arena::isEntityOutOfArena(entities::Entity* entity)
 Cell* Arena::getEntityPositionCell(entities::Entity* entity)
 {
 	const flat::geometry::Vector2& position = entity->getPosition();
-	unsigned int x = (unsigned int) floor(position.getX() / m_cellSize);
-	unsigned int y = (unsigned int) floor(position.getY() / m_cellSize);
+	int x = (int) floor(position.getX() / m_cellSize);
+	int y = (int) floor(position.getY() / m_cellSize);
 	
-	if (x >= 0 && x < m_numCellsX && y >= 0 && y < m_numCellsY)
-		return &m_cells[x][y];
+	if (x < 0)
+		x = 0;
+	else if (x >= m_numCellsX)
+		x = m_numCellsX - 1;
 		
-	else
-		return NULL;
+	if (y < 0)
+		y = 0;
+	else if (y >= m_numCellsY)
+		y = m_numCellsY - 1;
+	
+	return &m_cells[x][y];
+}
+
+float Arena::getMinX() const
+{
+	return m_boundingBox.getPosition().getX();
+}
+
+float Arena::getMinY() const
+{
+	return m_boundingBox.getPosition().getY();
+}
+
+float Arena::getMaxX() const
+{
+	return m_boundingBox.getPosition().getX() + m_boundingBox.getSize().getX();
+}
+
+float Arena::getMaxY() const
+{
+	return m_boundingBox.getPosition().getY() + m_boundingBox.getSize().getY();
 }
 
 } // arena
