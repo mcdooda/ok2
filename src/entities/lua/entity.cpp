@@ -42,6 +42,10 @@ void open(lua_State* L)
 		{"getSpeedX",           l_Entity_getSpeedX},
 		{"getSpeedY",           l_Entity_getSpeedY},
 		
+		// side
+		{"getSide",             l_Entity_getSide},
+		
+		// lua data
 		{"data",                l_Entity_data},
 		
 		{NULL, NULL}
@@ -234,6 +238,13 @@ int l_Entity_getSpeedY(lua_State* L)
 	Entity* entity = getEntity(L);
 	const flat::geometry::Vector2& speed = entity->getSpeed();
 	lua_pushnumber(L, speed.getY());
+	return 1;
+}
+
+int l_Entity_getSide(lua_State* L)
+{
+	Entity* entity = getEntity(L);
+	lua_pushinteger(L, entity->getSide());
 	return 1;
 }
 

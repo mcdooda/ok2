@@ -46,6 +46,9 @@ int l_Entity_getSpeed(lua_State* L);
 int l_Entity_getSpeedX(lua_State* L);
 int l_Entity_getSpeedY(lua_State* L);
 
+// side
+int l_Entity_getSide(lua_State* L);
+
 // lua data
 int l_Entity_data(lua_State* L);
 

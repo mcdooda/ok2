@@ -24,7 +24,8 @@ class Entity
 		{
 			ALLY,
 			ENEMY,
-			NUM_SIDES
+			NUM_SIDES,
+			NONE
 		};
 		
 	public:
@@ -73,6 +74,9 @@ class Entity
 		virtual bool isShip() const { return false; }
 		virtual bool isMissile() const { return false; }
 		
+		inline Side getSide() const { return m_side; }
+		inline void setSide(Side side) { m_side = side; }
+		
 	protected:
 		flat::util::Sprite* m_sprite;
 		EntityTemplate* m_template;
@@ -81,6 +85,7 @@ class Entity
 		float m_popTime;
 		arena::Cell* m_cell;
 		bool m_enteredArena;
+		Side m_side;
 };
 
 }

@@ -34,14 +34,14 @@ void Arena::addShip(entities::Ship* ship)
 {
 	Cell* cell = getEntityPositionCell(ship);
 	cell->addShip(ship);
-	m_ships.insert(ship);
+	m_ships[ship->getSide()].insert(ship);
 }
 
 void Arena::removeShip(entities::Ship* ship)
 {
 	Cell* cell = ship->getCell();
 	cell->removeShip(ship);
-	m_ships.erase(ship);
+	m_ships[ship->getSide()].erase(ship);
 }
 
 void Arena::moveShip(entities::Ship* ship)
@@ -61,14 +61,14 @@ void Arena::addMissile(entities::Missile* missile)
 {
 	Cell* cell = getEntityPositionCell(missile);
 	cell->addMissile(missile);
-	m_missiles.insert(missile);
+	m_missiles[missile->getSide()].insert(missile);
 }
 
 void Arena::removeMissile(entities::Missile* missile)
 {
 	Cell* cell = missile->getCell();
 	cell->removeMissile(missile);
-	m_missiles.erase(missile);
+	m_missiles[missile->getSide()].erase(missile);
 }
 
 void Arena::moveMissile(entities::Missile* missile)

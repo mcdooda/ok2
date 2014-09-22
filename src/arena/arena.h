@@ -33,8 +33,8 @@ class Arena
 		
 		inline const flat::geometry::Vector2& getSize() const { return m_size; }
 		
-		const std::set<entities::Ship*>& getShips() const { return m_ships; }
-		const std::set<entities::Missile*>& getMissiles() const { return m_missiles; }
+		const std::set<entities::Ship*>& getShips(entities::Entity::Side side) const { return m_ships[side]; }
+		const std::set<entities::Missile*>& getMissiles(entities::Entity::Side side) const { return m_missiles[side]; }
 		
 		inline float getMinX() const { return m_minX; }
 		inline float getMinY() const { return m_minY; }
@@ -53,8 +53,8 @@ class Arena
 		int m_numCellsY;
 		float m_cellSize;
 		
-		std::set<entities::Ship*> m_ships;
-		std::set<entities::Missile*> m_missiles;
+		std::set<entities::Ship*> m_ships[entities::Entity::NUM_SIDES];
+		std::set<entities::Missile*> m_missiles[entities::Entity::NUM_SIDES];
 		
 		flat::geometry::Vector2 m_center;
 		float m_minX;

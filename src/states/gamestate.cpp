@@ -33,27 +33,27 @@ void GameState::enter(flat::state::Agent* agent)
 	
 	entities::Ship* ship;
 	
-	ship = addShip("blue", flat::geometry::Vector2(-250, 0), M_PI / 2, new entities::PlayerShip());
+	ship = addShip("blue", flat::geometry::Vector2(-250, 0), M_PI / 2, entities::Entity::ALLY, new entities::PlayerShip());
 	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
 	
-	ship = addShip("gray", flat::geometry::Vector2(-150, 0), M_PI / 2, new entities::PlayerShip());
+	ship = addShip("gray", flat::geometry::Vector2(-150, 0), M_PI / 2, entities::Entity::ALLY, new entities::PlayerShip());
 	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
 	
-	ship = addShip("green", flat::geometry::Vector2(-50, 0), M_PI / 2, new entities::PlayerShip());
+	ship = addShip("green", flat::geometry::Vector2(-50, 0), M_PI / 2, entities::Entity::ALLY, new entities::PlayerShip());
 	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
 	
-	ship = addShip("pink", flat::geometry::Vector2(50, 0), M_PI / 2, new entities::PlayerShip());
+	ship = addShip("pink", flat::geometry::Vector2(50, 0), M_PI / 2, entities::Entity::ALLY, new entities::PlayerShip());
 	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
 	
-	ship = addShip("red", flat::geometry::Vector2(150, 0), M_PI / 2, new entities::PlayerShip());
+	ship = addShip("red", flat::geometry::Vector2(150, 0), M_PI / 2, entities::Entity::ALLY, new entities::PlayerShip());
 	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
 	
-	ship = addShip("yellow", flat::geometry::Vector2(250, 0), M_PI / 2, new entities::PlayerShip());
+	ship = addShip("yellow", flat::geometry::Vector2(250, 0), M_PI / 2, entities::Entity::ALLY, new entities::PlayerShip());
 	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
 }
@@ -137,7 +137,7 @@ skills::SkillTemplate* GameState::getSkillTemplate(const std::string& skillName)
 	return m_skillTemplates[skillName];
 }
 
-entities::Ship* GameState::addShip(const std::string& name, const flat::geometry::Vector2& position, float rotationZ, entities::Ship* existingShip)
+entities::Ship* GameState::addShip(const std::string& name, const flat::geometry::Vector2& position, float rotationZ, entities::Entity::Side side, entities::Ship* existingShip)
 {
 	entities::Ship* ship;
 	
@@ -159,12 +159,13 @@ entities::Ship* GameState::addShip(const std::string& name, const flat::geometry
 	
 	ship->setPosition(position);
 	ship->setRotationZ(rotationZ);
+	ship->setSide(side);
 	m_arena->addShip(ship);
 	
 	return ship;
 }
 
-entities::Missile* GameState::addMissile(const std::string& name, const flat::geometry::Vector2& position, float rotationZ)
+entities::Missile* GameState::addMissile(const std::string& name, const flat::geometry::Vector2& position, float rotationZ, entities::Entity::Side side)
 {
 	entities::Missile* missile = new entities::Missile();
 	
@@ -180,6 +181,7 @@ entities::Missile* GameState::addMissile(const std::string& name, const flat::ge
 	
 	missile->setPosition(position);
 	missile->setRotationZ(rotationZ);
+	missile->setSide(side);
 	m_arena->addMissile(missile);
 	
 	return missile;
@@ -203,27 +205,28 @@ void GameState::update(Game* game)
 	float elapsedTime = game->time->getFrameTime();
 	lua_State* L = game->luaState;
 	
-	// creates a copy before iterating
-	std::set<entities::Ship*> ships(m_arena->getShips());
-	
-	for (std::set<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
+	for (int i = entities::Entity::ALLY; i < entities::Entity::NUM_SIDES; i++)
 	{
-		(*it)->update(game, elapsedTime, m_arena);
-		entities::lua::triggerEntityUpdateFunction(L, *it, time, elapsedTime);
-	}
-	
-	// creates a copy before iterating
-	std::set<entities::Missile*> missiles(m_arena->getMissiles());
+		entities::Entity::Side side = (entities::Entity::Side) i;
 		
-	for (std::set<entities::Missile*>::iterator it = missiles.begin(); it != missiles.end(); it++)
-	{
-		(*it)->update(game, elapsedTime, m_arena);
-		entities::lua::triggerEntityUpdateFunction(L, *it, time, elapsedTime);
-	}
+		// creates a copy before iterating
+		std::set<entities::Ship*> ships(m_arena->getShips(side));
 	
-	std::cout << m_arena->getShips().size() << " ships" << std::endl;
-	std::cout << m_arena->getMissiles().size() << " missiles" << std::endl;
-	std::cout << std::endl;
+		for (std::set<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
+		{
+			(*it)->update(game, elapsedTime, m_arena);
+			entities::lua::triggerEntityUpdateFunction(L, *it, time, elapsedTime);
+		}
+	
+		// creates a copy before iterating
+		std::set<entities::Missile*> missiles(m_arena->getMissiles(side));
+		
+		for (std::set<entities::Missile*>::iterator it = missiles.begin(); it != missiles.end(); it++)
+		{
+			(*it)->update(game, elapsedTime, m_arena);
+			entities::lua::triggerEntityUpdateFunction(L, *it, time, elapsedTime);
+		}
+	}
 	
 	updateTimers(game);
 }
@@ -238,20 +241,30 @@ void GameState::draw(Game* game)
 	
 	m_spriteRenderSettings.viewProjectionMatrixUniform.setMatrix4(m_view.getViewProjectionMatrix());
 	
-	const std::set<entities::Missile*>& missiles = m_arena->getMissiles();
+	for (int i = entities::Entity::ALLY; i < entities::Entity::NUM_SIDES; i++)
+	{
+		entities::Entity::Side side = (entities::Entity::Side) i;
+		
+		const std::set<entities::Missile*>& missiles = m_arena->getMissiles(side);
 	
-	for (std::set<entities::Missile*>::iterator it = missiles.begin(); it != missiles.end(); it++)
-		(*it)->draw(m_spriteRenderSettings, m_view.getViewMatrix());
+		for (std::set<entities::Missile*>::iterator it = missiles.begin(); it != missiles.end(); it++)
+			(*it)->draw(m_spriteRenderSettings, m_view.getViewMatrix());
+	}
 		
 	// heightmaps
 	m_heightMapPass.use();
 	
 	m_heightMapRenderSettings.viewProjectionMatrixUniform.setMatrix4(m_view.getViewProjectionMatrix());
 	
-	const std::set<entities::Ship*>& ships = m_arena->getShips();
+	for (int i = entities::Entity::ALLY; i < entities::Entity::NUM_SIDES; i++)
+	{
+		entities::Entity::Side side = (entities::Entity::Side) i;
+		
+		const std::set<entities::Ship*>& ships = m_arena->getShips(side);
 	
-	for (std::set<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
-		(*it)->draw(m_heightMapRenderSettings, m_view.getViewMatrix());
+		for (std::set<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
+			(*it)->draw(m_heightMapRenderSettings, m_view.getViewMatrix());
+	}
 	
 	// final texture
 	m_renderProgram.use(game->video->window);

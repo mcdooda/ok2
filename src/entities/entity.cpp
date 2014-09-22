@@ -10,7 +10,8 @@ Entity::Entity() :
 	m_sprite(NULL),
 	m_dataRef(LUA_NOREF),
 	m_cell(NULL),
-	m_enteredArena(false)
+	m_enteredArena(false),
+	m_side(NONE)
 {
 	
 }
