@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "../arena/arena.h"
 
 namespace game
 {
@@ -8,7 +9,8 @@ namespace entities
 Entity::Entity() :
 	m_sprite(NULL),
 	m_dataRef(LUA_NOREF),
-	m_cell(NULL)
+	m_cell(NULL),
+	m_enteredArena(false)
 {
 	
 }
@@ -65,9 +67,15 @@ flat::geometry::Vector2 Entity::getAbsolutePosition(const flat::geometry::Vector
 	return getModelMatrix() * relativePosition;
 }
 
-void Entity::update(Game* game, float elapsedTime)
+void Entity::update(Game* game, float elapsedTime, arena::Arena* arena)
 {
 	m_sprite->moveBy(m_speed * elapsedTime);
+	
+	if (arena->isEntityInside(this))
+		m_enteredArena = true;
+		
+	else if (m_enteredArena || m_speed.dotProduct(arena->getCenter() - m_sprite->getPosition()) < 0)
+		arena->removeEntity(this);
 }
 
 void Entity::draw(const flat::util::RenderSettings& renderSettings, const flat::geometry::Matrix4& viewMatrix)

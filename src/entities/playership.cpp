@@ -26,7 +26,7 @@ void PlayerShip::setLevel(unsigned int level)
 	}
 }
 
-void PlayerShip::update(Game* game, float elapsedTime)
+void PlayerShip::update(Game* game, float elapsedTime, arena::Arena* arena)
 {
 	const flat::input::Keyboard* keyboard = game->input->keyboard;
 	

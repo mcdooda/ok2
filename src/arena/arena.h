@@ -5,6 +5,11 @@
 
 namespace game
 {
+namespace entities
+{
+class Missile;
+}
+
 namespace arena
 {
 
@@ -22,19 +27,21 @@ class Arena
 		void removeMissile(entities::Missile* missile);
 		void moveMissile(entities::Missile* missile);
 		
-		inline const flat::geometry::Rectangle& getBoundingBox() const { return m_boundingBox; }
+		void removeEntity(entities::Entity* entity);
 		
-		bool isEntityOutOfArena(entities::Entity* entity);
+		bool isEntityInside(entities::Entity* entity);
 		
 		inline const flat::geometry::Vector2& getSize() const { return m_size; }
 		
 		const std::set<entities::Ship*>& getShips() const { return m_ships; }
 		const std::set<entities::Missile*>& getMissiles() const { return m_missiles; }
 		
-		float getMinX() const;
-		float getMinY() const;
-		float getMaxX() const;
-		float getMaxY() const;
+		inline float getMinX() const { return m_minX; }
+		inline float getMinY() const { return m_minY; }
+		inline float getMaxX() const { return m_maxX; }
+		inline float getMaxY() const { return m_maxY; }
+		
+		inline const flat::geometry::Vector2& getCenter() const { return m_center; }
 		
 	private:
 		Cell* getEntityPositionCell(entities::Entity* entity);
@@ -45,10 +52,15 @@ class Arena
 		int m_numCellsX;
 		int m_numCellsY;
 		float m_cellSize;
-		flat::geometry::Rectangle m_boundingBox;
 		
 		std::set<entities::Ship*> m_ships;
 		std::set<entities::Missile*> m_missiles;
+		
+		flat::geometry::Vector2 m_center;
+		float m_minX;
+		float m_minY;
+		float m_maxX;
+		float m_maxY;
 };
 
 } // arena

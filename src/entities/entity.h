@@ -11,6 +11,7 @@ namespace game
 namespace arena
 {
 class Cell;
+class Arena;
 }
 
 namespace entities
@@ -49,7 +50,7 @@ class Entity
 		flat::geometry::Vector2 getAbsolutePosition(const flat::geometry::Vector2& relativePosition);
 		
 		// update & draw
-		virtual void update(Game* game, float elapsedTime);
+		virtual void update(Game* game, float elapsedTime, arena::Arena* arena);
 		void draw(const flat::util::RenderSettings& renderSettings, const flat::geometry::Matrix4& viewMatrix);
 		
 		// lua callbacks
@@ -69,6 +70,9 @@ class Entity
 		
 		inline float getRadius() const { return m_template->getRadius(); }
 		
+		virtual bool isShip() const { return false; }
+		virtual bool isMissile() const { return false; }
+		
 	protected:
 		flat::util::Sprite* m_sprite;
 		EntityTemplate* m_template;
@@ -76,6 +80,7 @@ class Entity
 		flat::geometry::Vector2 m_speed;
 		float m_popTime;
 		arena::Cell* m_cell;
+		bool m_enteredArena;
 };
 
 }

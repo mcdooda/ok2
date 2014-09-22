@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "../skills/skill.h"
 #include "../skills/skilltemplate.h"
+#include "../arena/arena.h"
 
 namespace game
 {
@@ -24,9 +25,11 @@ class Ship : public Entity
 		
 		virtual void setTemplate(EntityTemplate* entityTemplate);
 		
-		virtual void update(Game* game, float elapsedTime);
+		virtual void update(Game* game, float elapsedTime, arena::Arena* arena);
 		
 		virtual void setPopTime(float popTime);
+		
+		virtual bool isShip() const { return true; }
 		
 	protected:
 		void setTemplateSkills(unsigned int level = 1);

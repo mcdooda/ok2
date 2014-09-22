@@ -44,9 +44,9 @@ void Ship::setSkill(skills::Skill*& skill, skills::SkillTemplate* skillTemplate)
 	}
 }
 
-void Ship::update(Game* game, float elapsedTime)
+void Ship::update(Game* game, float elapsedTime, arena::Arena* arena)
 {
-	Entity::update(game, elapsedTime);
+	Entity::update(game, elapsedTime, arena);
 	
 	float time = game->time->getTime();
 	

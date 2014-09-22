@@ -14,6 +14,8 @@ class Missile : public Entity
 	public:
 		Missile();
 		virtual ~Missile();
+		
+		virtual bool isMissile() const { return true; }
 };
 
 } // entities

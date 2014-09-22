@@ -7,10 +7,9 @@
 
 namespace game
 {
-
 namespace entities
 {
-class Entity;
+	class Ship;
 }
 
 namespace arena

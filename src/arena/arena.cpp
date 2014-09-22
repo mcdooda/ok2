@@ -7,8 +7,7 @@ namespace arena
 
 Arena::Arena(const flat::geometry::Vector2& size, float cellSize) :
 	m_size(size),
-	m_cellSize(cellSize),
-	m_boundingBox(flat::geometry::Vector2() - size / 2, size)
+	m_cellSize(cellSize)
 {
 	m_numCellsX = ceil(size.getX() / cellSize);
 	m_numCellsY = ceil(size.getY() / cellSize);
@@ -16,6 +15,11 @@ Arena::Arena(const flat::geometry::Vector2& size, float cellSize) :
 	m_cells = new Cell*[m_numCellsX];
 	for (int x = 0; x < m_numCellsX; x++)
 		m_cells[x] = new Cell[m_numCellsY];
+		
+	m_minX = -size.getX() / 2.f;
+	m_minY = -size.getY() / 2.f;
+	m_maxX =  size.getX() / 2.f;
+	m_maxY =  size.getY() / 2.f;
 }
 
 Arena::~Arena()
@@ -37,7 +41,6 @@ void Arena::removeShip(entities::Ship* ship)
 {
 	Cell* cell = ship->getCell();
 	cell->removeShip(ship);
-	ship->setCell(NULL);
 	m_ships.erase(ship);
 }
 
@@ -51,8 +54,6 @@ void Arena::moveShip(entities::Ship* ship)
 		
 		if (newCell != NULL)
 			newCell->addShip(ship);
-			
-		ship->setCell(newCell);
 	}
 }
 
@@ -67,7 +68,6 @@ void Arena::removeMissile(entities::Missile* missile)
 {
 	Cell* cell = missile->getCell();
 	cell->removeMissile(missile);
-	missile->setCell(NULL);
 	m_missiles.erase(missile);
 }
 
@@ -81,12 +81,19 @@ void Arena::moveMissile(entities::Missile* missile)
 		
 		if (newCell != NULL)
 			newCell->addMissile(missile);
-			
-		missile->setCell(newCell);
 	}
 }
 
-bool Arena::isEntityOutOfArena(entities::Entity* entity)
+void Arena::removeEntity(entities::Entity* entity)
+{
+	if (entity->isShip())
+		removeShip((entities::Ship*) entity);
+		
+	else
+		removeMissile((entities::Missile*) entity);
+}
+
+bool Arena::isEntityInside(entities::Entity* entity)
 {
 	if (entity->getCell() == NULL)
 		return true;
@@ -94,8 +101,8 @@ bool Arena::isEntityOutOfArena(entities::Entity* entity)
 	const flat::geometry::Vector2& position = entity->getPosition();
 	float radius = entity->getRadius();
 	
-	return position.getX() > -radius && position.getX() < m_size.getX() + radius
-	    && position.getY() > -radius && position.getY() < m_size.getY() + radius;
+	return position.getX() > getMinX() - radius && position.getX() < getMaxX() + radius
+	    && position.getY() > getMinY() - radius && position.getY() < getMaxY() + radius;
 }
 
 Cell* Arena::getEntityPositionCell(entities::Entity* entity)
@@ -115,26 +122,6 @@ Cell* Arena::getEntityPositionCell(entities::Entity* entity)
 		y = m_numCellsY - 1;
 	
 	return &m_cells[x][y];
-}
-
-float Arena::getMinX() const
-{
-	return m_boundingBox.getPosition().getX();
-}
-
-float Arena::getMinY() const
-{
-	return m_boundingBox.getPosition().getY();
-}
-
-float Arena::getMaxX() const
-{
-	return m_boundingBox.getPosition().getX() + m_boundingBox.getSize().getX();
-}
-
-float Arena::getMaxY() const
-{
-	return m_boundingBox.getPosition().getY() + m_boundingBox.getSize().getY();
 }
 
 } // arena

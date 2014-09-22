@@ -49,6 +49,16 @@ Timer* getTimer(lua_State* L, int index)
 	return *(Timer**) luaL_checkudata(L, index, "OK2.Timer");;
 }
 
+Game* getGame(lua_State* L)
+{
+	return (Game*) lua_touserdata(L, lua_upvalueindex(2));
+}
+
+states::GameState* getGameState(lua_State* L)
+{
+	return (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
+}
+
 void triggerTimerUpdateFunction(lua_State* L, Timer* timer)
 {
 	int updateFunctionRef = timer->getUpdateFunctionRef();
@@ -100,10 +110,10 @@ int l_timer(lua_State* L)
 	timer->setUpdateFunctionRef(updateFunctionRef);
 	timer->setEndFunctionRef(endFunctionRef);
 	
-	Game* game = (Game*) lua_touserdata(L, lua_upvalueindex(2));
+	Game* game = getGame(L);
 	timer->setBeginTime(game->time->getTime());
 	
-	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
+	states::GameState* gameState = getGameState(L);
 	gameState->addTimer(timer);
 	
 	return 0;

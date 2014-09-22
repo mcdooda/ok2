@@ -53,9 +53,6 @@ class GameState : public flat::state::State
 		std::map<std::string, entities::MissileTemplate*> m_missileTemplates;
 		std::map<std::string, skills::SkillTemplate*> m_skillTemplates;
 		
-		std::vector<entities::Ship*> m_ships;
-		std::vector<entities::Missile*> m_missiles;
-		
 		std::set<timers::Timer*> m_timers;
 		
 		arena::Arena* m_arena;

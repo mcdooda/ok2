@@ -2,6 +2,7 @@
 #include "../game.h"
 #include "../entities/playership.h"
 #include "../entities/lua/entity.h"
+#include "../arena/lua/arena.h"
 #include "../timers/lua/timer.h"
 #include "../lua/templates.h"
 #include "../lua/pop.h"
@@ -96,12 +97,16 @@ void GameState::initGraphics(Game* game)
 	// show texture pass
 	m_renderProgram.load("rsrc/shaders/renderprogram.frag", "rsrc/shaders/renderprogram.vert");
 	m_renderProgram.addInputTexture(screenTexture);
+	
+	m_arenaSizeUniform = m_renderProgram.getUniform("arenaSize");
+	m_screenSizeUniform = m_renderProgram.getUniform("screenSize");
 }
 
 void GameState::loadLuaLibraries(Game* game)
 {
 	lua_State* L = game->luaState;
 	entities::lua::open(L);
+	arena::lua::open(L, m_arena);
 	timers::lua::open(L, this, game);
 	lua::templates::open(L, this, game);
 	lua::pop::open(L, this, game);
@@ -154,7 +159,7 @@ entities::Ship* GameState::addShip(const std::string& name, const flat::geometry
 	
 	ship->setPosition(position);
 	ship->setRotationZ(rotationZ);
-	m_ships.push_back(ship);
+	m_arena->addShip(ship);
 	
 	return ship;
 }
@@ -175,7 +180,7 @@ entities::Missile* GameState::addMissile(const std::string& name, const flat::ge
 	
 	missile->setPosition(position);
 	missile->setRotationZ(rotationZ);
-	m_missiles.push_back(missile);
+	m_arena->addMissile(missile);
 	
 	return missile;
 }
@@ -198,21 +203,27 @@ void GameState::update(Game* game)
 	float elapsedTime = game->time->getFrameTime();
 	lua_State* L = game->luaState;
 	
-	// creates a copy in order to allow skills to create new ships
-	std::vector<entities::Ship*> ships = m_ships;
-	std::vector<entities::Missile*> missiles = m_missiles;
+	// creates a copy before iterating
+	std::set<entities::Ship*> ships(m_arena->getShips());
 	
-	for (std::vector<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
+	for (std::set<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
 	{
-		(*it)->update(game, elapsedTime);
+		(*it)->update(game, elapsedTime, m_arena);
 		entities::lua::triggerEntityUpdateFunction(L, *it, time, elapsedTime);
 	}
+	
+	// creates a copy before iterating
+	std::set<entities::Missile*> missiles(m_arena->getMissiles());
 		
-	for (std::vector<entities::Missile*>::iterator it = missiles.begin(); it != missiles.end(); it++)
+	for (std::set<entities::Missile*>::iterator it = missiles.begin(); it != missiles.end(); it++)
 	{
-		(*it)->update(game, elapsedTime);
+		(*it)->update(game, elapsedTime, m_arena);
 		entities::lua::triggerEntityUpdateFunction(L, *it, time, elapsedTime);
 	}
+	
+	std::cout << m_arena->getShips().size() << " ships" << std::endl;
+	std::cout << m_arena->getMissiles().size() << " missiles" << std::endl;
+	std::cout << std::endl;
 	
 	updateTimers(game);
 }
@@ -227,7 +238,9 @@ void GameState::draw(Game* game)
 	
 	m_spriteRenderSettings.viewProjectionMatrixUniform.setMatrix4(m_view.getViewProjectionMatrix());
 	
-	for (std::vector<entities::Missile*>::iterator it = m_missiles.begin(); it != m_missiles.end(); it++)
+	const std::set<entities::Missile*>& missiles = m_arena->getMissiles();
+	
+	for (std::set<entities::Missile*>::iterator it = missiles.begin(); it != missiles.end(); it++)
 		(*it)->draw(m_spriteRenderSettings, m_view.getViewMatrix());
 		
 	// heightmaps
@@ -235,14 +248,16 @@ void GameState::draw(Game* game)
 	
 	m_heightMapRenderSettings.viewProjectionMatrixUniform.setMatrix4(m_view.getViewProjectionMatrix());
 	
-	for (std::vector<entities::Ship*>::iterator it = m_ships.begin(); it != m_ships.end(); it++)
+	const std::set<entities::Ship*>& ships = m_arena->getShips();
+	
+	for (std::set<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
 		(*it)->draw(m_heightMapRenderSettings, m_view.getViewMatrix());
 	
 	// final texture
 	m_renderProgram.use(game->video->window);
 	
-	m_renderProgram.getUniform("screenSize").setVector2(game->video->window->getSize());
-	m_renderProgram.getUniform("arenaSize").setVector2(m_arena->getSize());
+	m_screenSizeUniform.setVector2(game->video->window->getSize());
+	m_arenaSizeUniform.setVector2(m_arena->getSize());
 	
 	game->video->setClearColor(flat::video::Color::BLACK);
 	game->video->clear();
