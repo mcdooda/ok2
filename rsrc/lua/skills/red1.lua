@@ -1,11 +1,11 @@
 local cos = math.cos
 local sin = math.sin
-local mpi48 = -math.pi / 48
+local mpi64 = -math.pi / 64
 
 skill {
 	name     = 'red1',
 	cooldown = 0.2,
 	trigger  = function(ship)
-		popShipMissiles(ship, 'red', 2, 0, 30, mpi48)
+		popShipMissiles(ship, 'red', 2, 0, 30, mpi64)
 	end
 }

@@ -14,6 +14,7 @@ class GameState;
 namespace lua
 {
 
+void registerGameClosures(lua_State* L, Game* game, const luaL_Reg* funcs);
 void registerGameStateClosures(lua_State* L, states::GameState* gameState, Game* game, const luaL_Reg* funcs);
 
 } // lua

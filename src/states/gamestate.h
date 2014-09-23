@@ -41,21 +41,23 @@ class GameState : public flat::state::State
 		void loadLuaLibraries(Game* game);
 		void loadTemplates(Game* game);
 		
+		void loadLevel(Game* game);
+		void updateLevel(Game* game);
+		
 		void update(Game* game);
 		void draw(Game* game);
 		
 		void updateTimers(Game* game);
 		
 	private:
-		flat::audio::Music* m_music;
-		
+		// entity and skill templates
 		std::map<std::string, entities::ShipTemplate*> m_shipTemplates;
 		std::map<std::string, entities::MissileTemplate*> m_missileTemplates;
 		std::map<std::string, skills::SkillTemplate*> m_skillTemplates;
 		
-		std::set<timers::Timer*> m_timers;
-		
+		// ARENA
 		arena::Arena* m_arena;
+		int m_levelCoroutineRef;
 		
 		// GRAPHICS
 		
@@ -73,6 +75,12 @@ class GameState : public flat::state::State
 		flat::util::RenderSettings m_spriteRenderSettings;
 		flat::video::Uniform m_arenaSizeUniform;
 		flat::video::Uniform m_screenSizeUniform;
+		
+		// AUDIO
+		flat::audio::Music* m_music;
+		
+		// TIMERS
+		std::set<timers::Timer*> m_timers;
 };
 
 } // states

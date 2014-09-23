@@ -1,5 +1,6 @@
 #include "pop.h"
 #include "../entities/lua/entity.h"
+#include "../entities/playership.h"
 
 namespace game
 {
@@ -33,12 +34,17 @@ int l_popShip(lua_State* L)
 	float rotationZ = luaL_checknumber(L, 4);
 	entities::Entity::Side side = (entities::Entity::Side) luaL_checkint(L, 5);
 	luaL_argcheck(L, 5, side >= entities::Entity::ALLY && side < entities::Entity::NUM_SIDES, "invalid entity side");
+	int isPlayerShip = lua_toboolean(L, 6);
 	
 	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
 	Game* game = (Game*) lua_touserdata(L, lua_upvalueindex(2));
 	float time = game->time->getTime();
 	
-	entities::Ship* ship = gameState->addShip(name, flat::geometry::Vector2(x, y), rotationZ, side);
+	entities::Ship* ship = NULL;
+	if (isPlayerShip)
+		ship = new entities::PlayerShip();
+	
+	ship = gameState->addShip(name, flat::geometry::Vector2(x, y), rotationZ, side, ship);
 	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
 	

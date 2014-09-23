@@ -6,6 +6,8 @@
 #include "../timers/lua/timer.h"
 #include "../lua/templates.h"
 #include "../lua/pop.h"
+#include "../lua/level.h"
+#include "../lua/time.h"
 #include "gamestate.h"
 
 namespace game
@@ -56,6 +58,8 @@ void GameState::enter(flat::state::Agent* agent)
 	ship = addShip("yellow", flat::geometry::Vector2(250, 0), M_PI / 2, entities::Entity::ALLY, new entities::PlayerShip());
 	ship->setPopTime(time);
 	entities::lua::initEntity(L, ship, time);
+	
+	loadLevel(game);
 }
 
 void GameState::initMusic(Game* game)
@@ -110,11 +114,28 @@ void GameState::loadLuaLibraries(Game* game)
 	timers::lua::open(L, this, game);
 	lua::templates::open(L, this, game);
 	lua::pop::open(L, this, game);
+	lua::time::open(L, game);
 }
 
 void GameState::loadTemplates(Game* game)
 {
 	flat::lua::doFile(game->luaState, "rsrc/lua/templates.lua");
+}
+
+void GameState::loadLevel(Game* game)
+{
+	m_levelCoroutineRef = lua::level::load(game->luaState, "rsrc/lua/levels/level1.lua");
+}
+
+void GameState::updateLevel(Game* game)
+{
+	lua_State* L = game->luaState;
+	bool levelFinished = lua::level::resume(L, m_levelCoroutineRef);
+	if (levelFinished)
+	{
+		lua::level::destroyState(L, m_levelCoroutineRef);
+		m_levelCoroutineRef = LUA_NOREF;
+	}
 }
 
 void GameState::addShipTemplate(entities::ShipTemplate* shipTemplate)
@@ -204,6 +225,8 @@ void GameState::update(Game* game)
 	float time = game->time->getTime();
 	float elapsedTime = game->time->getFrameTime();
 	lua_State* L = game->luaState;
+	
+	updateLevel(game);
 	
 	for (int i = entities::Entity::ALLY; i < entities::Entity::NUM_SIDES; i++)
 	{
