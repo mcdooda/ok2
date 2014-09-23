@@ -127,17 +127,47 @@ void PlayerShip::update(Game* game, float elapsedTime, arena::Arena* arena)
 	
 	float time = game->time->getTime();
 	
+	fitInArena(arena);
+	
 	if (primaryFirePressed)
 	{
 		if (m_primarySkill != NULL && m_primarySkill->isReady(time))
 			m_primarySkill->trigger(game, this, time);
 	}
 	
+	fitInArena(arena);
+	
 	if (secondaryFirePressed)
 	{
 		if (m_secondarySkill != NULL && m_secondarySkill->isReady(time))
 			m_secondarySkill->trigger(game, this, time);
 	}
+	
+	fitInArena(arena);
+}
+
+void PlayerShip::fitInArena(arena::Arena* arena)
+{
+	flat::geometry::Vector2 position = getPosition();
+	float radius = getRadius();
+	int minX = arena->getMinX() + radius;
+	int maxX = arena->getMaxX() - radius;
+	int minY = arena->getMinY() + radius;
+	int maxY = arena->getMaxY() - radius;
+	
+	if (position.getX() < minX)
+		position.setX(minX);
+		
+	else if (position.getX() > maxX)
+		position.setX(maxX);
+		
+	if (position.getY() < minY)
+		position.setY(minY);
+		
+	else if (position.getY() > maxY)
+		position.setY(maxY);
+		
+	setPosition(position);
 }
 
 } // entities

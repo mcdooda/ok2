@@ -28,7 +28,13 @@ void GameState::enter(flat::state::Agent* agent)
 	initGraphics(game);
 	
 	loadLuaLibraries(game);
-	loadShip(game, "blue");
+	
+	std::string shipName = game->argGetString(1);
+	if (shipName == "")
+		shipName = "blue";
+		
+	loadShip(game, shipName);
+	
 	loadLevel(game);
 }
 

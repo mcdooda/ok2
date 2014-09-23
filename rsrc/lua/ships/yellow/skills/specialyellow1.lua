@@ -5,7 +5,7 @@ local pi6 = pi / 6
 
 skill {
 	name     = 'specialyellow1',
-	cooldown = 1,
+	cooldown = 0.6,
 	trigger  = function(ship)
 		popShipMissiles(ship, 'yellow1', 4, 0, 40)
 		popShipMissiles(ship, 'yellow1', 4, 0, 40, pi6)

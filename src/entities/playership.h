@@ -19,6 +19,9 @@ class PlayerShip : public Ship
 		void setLevel(unsigned int level);
 		
 	protected:
+		void fitInArena(arena::Arena* arena);
+		
+	protected:
 		unsigned int m_level;
 		unsigned int m_experience;
 };
