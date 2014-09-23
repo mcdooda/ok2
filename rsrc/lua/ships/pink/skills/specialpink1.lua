@@ -6,6 +6,6 @@ skill {
 	name     = 'specialpink1',
 	cooldown = 5,
 	trigger  = function(ship)
-		popShipMissiles(ship, 'pink', 20, 20, 0, pi * 2 - pi / 10)
+		popShipMissiles(ship, 'pink1', 20, 20, 0, pi * 2 - pi / 10)
 	end
 }

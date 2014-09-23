@@ -5,6 +5,6 @@ skill {
 	name     = 'gray1',
 	cooldown = 0.2,
 	trigger  = function(ship)
-		popShipMissiles(ship, 'gray', 1, 10, 0)
+		popShipMissiles(ship, 'gray1', 1, 10, 0)
 	end
 }

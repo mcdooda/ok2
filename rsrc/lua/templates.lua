@@ -1,8 +1,12 @@
-local function loadTemplates(templateType)
-	dofile('rsrc/lua/' .. templateType .. '.lua')
-	--print('* ' .. templateType .. ' LOADED')
-end
+load = require 'rsrc/lua/load'
 
-loadTemplates 'skills'
-loadTemplates 'ships'
-loadTemplates 'missiles'
+load.ships(
+	'blue',
+	'gray',
+	'green',
+	'pink',
+	'red',
+	'yellow'
+)
+
+

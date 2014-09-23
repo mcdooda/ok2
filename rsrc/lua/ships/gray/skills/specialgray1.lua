@@ -6,6 +6,6 @@ skill {
 	name     = 'specialgray1',
 	cooldown = 3,
 	trigger  = function(ship)
-		popShipMissiles(ship, 'gray', 10, 20, 0, pi / 2)
+		popShipMissiles(ship, 'gray1', 10, 20, 0, pi / 2)
 	end
 }

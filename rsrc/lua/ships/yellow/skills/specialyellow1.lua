@@ -7,8 +7,8 @@ skill {
 	name     = 'specialyellow1',
 	cooldown = 1,
 	trigger  = function(ship)
-		popShipMissiles(ship, 'yellow', 4, 0, 40)
-		popShipMissiles(ship, 'yellow', 4, 0, 40, pi6)
+		popShipMissiles(ship, 'yellow1', 4, 0, 40)
+		popShipMissiles(ship, 'yellow1', 4, 0, 40, pi6)
 		local sx, sy = ship:getSpeed()
 		local x, y = ship:getPosition()
 		local d = 1

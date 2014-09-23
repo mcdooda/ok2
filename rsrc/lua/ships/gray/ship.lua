@@ -1,3 +1,12 @@
+load.shipMissiles('gray',
+	'gray1'
+)
+
+load.shipSkills('gray',
+	'gray1',
+	'specialgray1'
+)
+
 ship {
 	name      = 'gray',
 	speed     = 450,
