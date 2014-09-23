@@ -28,37 +28,7 @@ void GameState::enter(flat::state::Agent* agent)
 	initGraphics(game);
 	
 	loadLuaLibraries(game);
-	loadTemplates(game);
-	
-	lua_State* L = game->luaState;
-	float time = game->time->getTime();
-	
-	entities::Ship* ship;
-	
-	ship = addShip("blue", flat::geometry::Vector2(-250, 0), M_PI / 2, entities::Entity::ALLY, new entities::PlayerShip());
-	ship->setPopTime(time);
-	entities::lua::initEntity(L, ship, time);
-	
-	ship = addShip("gray", flat::geometry::Vector2(-150, 0), M_PI / 2, entities::Entity::ALLY, new entities::PlayerShip());
-	ship->setPopTime(time);
-	entities::lua::initEntity(L, ship, time);
-	
-	ship = addShip("green", flat::geometry::Vector2(-50, 0), M_PI / 2, entities::Entity::ALLY, new entities::PlayerShip());
-	ship->setPopTime(time);
-	entities::lua::initEntity(L, ship, time);
-	
-	ship = addShip("pink", flat::geometry::Vector2(50, 0), M_PI / 2, entities::Entity::ALLY, new entities::PlayerShip());
-	ship->setPopTime(time);
-	entities::lua::initEntity(L, ship, time);
-	
-	ship = addShip("red", flat::geometry::Vector2(150, 0), M_PI / 2, entities::Entity::ALLY, new entities::PlayerShip());
-	ship->setPopTime(time);
-	entities::lua::initEntity(L, ship, time);
-	
-	ship = addShip("yellow", flat::geometry::Vector2(250, 0), M_PI / 2, entities::Entity::ALLY, new entities::PlayerShip());
-	ship->setPopTime(time);
-	entities::lua::initEntity(L, ship, time);
-	
+	loadShip(game, "blue");
 	loadLevel(game);
 }
 
@@ -115,11 +85,12 @@ void GameState::loadLuaLibraries(Game* game)
 	lua::templates::open(L, this, game);
 	lua::pop::open(L, this, game);
 	lua::time::open(L, game);
+	flat::lua::loadLib(game->luaState, "rsrc/lua/load.lua", "load");
 }
 
-void GameState::loadTemplates(Game* game)
+void GameState::loadShip(Game* game, std::string shipName)
 {
-	flat::lua::doFile(game->luaState, "rsrc/lua/templates.lua");
+	flat::lua::doFile(game->luaState, "rsrc/lua/ships/" + shipName + "/setup.lua");
 }
 
 void GameState::loadLevel(Game* game)

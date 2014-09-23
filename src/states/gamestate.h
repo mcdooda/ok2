@@ -39,7 +39,7 @@ class GameState : public flat::state::State
 		void initGraphics(Game* game);
 		
 		void loadLuaLibraries(Game* game);
-		void loadTemplates(Game* game);
+		void loadShip(Game* game, std::string shipName);
 		
 		void loadLevel(Game* game);
 		void updateLevel(Game* game);
