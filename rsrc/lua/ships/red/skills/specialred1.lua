@@ -10,17 +10,9 @@ skill {
 	trigger  = function(ship)
 		local rotationZ = ship:getRotationZ()
 		local side = ship:getSide()
-		for i = 0, 2 do
-			timer(i * 0.2, nil, function()
-				do
-					local x, y = ship:getAbsolutePosition(dx, -200)
-					popShip('red_specialred1', x, y, rotationZ + pi32 * (1 + i / 2), side)
-				end
-				do
-					local x, y = ship:getAbsolutePosition(dx, 200)
-					popShip('red_specialred1', x, y, rotationZ - pi32 * (1 + i / 2), side)
-				end
-			end)
+		do
+			local x, y = ship:getAbsolutePosition(dx, 0)
+			popShip('red_specialred1', x, y, rotationZ, side)
 		end
 	end
 }
