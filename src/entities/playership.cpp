@@ -18,15 +18,6 @@ PlayerShip::~PlayerShip()
 
 }
 
-void PlayerShip::setLevel(unsigned int level)
-{
-	if (level != m_level)
-	{
-		m_level = level;
-		setTemplateSkills(level);
-	}
-}
-
 void PlayerShip::update(Game* game, float time, float elapsedTime, arena::Arena* arena)
 {
 	const flat::input::Keyboard* keyboard = game->input->keyboard;
@@ -145,6 +136,20 @@ void PlayerShip::update(Game* game, float time, float elapsedTime, arena::Arena*
 	}
 	
 	fitInArena(arena);
+}
+
+void PlayerShip::setLevel(unsigned int level)
+{
+	if (level != m_level)
+	{
+		m_level = level;
+		setTemplateSkills(level);
+	}
+}
+
+float PlayerShip::getHitRadius() const
+{
+	return getRadius() / 1.5f;
 }
 
 void PlayerShip::fitInArena(arena::Arena* arena)

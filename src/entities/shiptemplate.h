@@ -15,12 +15,16 @@ class ShipTemplate : public EntityTemplate
 		ShipTemplate();
 		virtual ~ShipTemplate();
 		
+		inline void setHealth(int health) { m_health = health; }
+		inline int getHealth() const { return m_health; }
+		
 		void addSkillTemplates(skills::SkillTemplate* primarySkill, skills::SkillTemplate* secondarySkillName);
 		
 		skills::SkillTemplate* getPrimarySkillTemplate(unsigned int level);
 		skills::SkillTemplate* getSecondarySkillTemplate(unsigned int level);
 		
 	private:
+		int m_health;
 		std::vector<skills::SkillTemplate*> m_primarySkillTemplates;
 		std::vector<skills::SkillTemplate*> m_secondarySkillTemplates;
 };

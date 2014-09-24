@@ -22,7 +22,7 @@ void GameState::enter(flat::state::Agent* agent)
 	static const float arenaWidth = 600;
 	static const float arenaHeight = 1080;
 	flat::geometry::Vector2 arenaSize = flat::geometry::Vector2(arenaWidth, arenaHeight);
-	m_arena = new arena::Arena(arenaSize, 100);
+	m_arena = new arena::Arena(arenaSize, 50);
 	
 	initMusic(game);
 	initGraphics(game);
@@ -110,7 +110,7 @@ void GameState::updateLevel(Game* game)
 	bool levelFinished = lua::level::resume(L, m_levelCoroutineRef);
 	if (levelFinished)
 	{
-		lua::level::destroyState(L, m_levelCoroutineRef);
+		lua::level::destroyLevelState(L, m_levelCoroutineRef);
 		m_levelCoroutineRef = LUA_NOREF;
 	}
 }
@@ -219,6 +219,33 @@ void GameState::update(Game* game)
 		
 		for (std::set<entities::Missile*>::iterator it = missiles.begin(); it != missiles.end(); it++)
 			(*it)->update(game, time, elapsedTime, m_arena);
+	}
+	
+	for (int i = entities::Entity::ALLY; i < entities::Entity::NUM_SIDES; i++)
+	{
+		entities::Entity::Side side = (entities::Entity::Side) i;
+		
+		// creates a copy before iterating
+		std::set<entities::Ship*> ships(m_arena->getShips(side));
+		
+		for (std::set<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
+		{
+			entities::Ship* ship = *it;
+			
+			std::set<entities::Missile*> collidingMissiles = m_arena->getCollidingMissiles(*it);
+			
+			for (std::set<entities::Missile*>::iterator it2 = collidingMissiles.begin(); it2 != collidingMissiles.end(); it2++)
+			{
+				entities::Missile* missile = *it2;
+				
+				ship->dealDamage(*it2);
+				
+				if (ship->isDead()) {}
+				
+				// TODO FREE MISSILE
+				m_arena->removeMissile(missile);
+			}
+		}
 	}
 	
 	updateTimers(game);

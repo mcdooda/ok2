@@ -2,6 +2,7 @@
 #define GAME_ENTITIES_SHIP_H
 
 #include "entity.h"
+#include "missile.h"
 #include "../skills/skill.h"
 #include "../skills/skilltemplate.h"
 #include "../arena/arena.h"
@@ -31,6 +32,11 @@ class Ship : public Entity
 		
 		virtual bool isShip() const { return true; }
 		
+		void dealDamage(Missile* missile);
+		
+		inline int getHealth() const { return m_health; }
+		inline bool isDead() const { return m_health <= 0; }
+		
 	protected:
 		void setTemplateSkills(unsigned int level = 1);
 		void setSkill(skills::Skill*& skill, skills::SkillTemplate* skillTemplate);
@@ -38,6 +44,7 @@ class Ship : public Entity
 	protected:
 		skills::Skill* m_primarySkill;
 		skills::Skill* m_secondarySkill;
+		int m_health;
 };
 
 } // entities

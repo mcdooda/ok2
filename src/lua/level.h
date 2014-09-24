@@ -12,7 +12,7 @@ namespace level
 
 int load(lua_State* L, std::string filename);
 bool resume(lua_State* L, int levelCoroutineRef);
-void destroyState(lua_State* L, int levelCoroutineRef);
+void destroyLevelState(lua_State* L, int levelCoroutineRef);
 
 } // level
 } // lua

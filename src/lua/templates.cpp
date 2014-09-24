@@ -29,6 +29,9 @@ int l_ship(lua_State* L)
 	lua_getfield(L, 1, "speed");
 	float speed = luaL_checknumber(L, -1);
 	
+	lua_getfield(L, 1, "health");
+	int health = luaL_checkint(L, -1);
+	
 	lua_getfield(L, 1, "texture");
 	std::string texture = luaL_checkstring(L, -1);
 	
@@ -59,6 +62,7 @@ int l_ship(lua_State* L)
 	entities::ShipTemplate* shipTemplate = new entities::ShipTemplate();
 	shipTemplate->setName(name);
 	shipTemplate->setSpeed(speed);
+	shipTemplate->setHealth(health);
 	shipTemplate->setPopFunctionRef(popFunctionRef);
 	shipTemplate->setUpdateFunctionRef(updateFunctionRef);
 	

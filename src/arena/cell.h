@@ -27,9 +27,12 @@ class Cell
 		void addMissile(entities::Missile* missile);
 		void removeMissile(entities::Missile* missile);
 		
+		const std::set<entities::Ship*>& getShips(entities::Entity::Side side) const { return m_ships[side]; }
+		const std::set<entities::Missile*>& getMissiles(entities::Entity::Side side) const { return m_missiles[side]; }
+		
 	private:
-		std::set<entities::Ship*> m_ships;
-		std::set<entities::Missile*> m_missiles;
+		std::set<entities::Ship*> m_ships[entities::Entity::NUM_SIDES];
+		std::set<entities::Missile*> m_missiles[entities::Entity::NUM_SIDES];
 };
 
 } // arena

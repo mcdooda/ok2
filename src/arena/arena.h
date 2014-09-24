@@ -36,6 +36,8 @@ class Arena
 		const std::set<entities::Ship*>& getShips(entities::Entity::Side side) const { return m_ships[side]; }
 		const std::set<entities::Missile*>& getMissiles(entities::Entity::Side side) const { return m_missiles[side]; }
 		
+		std::set<entities::Missile*> getCollidingMissiles(entities::Ship* ship) const;
+		
 		inline float getMinX() const { return m_minX; }
 		inline float getMinY() const { return m_minY; }
 		inline float getMaxX() const { return m_maxX; }
@@ -45,6 +47,11 @@ class Arena
 		
 	private:
 		Cell* getEntityPositionCell(entities::Entity* entity);
+		
+		bool collides(entities::Entity* a, entities::Entity* b) const;
+		
+		int getCellX(float x) const;
+		int getCellY(float y) const;
 		
 	private:
 		flat::geometry::Vector2 m_size;

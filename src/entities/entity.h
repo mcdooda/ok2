@@ -70,6 +70,7 @@ class Entity
 		inline arena::Cell* getCell() const { return m_cell; }
 		
 		inline float getRadius() const { return m_template->getRadius(); }
+		virtual float getHitRadius() const;
 		
 		virtual bool isShip() const { return false; }
 		virtual bool isMissile() const { return false; }

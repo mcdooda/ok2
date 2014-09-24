@@ -97,6 +97,11 @@ int Entity::getUpdateFunctionRef() const
 	return m_template->getUpdateFunctionRef();
 }
 
+float Entity::getHitRadius() const
+{
+	return getRadius() * 1.2f;
+}
+
 void Entity::setPopTime(float popTime)
 {
 	m_popTime = popTime;

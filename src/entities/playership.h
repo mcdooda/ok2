@@ -18,6 +18,8 @@ class PlayerShip : public Ship
 		
 		void setLevel(unsigned int level);
 		
+		virtual float getHitRadius() const;
+		
 	protected:
 		void fitInArena(arena::Arena* arena);
 		

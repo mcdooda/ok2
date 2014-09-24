@@ -105,23 +105,85 @@ bool Arena::isEntityInside(entities::Entity* entity)
 	    && position.getY() > getMinY() - radius && position.getY() < getMaxY() + radius;
 }
 
+std::set<entities::Missile*> Arena::getCollidingMissiles(entities::Ship* ship) const
+{
+	std::set<entities::Missile*> collidingMissiles;
+	float radius = ship->getHitRadius();
+	flat::geometry::Vector2 position = ship->getPosition();
+	entities::Entity::Side shipSide = ship->getSide();
+	
+	static const float missileMaxRadius = 20.f;
+	
+	int minX = getCellX(position.getX() - radius - missileMaxRadius);
+	int maxX = getCellX(position.getX() + radius + missileMaxRadius);
+	int minY = getCellX(position.getY() - radius - missileMaxRadius);
+	int maxY = getCellX(position.getY() + radius + missileMaxRadius);
+	
+	for (int x = minX; x <= maxX; x++)
+	{
+		for (int y = minY; y <= maxY; y++)
+		{
+			const Cell& cell = m_cells[x][y];
+			
+			for (int i = entities::Entity::ALLY; i < entities::Entity::NUM_SIDES; i++)
+			{
+				entities::Entity::Side side = (entities::Entity::Side) i;
+				
+				if (side != shipSide)
+				{
+					const std::set<entities::Missile*>& cellMissiles = cell.getMissiles(side);
+				
+					for (std::set<entities::Missile*>::iterator it = cellMissiles.begin(); it != cellMissiles.end(); it++)
+					{
+						if (collides(ship, *it))
+							collidingMissiles.insert(*it);
+					}
+				}
+			}
+		}
+	}
+	
+	return collidingMissiles;
+}
+
 Cell* Arena::getEntityPositionCell(entities::Entity* entity)
 {
 	const flat::geometry::Vector2& position = entity->getPosition();
-	int x = (int) floor(position.getX() / m_cellSize);
-	int y = (int) floor(position.getY() / m_cellSize);
-	
-	if (x < 0)
-		x = 0;
-	else if (x >= m_numCellsX)
-		x = m_numCellsX - 1;
-		
-	if (y < 0)
-		y = 0;
-	else if (y >= m_numCellsY)
-		y = m_numCellsY - 1;
-	
+	int x = getCellX(position.getX());
+	int y = getCellY(position.getY());
 	return &m_cells[x][y];
+}
+
+bool Arena::collides(entities::Entity* a, entities::Entity* b) const
+{
+	float collisionDistance = (a->getHitRadius() + b->getHitRadius()) / 2;
+	return (a->getPosition() - b->getPosition()).distanceSquared() < collisionDistance * collisionDistance;
+}
+
+int Arena::getCellX(float x) const
+{
+	int cellX = (int) floor((x + m_minX) / m_cellSize);
+	
+	if (cellX < 0)
+		cellX = 0;
+		
+	else if (cellX >= m_numCellsX)
+		cellX = m_numCellsX - 1;
+		
+	return cellX;
+}
+
+int Arena::getCellY(float y) const
+{
+	int cellY = (int) floor((y + m_minY) / m_cellSize);
+	
+	if (cellY < 0)
+		cellY = 0;
+		
+	else if (cellY >= m_numCellsY)
+		cellY = m_numCellsY - 1;
+		
+	return cellY;
 }
 
 } // arena

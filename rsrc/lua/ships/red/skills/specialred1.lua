@@ -6,7 +6,7 @@ local dx = -arena.getHeight() * 1.2
 
 skill {
 	name     = 'specialred1',
-	cooldown = 1,
+	cooldown = 2,
 	trigger  = function(ship)
 		local rotationZ = ship:getRotationZ()
 		local side = ship:getSide()

@@ -44,7 +44,7 @@ bool resume(lua_State* L, int levelCoroutineRef)
 		return true;
 }
 
-void destroyState(lua_State* L, int levelCoroutineRef)
+void destroyLevelState(lua_State* L, int levelCoroutineRef)
 {
 	luaL_unref(L, LUA_REGISTRYINDEX, levelCoroutineRef);
 }

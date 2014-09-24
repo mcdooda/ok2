@@ -22,6 +22,8 @@ Ship::~Ship()
 void Ship::setTemplate(EntityTemplate* entityTemplate)
 {
 	Entity::setTemplate(entityTemplate);
+	ShipTemplate* shipTemplate = (ShipTemplate*) m_template;
+	m_health = shipTemplate->getHealth();
 	setTemplateSkills();
 }
 
@@ -64,6 +66,11 @@ void Ship::setPopTime(float popTime)
 		
 	if (m_secondarySkill != NULL)
 		m_secondarySkill->setLastTriggeredTime(popTime);
+}
+
+void Ship::dealDamage(Missile* missile)
+{
+	m_health -= 1; //missile->getDamage();
 }
 
 } // entities
