@@ -149,7 +149,7 @@ void PlayerShip::setLevel(unsigned int level)
 
 float PlayerShip::getHitRadius() const
 {
-	return getRadius() / 1.5f;
+	return getRadius() * 0.7f;
 }
 
 void PlayerShip::fitInArena(arena::Arena* arena)

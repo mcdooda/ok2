@@ -112,12 +112,12 @@ std::set<entities::Missile*> Arena::getCollidingMissiles(entities::Ship* ship) c
 	flat::geometry::Vector2 position = ship->getPosition();
 	entities::Entity::Side shipSide = ship->getSide();
 	
-	static const float missileMaxRadius = 20.f;
+	static const float missileMaxRadius = 30.f;
 	
 	int minX = getCellX(position.getX() - radius - missileMaxRadius);
 	int maxX = getCellX(position.getX() + radius + missileMaxRadius);
-	int minY = getCellX(position.getY() - radius - missileMaxRadius);
-	int maxY = getCellX(position.getY() + radius + missileMaxRadius);
+	int minY = getCellY(position.getY() - radius - missileMaxRadius);
+	int maxY = getCellY(position.getY() + radius + missileMaxRadius);
 	
 	for (int x = minX; x <= maxX; x++)
 	{

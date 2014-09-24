@@ -22,7 +22,7 @@ void GameState::enter(flat::state::Agent* agent)
 	static const float arenaWidth = 600;
 	static const float arenaHeight = 1080;
 	flat::geometry::Vector2 arenaSize = flat::geometry::Vector2(arenaWidth, arenaHeight);
-	m_arena = new arena::Arena(arenaSize, 50);
+	m_arena = new arena::Arena(arenaSize, 100);
 	
 	initMusic(game);
 	initGraphics(game);
