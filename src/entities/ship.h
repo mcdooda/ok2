@@ -25,7 +25,7 @@ class Ship : public Entity
 		
 		virtual void setTemplate(EntityTemplate* entityTemplate);
 		
-		virtual void update(Game* game, float elapsedTime, arena::Arena* arena);
+		virtual void update(Game* game, float time, float elapsedTime, arena::Arena* arena);
 		
 		virtual void setPopTime(float popTime);
 		

@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "lua/entity.h"
 #include "../arena/arena.h"
 
 namespace game
@@ -68,13 +69,15 @@ flat::geometry::Vector2 Entity::getAbsolutePosition(const flat::geometry::Vector
 	return getModelMatrix() * relativePosition;
 }
 
-void Entity::update(Game* game, float elapsedTime, arena::Arena* arena)
+void Entity::update(Game* game, float time, float elapsedTime, arena::Arena* arena)
 {
 	m_sprite->moveBy(m_speed * elapsedTime);
 	
 	if (arena->isEntityInside(this))
+	{
 		m_enteredArena = true;
-		
+		lua::triggerEntityUpdateFunction(game->luaState, this, time, elapsedTime);
+	}
 	else if (m_enteredArena || m_speed.dotProduct(arena->getCenter() - m_sprite->getPosition()) < 0)
 		arena->removeEntity(this);
 }

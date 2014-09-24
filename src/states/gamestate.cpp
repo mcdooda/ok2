@@ -201,7 +201,6 @@ void GameState::update(Game* game)
 {
 	float time = game->time->getTime();
 	float elapsedTime = game->time->getFrameTime();
-	lua_State* L = game->luaState;
 	
 	updateLevel(game);
 	
@@ -211,21 +210,15 @@ void GameState::update(Game* game)
 		
 		// creates a copy before iterating
 		std::set<entities::Ship*> ships(m_arena->getShips(side));
-	
+		
 		for (std::set<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
-		{
-			(*it)->update(game, elapsedTime, m_arena);
-			entities::lua::triggerEntityUpdateFunction(L, *it, time, elapsedTime);
-		}
-	
+			(*it)->update(game, time, elapsedTime, m_arena);
+		
 		// creates a copy before iterating
 		std::set<entities::Missile*> missiles(m_arena->getMissiles(side));
 		
 		for (std::set<entities::Missile*>::iterator it = missiles.begin(); it != missiles.end(); it++)
-		{
-			(*it)->update(game, elapsedTime, m_arena);
-			entities::lua::triggerEntityUpdateFunction(L, *it, time, elapsedTime);
-		}
+			(*it)->update(game, time, elapsedTime, m_arena);
 	}
 	
 	updateTimers(game);

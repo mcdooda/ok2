@@ -44,11 +44,9 @@ void Ship::setSkill(skills::Skill*& skill, skills::SkillTemplate* skillTemplate)
 	}
 }
 
-void Ship::update(Game* game, float elapsedTime, arena::Arena* arena)
+void Ship::update(Game* game, float time, float elapsedTime, arena::Arena* arena)
 {
-	Entity::update(game, elapsedTime, arena);
-	
-	float time = game->time->getTime();
+	Entity::update(game, time, elapsedTime, arena);
 	
 	if (m_primarySkill != NULL && m_primarySkill->isReady(time))
 		m_primarySkill->trigger(game, this, time);

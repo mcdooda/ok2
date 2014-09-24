@@ -1,4 +1,5 @@
 #include "playership.h"
+#include "lua/entity.h"
 
 namespace game
 {
@@ -26,7 +27,7 @@ void PlayerShip::setLevel(unsigned int level)
 	}
 }
 
-void PlayerShip::update(Game* game, float elapsedTime, arena::Arena* arena)
+void PlayerShip::update(Game* game, float time, float elapsedTime, arena::Arena* arena)
 {
 	const flat::input::Keyboard* keyboard = game->input->keyboard;
 	
@@ -125,7 +126,7 @@ void PlayerShip::update(Game* game, float elapsedTime, arena::Arena* arena)
 	bool primaryFirePressed   = keyboard->isPressed(K(LCTRL)) || keyboard->isPressed(K(RCTRL));
 	bool secondaryFirePressed = keyboard->isPressed(K(SPACE)) || keyboard->isPressed(K(SPACE));
 	
-	float time = game->time->getTime();
+	lua::triggerEntityUpdateFunction(game->luaState, this, time, elapsedTime);
 	
 	fitInArena(arena);
 	

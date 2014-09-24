@@ -51,7 +51,7 @@ class Entity
 		flat::geometry::Vector2 getAbsolutePosition(const flat::geometry::Vector2& relativePosition);
 		
 		// update & draw
-		virtual void update(Game* game, float elapsedTime, arena::Arena* arena);
+		virtual void update(Game* game, float time, float elapsedTime, arena::Arena* arena);
 		void draw(const flat::util::RenderSettings& renderSettings, const flat::geometry::Matrix4& viewMatrix);
 		
 		// lua callbacks

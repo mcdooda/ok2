@@ -14,7 +14,7 @@ class PlayerShip : public Ship
 		PlayerShip();
 		virtual ~PlayerShip();
 		
-		virtual void update(Game* game, float elapsedTime, arena::Arena* arena);
+		virtual void update(Game* game, float time, float elapsedTime, arena::Arena* arena);
 		
 		void setLevel(unsigned int level);
 		

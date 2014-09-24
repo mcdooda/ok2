@@ -13,7 +13,7 @@ local arenaMinX, arenaMinY, arenaMaxX, arenaMaxY = arena.getBounds()
 load.ships 'red'
 
 yield()
-
+--[[
 do
 	local top = arenaMaxY + 100
 	local left = arenaMinX * 9 / 10
@@ -34,3 +34,4 @@ do
 		
 	end
 end
+]]

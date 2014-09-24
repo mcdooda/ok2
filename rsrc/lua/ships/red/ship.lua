@@ -17,6 +17,24 @@ ship {
 	texture   = 'rsrc/images/units/ships/red/texture.png',
 	heightmap = 'rsrc/images/units/ships/red/heightmap.png',
 	bumpmap   = 'rsrc/images/units/ships/red/bumpmap.png',
+	update    = function(ship)
+		local data = ship:data()
+		if data.isLeftShip or data.isRightShip then
+			local leftShip, rightShip = data.getShips()
+			local rx = rightShip:getPositionX()
+			local lx = leftShip:getPositionX()
+			local distance = rx - lx
+			local dx = 60
+			if distance < dx then
+				local cx = (rx + lx) / 2
+				if cx < 0 then
+					rightShip:setPositionX(lx + dx)
+				else
+					leftShip:setPositionX(rx - dx)
+				end
+			end
+		end
+	end,
 	skills    = {
 		{'red1', 'specialred1'}
 	}
