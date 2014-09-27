@@ -19,7 +19,7 @@ Entity::Entity() :
 
 Entity::~Entity()
 {
-	
+	delete m_sprite;
 }
 
 void Entity::setTemplate(EntityTemplate* entityTemplate)
@@ -79,7 +79,10 @@ void Entity::update(Game* game, float time, float elapsedTime, arena::Arena* are
 		lua::triggerEntityUpdateFunction(game->luaState, this, time, elapsedTime);
 	}
 	else if (m_enteredArena || m_speed.dotProduct(arena->getCenter() - m_sprite->getPosition()) < 0)
+	{
 		arena->removeEntity(this);
+		delete this;
+	}
 }
 
 void Entity::draw(const flat::util::RenderSettings& renderSettings, const flat::geometry::Matrix4& viewMatrix)
@@ -97,6 +100,11 @@ int Entity::getUpdateFunctionRef() const
 	return m_template->getUpdateFunctionRef();
 }
 
+const std::string& Entity::getName() const
+{
+	return m_template->getName();
+}
+
 float Entity::getHitRadius() const
 {
 	return getRadius() * 1.2f;
@@ -105,6 +113,12 @@ float Entity::getHitRadius() const
 void Entity::setPopTime(float popTime)
 {
 	m_popTime = popTime;
+}
+
+void Entity::die(arena::Arena* arena)
+{
+	arena->removeEntity(this);
+	delete this;
 }
 
 } // entities

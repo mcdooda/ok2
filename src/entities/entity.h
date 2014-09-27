@@ -58,6 +58,8 @@ class Entity
 		int getPopFunctionRef() const;
 		int getUpdateFunctionRef() const;
 		
+		const std::string& getName() const;
+		
 		inline void setDataRef(int dataRef) { m_dataRef = dataRef; }
 		inline int getDataRef() { return m_dataRef; }
 		
@@ -78,9 +80,11 @@ class Entity
 		inline Side getSide() const { return m_side; }
 		inline void setSide(Side side) { m_side = side; }
 		
+		virtual void die(arena::Arena* arena);
+		
 	protected:
-		flat::util::Sprite* m_sprite;
 		EntityTemplate* m_template;
+		flat::util::Sprite* m_sprite;
 		int m_dataRef;
 		flat::geometry::Vector2 m_speed;
 		float m_popTime;

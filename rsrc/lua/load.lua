@@ -21,6 +21,13 @@ function load.shipMissiles(shipName, ...)
 	end
 end
 
+function load.shipLasers(shipName, ...)
+	for i = 1, select('#', ...) do
+		local laserName = select(i, ...)
+		dofile('rsrc/lua/ships/' .. shipName .. '/lasers/' .. laserName .. '.lua')
+	end
+end
+
 function load.shipShips(shipName, ...)
 	for i = 1, select('#', ...) do
 		local subShipName = select(i, ...)

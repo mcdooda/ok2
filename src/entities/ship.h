@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include "missile.h"
+#include "laser.h"
 #include "../skills/skill.h"
 #include "../skills/skilltemplate.h"
 #include "../arena/arena.h"
@@ -45,6 +46,7 @@ class Ship : public Entity
 		skills::Skill* m_primarySkill;
 		skills::Skill* m_secondarySkill;
 		int m_health;
+		std::set<Laser*> m_lasers;
 };
 
 } // entities

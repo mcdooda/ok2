@@ -14,8 +14,11 @@ class MissileTemplate : public EntityTemplate
 		MissileTemplate();
 		virtual ~MissileTemplate();
 		
-	protected:
+		inline void setDamage(int damage) { m_damage = damage; }
+		inline int getDamage() const { return m_damage; }
 		
+	protected:
+		int m_damage;
 };
 
 } // entities

@@ -70,7 +70,7 @@ void Ship::setPopTime(float popTime)
 
 void Ship::dealDamage(Missile* missile)
 {
-	m_health -= 1; //missile->getDamage();
+	m_health -= missile->getDamage();
 }
 
 } // entities

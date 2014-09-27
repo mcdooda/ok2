@@ -176,6 +176,11 @@ void PlayerShip::fitInArena(arena::Arena* arena)
 	setPosition(position);
 }
 
+void PlayerShip::die(arena::Arena* arena)
+{
+	// TODO
+}
+
 } // entities
 } // game
 

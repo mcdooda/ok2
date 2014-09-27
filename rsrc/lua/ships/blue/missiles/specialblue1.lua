@@ -3,6 +3,7 @@ local sin = math.sin
 missile {
 	name    = 'specialblue1',
 	speed   = 1000,
+	damage  = 25,
 	texture = 'rsrc/images/missiles/missile1.png',
 	pop     = function(self, time)
 		local data = self:data()

@@ -20,6 +20,8 @@ class PlayerShip : public Ship
 		
 		virtual float getHitRadius() const;
 		
+		virtual void die(arena::Arena* arena);
+		
 	protected:
 		void fitInArena(arena::Arena* arena);
 		

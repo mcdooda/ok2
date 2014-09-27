@@ -131,6 +131,9 @@ int l_missile(lua_State* L)
 	lua_getfield(L, 1, "speed");
 	float speed = luaL_checknumber(L, -1);
 	
+	lua_getfield(L, 1, "damage");
+	int damage = luaL_checkint(L, -1);
+	
 	lua_getfield(L, 1, "texture");
 	std::string texture = luaL_checkstring(L, -1);
 	
@@ -151,6 +154,7 @@ int l_missile(lua_State* L)
 	entities::MissileTemplate* missileTemplate = new entities::MissileTemplate();
 	missileTemplate->setName(name);
 	missileTemplate->setSpeed(speed);
+	missileTemplate->setDamage(damage);
 	missileTemplate->setPopFunctionRef(popFunctionRef);
 	missileTemplate->setUpdateFunctionRef(updateFunctionRef);
 	
