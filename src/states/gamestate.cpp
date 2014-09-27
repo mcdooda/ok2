@@ -204,6 +204,7 @@ void GameState::update(Game* game)
 	
 	updateLevel(game);
 	
+	// update ships
 	for (int i = entities::Entity::ALLY; i < entities::Entity::NUM_SIDES; i++)
 	{
 		entities::Entity::Side side = (entities::Entity::Side) i;
@@ -213,6 +214,12 @@ void GameState::update(Game* game)
 		
 		for (std::set<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
 			(*it)->update(game, time, elapsedTime, m_arena);
+	}
+	
+	// update missiles
+	for (int i = entities::Entity::ALLY; i < entities::Entity::NUM_SIDES; i++)
+	{
+		entities::Entity::Side side = (entities::Entity::Side) i;
 		
 		// creates a copy before iterating
 		std::set<entities::Missile*> missiles(m_arena->getMissiles(side));
@@ -221,6 +228,7 @@ void GameState::update(Game* game)
 			(*it)->update(game, time, elapsedTime, m_arena);
 	}
 	
+	// check for collisions
 	for (int i = entities::Entity::ALLY; i < entities::Entity::NUM_SIDES; i++)
 	{
 		entities::Entity::Side side = (entities::Entity::Side) i;
