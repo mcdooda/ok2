@@ -46,15 +46,17 @@ void Ship::setSkill(skills::Skill*& skill, skills::SkillTemplate* skillTemplate)
 	}
 }
 
-void Ship::update(Game* game, float time, float elapsedTime, arena::Arena* arena)
+bool Ship::update(Game* game, float time, float elapsedTime, arena::Arena* arena)
 {
-	Entity::update(game, time, elapsedTime, arena);
+	bool remove = Entity::update(game, time, elapsedTime, arena);
 	
 	if (m_primarySkill != NULL && m_primarySkill->isReady(time))
 		m_primarySkill->trigger(game, this, time);
 		
 	if (m_secondarySkill != NULL && m_secondarySkill->isReady(time))
 		m_secondarySkill->trigger(game, this, time);
+		
+	return remove;
 }
 
 void Ship::setPopTime(float popTime)

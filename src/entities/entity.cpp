@@ -69,9 +69,12 @@ flat::geometry::Vector2 Entity::getAbsolutePosition(const flat::geometry::Vector
 	return getModelMatrix() * relativePosition;
 }
 
-void Entity::update(Game* game, float time, float elapsedTime, arena::Arena* arena)
+bool Entity::update(Game* game, float time, float elapsedTime, arena::Arena* arena)
 {
 	m_sprite->moveBy(m_speed * elapsedTime);
+	arena->moveEntity(this);
+	
+	bool remove = false;
 	
 	if (arena->isEntityInside(this))
 	{
@@ -80,9 +83,10 @@ void Entity::update(Game* game, float time, float elapsedTime, arena::Arena* are
 	}
 	else if (m_enteredArena || m_speed.dotProduct(arena->getCenter() - m_sprite->getPosition()) < 0)
 	{
-		arena->removeEntity(this);
-		delete this;
+		remove = true;
 	}
+	
+	return remove;
 }
 
 void Entity::draw(const flat::util::RenderSettings& renderSettings, const flat::geometry::Matrix4& viewMatrix)

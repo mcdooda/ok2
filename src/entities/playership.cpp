@@ -7,7 +7,7 @@ namespace entities
 {
 
 PlayerShip::PlayerShip() : Ship(),
-	m_numLives(5),
+	m_numLives(50),
 	m_lastDeath(-2.f),
 	m_level(1),
 	m_experience(0)
@@ -20,7 +20,7 @@ PlayerShip::~PlayerShip()
 
 }
 
-void PlayerShip::update(Game* game, float time, float elapsedTime, arena::Arena* arena)
+bool PlayerShip::update(Game* game, float time, float elapsedTime, arena::Arena* arena)
 {
 	const flat::input::Keyboard* keyboard = game->input->keyboard;
 	
@@ -138,6 +138,8 @@ void PlayerShip::update(Game* game, float time, float elapsedTime, arena::Arena*
 	}
 	
 	fitInArena(arena);
+	
+	return false;
 }
 
 void PlayerShip::setLevel(unsigned int level)

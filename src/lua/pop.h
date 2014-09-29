@@ -12,6 +12,8 @@ namespace pop
 
 void open(lua_State* L, states::GameState* gameState, Game* game);
 
+entities::Entity::Side checkSide(lua_State* L, int index);
+
 int l_popShip(lua_State* L);
 int l_popMissile(lua_State* L);
 int l_popShipMissiles(lua_State* L);

@@ -93,6 +93,15 @@ void Arena::removeEntity(entities::Entity* entity)
 		removeMissile((entities::Missile*) entity);
 }
 
+void Arena::moveEntity(entities::Entity* entity)
+{
+	if (entity->isShip())
+		moveShip((entities::Ship*) entity);
+		
+	else
+		moveMissile((entities::Missile*) entity);
+}
+
 bool Arena::isEntityInside(entities::Entity* entity)
 {
 	if (entity->getCell() == NULL)
@@ -111,6 +120,7 @@ std::set<entities::Missile*> Arena::getCollidingMissiles(entities::Ship* ship) c
 	float radius = ship->getHitRadius();
 	flat::geometry::Vector2 position = ship->getPosition();
 	entities::Entity::Side shipSide = ship->getSide();
+	assertValidSide(shipSide);
 	
 	static const float missileMaxRadius = 30.f;
 	
@@ -119,11 +129,14 @@ std::set<entities::Missile*> Arena::getCollidingMissiles(entities::Ship* ship) c
 	int minY = getCellY(position.getY() - radius - missileMaxRadius);
 	int maxY = getCellY(position.getY() + radius + missileMaxRadius);
 	
+	int j = 0;
+	
 	for (int x = minX; x <= maxX; x++)
 	{
 		for (int y = minY; y <= maxY; y++)
 		{
 			const Cell& cell = m_cells[x][y];
+			j++;
 			
 			for (int i = entities::Entity::ALLY; i < entities::Entity::NUM_SIDES; i++)
 			{
@@ -167,7 +180,7 @@ bool Arena::collides(entities::Entity* a, entities::Entity* b) const
 
 int Arena::getCellX(float x) const
 {
-	int cellX = (int) floor((x + m_minX) / m_cellSize);
+	int cellX = (int) floor((x - m_minX) / m_cellSize);
 	
 	if (cellX < 0)
 		cellX = 0;
@@ -180,7 +193,7 @@ int Arena::getCellX(float x) const
 
 int Arena::getCellY(float y) const
 {
-	int cellY = (int) floor((y + m_minY) / m_cellSize);
+	int cellY = (int) floor((y - m_minY) / m_cellSize);
 	
 	if (cellY < 0)
 		cellY = 0;

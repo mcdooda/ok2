@@ -22,7 +22,7 @@ void GameState::enter(flat::state::Agent* agent)
 	static const float arenaWidth = 600;
 	static const float arenaHeight = 1080;
 	flat::geometry::Vector2 arenaSize = flat::geometry::Vector2(arenaWidth, arenaHeight);
-	m_arena = new arena::Arena(arenaSize, 100);
+	m_arena = new arena::Arena(arenaSize, 10);
 	
 	initMusic(game);
 	initGraphics(game);
@@ -202,6 +202,8 @@ void GameState::update(Game* game)
 	float time = game->time->getTime();
 	float elapsedTime = game->time->getFrameTime();
 	
+	std::cout << 1.f / elapsedTime << std::endl;
+	
 	updateLevel(game);
 	
 	// update ships
@@ -213,7 +215,15 @@ void GameState::update(Game* game)
 		std::set<entities::Ship*> ships(m_arena->getShips(side));
 		
 		for (std::set<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
-			(*it)->update(game, time, elapsedTime, m_arena);
+		{
+			entities::Ship* ship = *it;
+			bool remove = ship->update(game, time, elapsedTime, m_arena);
+			if (remove)
+			{
+				m_arena->removeShip(ship);
+				delete ship;
+			}
+		}
 	}
 	
 	// update missiles
@@ -225,7 +235,15 @@ void GameState::update(Game* game)
 		std::set<entities::Missile*> missiles(m_arena->getMissiles(side));
 		
 		for (std::set<entities::Missile*>::iterator it = missiles.begin(); it != missiles.end(); it++)
-			(*it)->update(game, time, elapsedTime, m_arena);
+		{
+			entities::Missile* missile = *it;
+			bool remove = missile->update(game, time, elapsedTime, m_arena);
+			if (remove)
+			{
+				m_arena->removeMissile(missile);
+				delete missile;
+			}
+		}
 	}
 	
 	// check for collisions

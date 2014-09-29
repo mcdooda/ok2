@@ -28,6 +28,7 @@ class Arena
 		void moveMissile(entities::Missile* missile);
 		
 		void removeEntity(entities::Entity* entity);
+		void moveEntity(entities::Entity* entity);
 		
 		bool isEntityInside(entities::Entity* entity);
 		

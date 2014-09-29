@@ -29,6 +29,8 @@ bool resume(lua_State* L, int levelCoroutineRef)
 	{
 		lua_rawgeti(L, LUA_REGISTRYINDEX, levelCoroutineRef);
 		lua_State* L1 = lua_tothread(L, -1);
+		lua_pop(L, 1);
+		
 		int status = lua_resume(L1, L, 0);
 	
 		if (status != LUA_YIELD && status != LUA_OK)

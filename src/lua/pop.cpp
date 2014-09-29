@@ -26,14 +26,20 @@ void open(lua_State* L, states::GameState* gameState, Game* game)
 	lua_setglobal(L, "ENEMY");
 }
 
+entities::Entity::Side checkSide(lua_State* L, int index)
+{
+	entities::Entity::Side side = (entities::Entity::Side) luaL_checkint(L, index);
+	luaL_argcheck(L, side == entities::Entity::ALLY || side == entities::Entity::ENEMY, index, "invalid entity side");
+	return side;
+}
+
 int l_popShip(lua_State* L)
 {
 	std::string name = luaL_checkstring(L, 1);
 	float x = luaL_checknumber(L, 2);
 	float y = luaL_checknumber(L, 3);
 	float rotationZ = luaL_checknumber(L, 4);
-	entities::Entity::Side side = (entities::Entity::Side) luaL_checkint(L, 5);
-	luaL_argcheck(L, 5, side >= entities::Entity::ALLY && side < entities::Entity::NUM_SIDES, "invalid entity side");
+	entities::Entity::Side side = checkSide(L, 5);
 	int isPlayerShip = lua_toboolean(L, 6);
 	
 	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
@@ -59,8 +65,7 @@ int l_popMissile(lua_State* L)
 	float x = luaL_checknumber(L, 2);
 	float y = luaL_checknumber(L, 3);
 	float rotationZ = luaL_checknumber(L, 4);
-	entities::Entity::Side side = (entities::Entity::Side) luaL_checkint(L, 5);
-	luaL_argcheck(L, 5, side >= entities::Entity::ALLY && side < entities::Entity::NUM_SIDES, "invalid entity side");
+	entities::Entity::Side side = checkSide(L, 5);
 	
 	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
 	Game* game = (Game*) lua_touserdata(L, lua_upvalueindex(2));
