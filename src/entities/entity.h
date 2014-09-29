@@ -80,7 +80,7 @@ class Entity
 		inline Side getSide() const { return m_side; }
 		inline void setSide(Side side) { m_side = side; }
 		
-		virtual void die(arena::Arena* arena);
+		virtual void die(arena::Arena* arena, float time);
 		
 	protected:
 		EntityTemplate* m_template;

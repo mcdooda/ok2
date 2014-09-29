@@ -45,6 +45,8 @@ class Arena
 		
 		inline const flat::geometry::Vector2& getCenter() const { return m_center; }
 		
+		flat::geometry::Vector2 getPlayerPopPosition() const;
+		
 	private:
 		Cell* getEntityPositionCell(entities::Entity* entity);
 		

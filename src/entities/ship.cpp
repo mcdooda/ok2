@@ -68,9 +68,14 @@ void Ship::setPopTime(float popTime)
 		m_secondarySkill->setLastTriggeredTime(popTime);
 }
 
-void Ship::dealDamage(Missile* missile)
+void Ship::dealDamage(Missile* missile, float time)
 {
 	m_health -= missile->getDamage();
+}
+
+int Ship::getMaxHealth() const
+{
+	return ((ShipTemplate*) m_template)->getHealth();
 }
 
 } // entities

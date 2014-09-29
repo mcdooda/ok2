@@ -1,9 +1,9 @@
 load.ships 'red'
 
-local minX, minY, maxX, maxY = arena.getBounds()
+local popX, popY = arena.getPlayerPopPosition()
 
-local ship1 = popShip('red', -30, minY / 2, math.pi / 2, ALLY, true)
-local ship2 = popShip('red',  30, minY / 2, math.pi / 2, ALLY, true)
+local ship1 = popShip('red', popX - 30, popY, math.pi / 2, ALLY, true)
+local ship2 = popShip('red', popX + 30, popY, math.pi / 2, ALLY, true)
 
 local function getShips()
 	return ship1, ship2

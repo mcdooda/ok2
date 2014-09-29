@@ -17,6 +17,7 @@ int l_arena_getSize(lua_State* L);
 int l_arena_getWidth(lua_State* L);
 int l_arena_getHeight(lua_State* L);
 int l_arena_getBounds(lua_State* L);
+int l_arena_getPlayerPopPosition(lua_State* L);
 
 } // lua
 } // arena

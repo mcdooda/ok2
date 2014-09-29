@@ -7,6 +7,8 @@ namespace entities
 {
 
 PlayerShip::PlayerShip() : Ship(),
+	m_numLives(5),
+	m_lastDeath(-2.f),
 	m_level(1),
 	m_experience(0)
 {
@@ -176,9 +178,30 @@ void PlayerShip::fitInArena(arena::Arena* arena)
 	setPosition(position);
 }
 
-void PlayerShip::die(arena::Arena* arena)
+void PlayerShip::dealDamage(Missile* missile, float time)
 {
-	// TODO
+	if (!isInvincible(time))
+		m_health -= missile->getDamage();
+}
+
+void PlayerShip::die(arena::Arena* arena, float time)
+{
+	m_numLives--;
+	if (m_numLives > 0)
+	{
+		setPosition(arena->getPlayerPopPosition());
+		m_health = getMaxHealth();
+		m_lastDeath = time;
+	}
+	else
+	{
+		// GAME OVER
+	}
+}
+
+bool PlayerShip::isInvincible(float time)
+{
+	return time - m_lastDeath < 2.f;
 }
 
 } // entities

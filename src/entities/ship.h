@@ -33,8 +33,9 @@ class Ship : public Entity
 		
 		virtual bool isShip() const { return true; }
 		
-		void dealDamage(Missile* missile);
+		virtual void dealDamage(Missile* missile, float time);
 		
+		int getMaxHealth() const;
 		inline int getHealth() const { return m_health; }
 		inline bool isDead() const { return m_health <= 0; }
 		

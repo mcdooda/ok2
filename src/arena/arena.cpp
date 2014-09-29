@@ -146,6 +146,11 @@ std::set<entities::Missile*> Arena::getCollidingMissiles(entities::Ship* ship) c
 	return collidingMissiles;
 }
 
+flat::geometry::Vector2 Arena::getPlayerPopPosition() const
+{
+	return flat::geometry::Vector2(0, m_minY * 3.f / 4.f);
+}
+
 Cell* Arena::getEntityPositionCell(entities::Entity* entity)
 {
 	const flat::geometry::Vector2& position = entity->getPosition();

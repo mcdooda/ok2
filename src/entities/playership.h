@@ -20,12 +20,17 @@ class PlayerShip : public Ship
 		
 		virtual float getHitRadius() const;
 		
-		virtual void die(arena::Arena* arena);
+		virtual void dealDamage(Missile* missile, float time);
+		
+		virtual void die(arena::Arena* arena, float time);
 		
 	protected:
 		void fitInArena(arena::Arena* arena);
+		bool isInvincible(float time);
 		
 	protected:
+		unsigned int m_numLives;
+		float m_lastDeath;
 		unsigned int m_level;
 		unsigned int m_experience;
 };

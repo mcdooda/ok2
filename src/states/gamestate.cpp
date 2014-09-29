@@ -248,12 +248,12 @@ void GameState::update(Game* game)
 				{
 					entities::Missile* missile = *it2;
 					
-					ship->dealDamage(missile);
+					ship->dealDamage(missile, time);
 					
 					if (ship->isDead())
-						ship->die(m_arena);
+						ship->die(m_arena, time);
 						
-					missile->die(m_arena);
+					missile->die(m_arena, time);
 				}
 			}
 		}

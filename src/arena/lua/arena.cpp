@@ -10,10 +10,11 @@ namespace lua
 void open(lua_State* L, Arena* arena)
 {
 	static const luaL_Reg arena_f[] = {
-		{"getSize",   l_arena_getSize},
-		{"getWidth",  l_arena_getWidth},
-		{"getHeight", l_arena_getHeight},
-		{"getBounds", l_arena_getBounds},
+		{"getSize",              l_arena_getSize},
+		{"getWidth",             l_arena_getWidth},
+		{"getHeight",            l_arena_getHeight},
+		{"getBounds",            l_arena_getBounds},
+		{"getPlayerPopPosition", l_arena_getPlayerPopPosition},
 		{NULL, NULL}
 	};
 	
@@ -57,6 +58,15 @@ int l_arena_getBounds(lua_State* L)
 	lua_pushnumber(L, arena->getMaxX());
 	lua_pushnumber(L, arena->getMaxY());
 	return 4;
+}
+
+int l_arena_getPlayerPopPosition(lua_State* L)
+{
+	Arena* arena = (Arena*) lua_touserdata(L, lua_upvalueindex(1));
+	flat::geometry::Vector2 playerPopPosition = arena->getPlayerPopPosition();
+	lua_pushnumber(L, playerPopPosition.getX());
+	lua_pushnumber(L, playerPopPosition.getY());
+	return 2;
 }
 
 } // game

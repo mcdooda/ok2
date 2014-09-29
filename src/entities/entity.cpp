@@ -115,7 +115,7 @@ void Entity::setPopTime(float popTime)
 	m_popTime = popTime;
 }
 
-void Entity::die(arena::Arena* arena)
+void Entity::die(arena::Arena* arena, float time)
 {
 	arena->removeEntity(this);
 	delete this;
