@@ -1,6 +1,7 @@
 #ifndef GAME_ARENA_ARENA_H
 #define GAME_ARENA_ARENA_H
 
+#include <map>
 #include "cell.h"
 
 namespace game
@@ -37,6 +38,8 @@ class Arena
 		const std::set<entities::Ship*>& getShips(entities::Entity::Side side) const { return m_ships[side]; }
 		const std::set<entities::Missile*>& getMissiles(entities::Entity::Side side) const { return m_missiles[side]; }
 		
+		entities::Entity* getEntityById(int id);
+		
 		std::set<entities::Missile*> getCollidingMissiles(entities::Ship* ship) const;
 		
 		inline float getMinX() const { return m_minX; }
@@ -56,6 +59,9 @@ class Arena
 		int getCellX(float x) const;
 		int getCellY(float y) const;
 		
+		void setEntityId(entities::Entity* entity);
+		void removeEntityId(entities::Entity* entity);
+		
 	private:
 		flat::geometry::Vector2 m_size;
 		Cell** m_cells;
@@ -66,11 +72,15 @@ class Arena
 		std::set<entities::Ship*> m_ships[entities::Entity::NUM_SIDES];
 		std::set<entities::Missile*> m_missiles[entities::Entity::NUM_SIDES];
 		
+		std::map<int, entities::Entity*> m_entitiesById;
+		
 		flat::geometry::Vector2 m_center;
 		float m_minX;
 		float m_minY;
 		float m_maxX;
 		float m_maxY;
+		
+		int m_nextEntityId;
 };
 
 } // arena

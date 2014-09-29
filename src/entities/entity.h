@@ -83,6 +83,9 @@ class Entity
 		
 		virtual void die(arena::Arena* arena, float time);
 		
+		inline void setId(int id) { m_id = id; }
+		inline int getId() const { return m_id; }
+		
 	protected:
 		EntityTemplate* m_template;
 		flat::util::Sprite* m_sprite;
@@ -92,6 +95,7 @@ class Entity
 		arena::Cell* m_cell;
 		bool m_enteredArena;
 		Side m_side;
+		int m_id;
 };
 
 }

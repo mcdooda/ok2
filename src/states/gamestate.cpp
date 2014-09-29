@@ -202,8 +202,6 @@ void GameState::update(Game* game)
 	float time = game->time->getTime();
 	float elapsedTime = game->time->getFrameTime();
 	
-	std::cout << 1.f / elapsedTime << std::endl;
-	
 	updateLevel(game);
 	
 	// update ships

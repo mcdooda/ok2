@@ -10,10 +10,6 @@ end
 
 local arenaMinX, arenaMinY, arenaMaxX, arenaMaxY = arena.getBounds()
 
-load.ships 'pink'
-
 yield()
-
-popShip('pink', 0, arenaMaxY, -pi / 2, ENEMY)
 
 

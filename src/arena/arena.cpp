@@ -7,7 +7,8 @@ namespace arena
 
 Arena::Arena(const flat::geometry::Vector2& size, float cellSize) :
 	m_size(size),
-	m_cellSize(cellSize)
+	m_cellSize(cellSize),
+	m_nextEntityId(1)
 {
 	m_numCellsX = ceil(size.getX() / cellSize);
 	m_numCellsY = ceil(size.getY() / cellSize);
@@ -35,6 +36,7 @@ void Arena::addShip(entities::Ship* ship)
 	Cell* cell = getEntityPositionCell(ship);
 	cell->addShip(ship);
 	m_ships[ship->getSide()].insert(ship);
+	setEntityId(ship);
 }
 
 void Arena::removeShip(entities::Ship* ship)
@@ -42,6 +44,7 @@ void Arena::removeShip(entities::Ship* ship)
 	Cell* cell = ship->getCell();
 	cell->removeShip(ship);
 	m_ships[ship->getSide()].erase(ship);
+	removeEntityId(ship);
 }
 
 void Arena::moveShip(entities::Ship* ship)
@@ -62,6 +65,7 @@ void Arena::addMissile(entities::Missile* missile)
 	Cell* cell = getEntityPositionCell(missile);
 	cell->addMissile(missile);
 	m_missiles[missile->getSide()].insert(missile);
+	setEntityId(missile);
 }
 
 void Arena::removeMissile(entities::Missile* missile)
@@ -69,6 +73,7 @@ void Arena::removeMissile(entities::Missile* missile)
 	Cell* cell = missile->getCell();
 	cell->removeMissile(missile);
 	m_missiles[missile->getSide()].erase(missile);
+	removeEntityId(missile);
 }
 
 void Arena::moveMissile(entities::Missile* missile)
@@ -112,6 +117,17 @@ bool Arena::isEntityInside(entities::Entity* entity)
 	
 	return position.getX() > getMinX() - radius && position.getX() < getMaxX() + radius
 	    && position.getY() > getMinY() - radius && position.getY() < getMaxY() + radius;
+}
+
+entities::Entity* Arena::getEntityById(int id)
+{
+	std::map<int, entities::Entity*>::iterator it = m_entitiesById.find(id);
+	
+	if (it != m_entitiesById.end())
+		return it->second;
+		
+	else
+		return NULL;
 }
 
 std::set<entities::Missile*> Arena::getCollidingMissiles(entities::Ship* ship) const
@@ -202,6 +218,25 @@ int Arena::getCellY(float y) const
 		cellY = m_numCellsY - 1;
 		
 	return cellY;
+}
+
+void Arena::setEntityId(entities::Entity* entity)
+{
+	if (entity->getId() == 0)
+	{
+		entity->setId(m_nextEntityId);
+		m_entitiesById[m_nextEntityId] = entity;
+		m_nextEntityId++;
+	}
+}
+
+void Arena::removeEntityId(entities::Entity* entity)
+{
+	if (entity->getId() != 0)
+	{
+		m_entitiesById.erase(entity->getId());
+		entity->setId(0);
+	}
 }
 
 } // arena

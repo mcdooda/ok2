@@ -45,6 +45,9 @@ void open(lua_State* L)
 		// side
 		{"getSide",             l_Entity_getSide},
 		
+		// id
+		{"getId",               l_Entity_getId},
+		
 		// lua data
 		{"data",                l_Entity_data},
 		
@@ -245,6 +248,13 @@ int l_Entity_getSide(lua_State* L)
 {
 	Entity* entity = getEntity(L);
 	lua_pushinteger(L, entity->getSide());
+	return 1;
+}
+
+int l_Entity_getId(lua_State* L)
+{
+	Entity* entity = getEntity(L);
+	lua_pushinteger(L, entity->getId());
 	return 1;
 }
 
