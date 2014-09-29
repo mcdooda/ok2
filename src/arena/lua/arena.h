@@ -20,9 +20,14 @@ int l_arena_getSize(lua_State* L);
 int l_arena_getWidth(lua_State* L);
 int l_arena_getHeight(lua_State* L);
 int l_arena_getBounds(lua_State* L);
+
 int l_arena_getPlayerPopPosition(lua_State* L);
+
 int l_arena_getMissiles(lua_State* L);
 int l_arena_getShips(lua_State* L);
+int l_arena_getNumMissiles(lua_State* L);
+int l_arena_getNumShips(lua_State* L);
+
 int l_arena_getEntityById(lua_State* L);
 
 } // lua

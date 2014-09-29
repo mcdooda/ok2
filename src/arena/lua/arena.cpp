@@ -15,9 +15,14 @@ void open(lua_State* L, Arena* arena)
 		{"getWidth",             l_arena_getWidth},
 		{"getHeight",            l_arena_getHeight},
 		{"getBounds",            l_arena_getBounds},
+		
 		{"getPlayerPopPosition", l_arena_getPlayerPopPosition},
+		
 		{"getMissiles",          l_arena_getMissiles},
 		{"getShips",             l_arena_getShips},
+		{"getNumMissiles",       l_arena_getNumMissiles},
+		{"getNumShips",          l_arena_getNumShips},
+		
 		{"getEntityById",        l_arena_getEntityById},
 		{NULL, NULL}
 	};
@@ -116,6 +121,24 @@ int l_arena_getShips(lua_State* L)
 		lua_rawseti(L, -2, i);
 		i++;
 	}
+	return 1;
+}
+
+int l_arena_getNumMissiles(lua_State* L)
+{
+	Arena* arena = getArena(L);
+	entities::Entity::Side side = checkSide(L, 1);
+	int numMissiles = arena->getNumMissiles(side);
+	lua_pushinteger(L, numMissiles);
+	return 1;
+}
+
+int l_arena_getNumShips(lua_State* L)
+{
+	Arena* arena = getArena(L);
+	entities::Entity::Side side = checkSide(L, 1);
+	int numShips = arena->getNumShips(side);
+	lua_pushinteger(L, numShips);
 	return 1;
 }
 

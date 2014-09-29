@@ -26,6 +26,8 @@ void open(lua_State* L)
 		{"getRotationY",        l_Entity_getRotationY},
 		{"getRotationZ",        l_Entity_getRotationZ},
 		
+		{"follow",              l_Entity_follow},
+		
 		// position
 		{"setPosition",         l_Entity_setPosition},
 		{"setPositionX",        l_Entity_setPositionX},
@@ -44,9 +46,8 @@ void open(lua_State* L)
 		
 		// side
 		{"getSide",             l_Entity_getSide},
-		
-		// id
 		{"getId",               l_Entity_getId},
+		{"getPopTime",          l_Entity_getPopTime},
 		
 		// lua data
 		{"data",                l_Entity_data},
@@ -157,6 +158,14 @@ int l_Entity_getRotationZ(lua_State* L)
 	return 1;
 }
 
+int l_Entity_follow(lua_State* L)
+{
+	Entity* entity = getEntity(L);
+	Entity* entity2 = getEntity(L, 2);
+	entity->follow(entity2);
+	return 0;
+}
+
 int l_Entity_setPosition(lua_State* L)
 {
 	Entity* entity = getEntity(L);
@@ -255,6 +264,13 @@ int l_Entity_getId(lua_State* L)
 {
 	Entity* entity = getEntity(L);
 	lua_pushinteger(L, entity->getId());
+	return 1;
+}
+
+int l_Entity_getPopTime(lua_State* L)
+{
+	Entity* entity = getEntity(L);
+	lua_pushnumber(L, entity->getPopTime());
 	return 1;
 }
 

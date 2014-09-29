@@ -29,6 +29,8 @@ int l_Entity_getRotation(lua_State* L);
 int l_Entity_getRotationX(lua_State* L);
 int l_Entity_getRotationY(lua_State* L);
 int l_Entity_getRotationZ(lua_State* L);
+
+int l_Entity_follow(lua_State* L);
 		
 // position
 int l_Entity_setPosition(lua_State* L);
@@ -46,11 +48,10 @@ int l_Entity_getSpeed(lua_State* L);
 int l_Entity_getSpeedX(lua_State* L);
 int l_Entity_getSpeedY(lua_State* L);
 
-// side
+// misc
 int l_Entity_getSide(lua_State* L);
-
-// id
 int l_Entity_getId(lua_State* L);
+int l_Entity_getPopTime(lua_State* L);
 
 // lua data
 int l_Entity_data(lua_State* L);

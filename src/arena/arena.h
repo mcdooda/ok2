@@ -35,8 +35,10 @@ class Arena
 		
 		inline const flat::geometry::Vector2& getSize() const { return m_size; }
 		
-		const std::set<entities::Ship*>& getShips(entities::Entity::Side side) const { return m_ships[side]; }
-		const std::set<entities::Missile*>& getMissiles(entities::Entity::Side side) const { return m_missiles[side]; }
+		inline const std::set<entities::Ship*>& getShips(entities::Entity::Side side) const { return m_ships[side]; }
+		inline const std::set<entities::Missile*>& getMissiles(entities::Entity::Side side) const { return m_missiles[side]; }
+		inline int getNumShips(entities::Entity::Side side) const { return m_ships[side].size(); }
+		inline int getNumMissiles(entities::Entity::Side side) const { return m_missiles[side].size(); }
 		
 		entities::Entity* getEntityById(int id);
 		

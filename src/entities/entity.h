@@ -37,6 +37,7 @@ class Entity
 		
 		// rotation
 		virtual void setRotationZ(float rotationZ);
+		void follow(Entity* entity);
 		
 		const flat::geometry::Vector3& getRotation() const;
 		
