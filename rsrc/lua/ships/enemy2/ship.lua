@@ -8,7 +8,7 @@ load.shipSkills('enemy2',
 
 ship {
 	name      = 'enemy2',
-	speed     = 250,
+	speed     = 200,
 	health    = 50,
 	texture   = 'rsrc/images/units/enemies/enemy2/texture.png',
 	heightmap = 'rsrc/images/units/enemies/enemy2/heightmap.png',
