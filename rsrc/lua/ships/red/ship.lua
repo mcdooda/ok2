@@ -3,8 +3,7 @@ load.shipMissiles('red',
 )
 
 load.shipSkills('red',
-	'red1',
-	'specialred1'
+	'red1', 'specialred1'
 )
 
 load.shipShips('red',
@@ -16,7 +15,7 @@ local dx = 60
 ship {
 	name      = 'red',
 	speed     = 300,
-	health    = 100,
+	health    = 1,
 	texture   = 'rsrc/images/units/ships/red/texture.png',
 	heightmap = 'rsrc/images/units/ships/red/heightmap.png',
 	bumpmap   = 'rsrc/images/units/ships/red/bumpmap.png',

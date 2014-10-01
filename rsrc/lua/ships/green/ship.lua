@@ -3,14 +3,13 @@ load.shipMissiles('green',
 )
 
 load.shipSkills('green',
-	'green1',
-	'specialgreen1'
+	'green1', 'specialgreen1'
 )
 
 ship {
 	name      = 'green',
 	speed     = 400,
-	health    = 100,
+	health    = 1,
 	texture   = 'rsrc/images/units/ships/green/texture.png',
 	heightmap = 'rsrc/images/units/ships/green/heightmap.png',
 	bumpmap   = 'rsrc/images/units/ships/green/bumpmap.png',

@@ -56,6 +56,17 @@ bool Ship::update(Game* game, float time, float elapsedTime, arena::Arena* arena
 	if (m_secondarySkill != NULL && m_secondarySkill->isReady(time))
 		m_secondarySkill->trigger(game, this, time);
 		
+	static const float blinkDuration = 0.07f;
+	if (m_lastHit > time - blinkDuration)
+	{
+		float gray;
+		gray = (m_lastHit - time) / blinkDuration;
+		flat::video::Color color(gray);
+		m_sprite->setColor(color);
+	}
+	else
+		m_sprite->setColor(flat::video::Color::WHITE);
+		
 	return remove;
 }
 
@@ -68,11 +79,14 @@ void Ship::setPopTime(float popTime)
 		
 	if (m_secondarySkill != NULL)
 		m_secondarySkill->setLastTriggeredTime(popTime);
+		
+	m_lastHit = popTime - 1.f;
 }
 
 void Ship::dealDamage(Missile* missile, float time)
 {
 	m_health -= missile->getDamage();
+	m_lastHit = time;
 }
 
 int Ship::getMaxHealth() const

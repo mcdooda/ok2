@@ -47,6 +47,7 @@ class Ship : public Entity
 		skills::Skill* m_primarySkill;
 		skills::Skill* m_secondarySkill;
 		int m_health;
+		float m_lastHit;
 		std::set<Laser*> m_lasers;
 };
 

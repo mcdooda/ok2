@@ -57,6 +57,7 @@ void GameState::initGraphics(Game* game)
 	m_heightMapPass.load(&m_frameBuffer, "rsrc/shaders/heightmap.frag", "rsrc/shaders/heightmap.vert");
 	
 	m_heightMapRenderSettings.textureUniform              = m_heightMapPass.getUniform("objectTexture");
+	m_heightMapRenderSettings.colorUniform                = m_heightMapPass.getUniform("color");
 	m_heightMapRenderSettings.bumpMapUniform              = m_heightMapPass.getUniform("objectBumpMap");
 	m_heightMapRenderSettings.modelMatrixUniform          = m_heightMapPass.getUniform("modelMatrix");
 	m_heightMapRenderSettings.normalMatrixUniform         = m_heightMapPass.getUniform("normalMatrix");
@@ -69,6 +70,7 @@ void GameState::initGraphics(Game* game)
 	m_spritePass.load(&m_frameBuffer, "rsrc/shaders/sprite.frag", "rsrc/shaders/sprite.vert");
 	
 	m_spriteRenderSettings.textureUniform              = m_spritePass.getUniform("objectTexture");
+	m_spriteRenderSettings.colorUniform                = m_spritePass.getUniform("color");
 	m_spriteRenderSettings.modelMatrixUniform          = m_spritePass.getUniform("modelMatrix");
 	m_spriteRenderSettings.viewProjectionMatrixUniform = m_spritePass.getUniform("vpMatrix");
 	m_spriteRenderSettings.positionAttribute           = m_spritePass.getAttribute("position");

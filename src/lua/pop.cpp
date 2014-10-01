@@ -113,6 +113,12 @@ int l_popShipMissiles(lua_State* L)
 			float rotationZ = shipRotationZ - drz / 2 + ((float) i / (numMissiles - 1)) * drz;
 			entities::Missile* missile = gameState->addMissile(name, position, rotationZ, side);
 			entities::lua::initEntity(L, missile, time);
+			
+			// data.i = i + 1
+			lua_rawgeti(L, LUA_REGISTRYINDEX, missile->getDataRef());
+			lua_pushinteger(L, i + 1);
+			lua_setfield(L, -2, "i");
+			lua_pop(L, 1);
 		}
 	}
 	

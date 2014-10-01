@@ -139,6 +139,15 @@ bool PlayerShip::update(Game* game, float time, float elapsedTime, arena::Arena*
 	
 	fitInArena(arena);
 	
+	if (isInvincible(time))
+	{
+		flat::video::Color color;
+		color.setA((sin(time * 30.f) + 1.f) / 2.f);
+		m_sprite->setColor(color);
+	}
+	else
+		m_sprite->setColor(flat::video::Color::WHITE);
+	
 	return false;
 }
 
@@ -183,7 +192,7 @@ void PlayerShip::fitInArena(arena::Arena* arena)
 void PlayerShip::dealDamage(Missile* missile, float time)
 {
 	if (!isInvincible(time))
-		m_health -= missile->getDamage();
+		Ship::dealDamage(missile, time);
 }
 
 void PlayerShip::die(arena::Arena* arena, float time)

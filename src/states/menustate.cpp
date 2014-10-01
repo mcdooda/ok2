@@ -21,6 +21,7 @@ void MenuState::enter(flat::state::Agent* agent)
 	m_program.load("rsrc/shaders/sprite.frag", "rsrc/shaders/sprite.vert");
 	
 	m_programRenderSettings.textureUniform              = m_program.getUniform("objectTexture");
+	m_programRenderSettings.colorUniform                = m_program.getUniform("color");
 	m_programRenderSettings.modelMatrixUniform          = m_program.getUniform("modelMatrix");
 	m_programRenderSettings.viewProjectionMatrixUniform = m_program.getUniform("vpMatrix");
 	m_programRenderSettings.positionAttribute           = m_program.getAttribute("position");
