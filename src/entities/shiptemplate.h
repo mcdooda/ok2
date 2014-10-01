@@ -18,15 +18,23 @@ class ShipTemplate : public EntityTemplate
 		inline void setHealth(int health) { m_health = health; }
 		inline int getHealth() const { return m_health; }
 		
-		void addSkillTemplates(skills::SkillTemplate* primarySkill, skills::SkillTemplate* secondarySkillName);
+		inline void setExperienceValue(int experienceValue) { m_experienceValue = experienceValue; }
+		inline int getExperienceValue() const { return m_experienceValue; }
 		
-		skills::SkillTemplate* getPrimarySkillTemplate(unsigned int level);
-		skills::SkillTemplate* getSecondarySkillTemplate(unsigned int level);
+		void addLevel(unsigned int levelExperience, skills::SkillTemplate* primarySkill, skills::SkillTemplate* secondarySkillName);
+		
+		unsigned int getMaxLevel() const;
+		
+		unsigned int getLevelExperience(unsigned int level) const;
+		skills::SkillTemplate* getPrimarySkillTemplate(unsigned int level) const;
+		skills::SkillTemplate* getSecondarySkillTemplate(unsigned int level) const;
 		
 	private:
 		int m_health;
+		unsigned int m_experienceValue;
 		std::vector<skills::SkillTemplate*> m_primarySkillTemplates;
 		std::vector<skills::SkillTemplate*> m_secondarySkillTemplates;
+		std::vector<unsigned int> m_levelsExperience;
 };
 
 } // entities

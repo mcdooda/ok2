@@ -32,6 +32,9 @@ int l_ship(lua_State* L)
 	lua_getfield(L, 1, "health");
 	int health = luaL_checkint(L, -1);
 	
+	lua_getfield(L, 1, "experience");
+	unsigned int experience = luaL_optint(L, -1, 0);
+	
 	lua_getfield(L, 1, "texture");
 	std::string texture = luaL_checkstring(L, -1);
 	
@@ -63,6 +66,7 @@ int l_ship(lua_State* L)
 	shipTemplate->setName(name);
 	shipTemplate->setSpeed(speed);
 	shipTemplate->setHealth(health);
+	shipTemplate->setExperienceValue(experience);
 	shipTemplate->setPopFunctionRef(popFunctionRef);
 	shipTemplate->setUpdateFunctionRef(updateFunctionRef);
 	
@@ -88,32 +92,38 @@ int l_ship(lua_State* L)
 	
 	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
 	
-	lua_getfield(L, 1, "skills");
-	luaL_checktype(L, -1, LUA_TTABLE);
-	int numSkills = luaL_len(L, -1);
-	for (int i = 1; i <= numSkills; i++)
+	lua_getfield(L, 1, "levels");
+	if (!lua_isnil(L, -1))
 	{
-		lua_rawgeti(L, -1, i);
-		
-		lua_rawgeti(L, -1, 1);
-		skills::SkillTemplate* primarySkillTemplate = NULL;
-		if (!lua_isnil(L, -1))
+		luaL_checktype(L, -1, LUA_TTABLE);
+		int numSkills = luaL_len(L, -1);
+		for (int i = 1; i <= numSkills; i++)
 		{
-			std::string primarySkillName = luaL_checkstring(L, -1);
-			primarySkillTemplate = gameState->getSkillTemplate(primarySkillName);
+			lua_rawgeti(L, -1, i);
+			
+			lua_rawgeti(L, -1, 1);
+			unsigned int levelExperience = luaL_checkint(L, -1);
+		
+			lua_rawgeti(L, -2, 2);
+			skills::SkillTemplate* primarySkillTemplate = NULL;
+			if (!lua_isnil(L, -1))
+			{
+				std::string primarySkillName = luaL_checkstring(L, -1);
+				primarySkillTemplate = gameState->getSkillTemplate(primarySkillName);
+			}
+		
+			lua_rawgeti(L, -3, 3);
+			skills::SkillTemplate* secondarySkillTemplate = NULL;
+			if (!lua_isnil(L, -1))
+			{
+				std::string secondarySkillName = luaL_checkstring(L, -1);
+				secondarySkillTemplate = gameState->getSkillTemplate(secondarySkillName);
+			}
+		
+			shipTemplate->addLevel(levelExperience, primarySkillTemplate, secondarySkillTemplate);
+		
+			lua_pop(L, 4);
 		}
-		
-		lua_rawgeti(L, -2, 2);
-		skills::SkillTemplate* secondarySkillTemplate = NULL;
-		if (!lua_isnil(L, -1))
-		{
-			std::string secondarySkillName = luaL_checkstring(L, -1);
-			secondarySkillTemplate = gameState->getSkillTemplate(secondarySkillName);
-		}
-		
-		shipTemplate->addSkillTemplates(primarySkillTemplate, secondarySkillTemplate);
-		
-		lua_pop(L, 3);
 	}
 
 	gameState->addShipTemplate(shipTemplate);

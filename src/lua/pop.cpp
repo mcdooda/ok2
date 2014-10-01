@@ -90,6 +90,7 @@ int l_popShipMissiles(lua_State* L)
 	float drz = luaL_optnumber(L, 6, 0);
 	
 	entities::Entity::Side side = ship->getSide();
+	int shipId = ship->getId();
 	
 	float shipRotationZ = ship->getRotation().getZ();
 	const flat::geometry::Matrix4& shipModelMatrix = ship->getModelMatrix();
@@ -103,6 +104,7 @@ int l_popShipMissiles(lua_State* L)
 		flat::geometry::Vector2 position = shipModelMatrix * flat::geometry::Vector2(dx, dy);
 		float rotationZ = shipRotationZ + drz;
 		entities::Missile* missile = gameState->addMissile(name, position, rotationZ, side);
+		missile->setShipId(shipId);
 		entities::lua::initEntity(L, missile, time);
 	}
 	else if (numMissiles > 1)
@@ -112,6 +114,7 @@ int l_popShipMissiles(lua_State* L)
 			flat::geometry::Vector2 position = shipModelMatrix * flat::geometry::Vector2(dx, -dy / 2 + ((float) i / (numMissiles - 1)) * dy);
 			float rotationZ = shipRotationZ - drz / 2 + ((float) i / (numMissiles - 1)) * drz;
 			entities::Missile* missile = gameState->addMissile(name, position, rotationZ, side);
+			missile->setShipId(shipId);
 			entities::lua::initEntity(L, missile, time);
 			
 			// data.i = i + 1

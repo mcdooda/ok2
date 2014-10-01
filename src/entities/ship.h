@@ -39,6 +39,10 @@ class Ship : public Entity
 		inline int getHealth() const { return m_health; }
 		inline bool isDead() const { return m_health <= 0; }
 		
+		int getExperienceValue() const;
+		
+		virtual void killedShip(Ship* ship);
+		
 	protected:
 		void setTemplateSkills(unsigned int level = 1);
 		void setSkill(skills::Skill*& skill, skills::SkillTemplate* skillTemplate);

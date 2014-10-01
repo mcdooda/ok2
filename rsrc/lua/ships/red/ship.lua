@@ -19,6 +19,9 @@ ship {
 	texture   = 'rsrc/images/units/ships/red/texture.png',
 	heightmap = 'rsrc/images/units/ships/red/heightmap.png',
 	bumpmap   = 'rsrc/images/units/ships/red/bumpmap.png',
+	levels    = {
+		{0, 'red1', 'specialred1'}
+	},
 	update    = function(ship)
 		local data = ship:data()
 		if data.isLeftShip or data.isRightShip then
@@ -35,8 +38,5 @@ ship {
 				end
 			end
 		end
-	end,
-	skills    = {
-		{'red1', 'specialred1'}
-	}
+	end
 }

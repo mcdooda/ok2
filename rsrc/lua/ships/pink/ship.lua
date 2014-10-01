@@ -13,7 +13,7 @@ ship {
 	texture   = 'rsrc/images/units/ships/pink/texture.png',
 	heightmap = 'rsrc/images/units/ships/pink/heightmap.png',
 	bumpmap   = 'rsrc/images/units/ships/pink/bumpmap.png',
-	skills    = {
-		{'pink1', 'specialpink1'}
+	levels    = {
+		{0, 'pink1', 'specialpink1'}
 	}
 }

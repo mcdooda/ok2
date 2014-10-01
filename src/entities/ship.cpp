@@ -30,8 +30,8 @@ void Ship::setTemplate(EntityTemplate* entityTemplate)
 void Ship::setTemplateSkills(unsigned int level)
 {
 	ShipTemplate* shipTemplate = (ShipTemplate*) m_template;
-	setSkill(m_primarySkill,   shipTemplate->getPrimarySkillTemplate(1));
-	setSkill(m_secondarySkill, shipTemplate->getSecondarySkillTemplate(1));
+	setSkill(m_primarySkill,   shipTemplate->getPrimarySkillTemplate(level));
+	setSkill(m_secondarySkill, shipTemplate->getSecondarySkillTemplate(level));
 }
 
 void Ship::setSkill(skills::Skill*& skill, skills::SkillTemplate* skillTemplate)
@@ -92,6 +92,16 @@ void Ship::dealDamage(Missile* missile, float time)
 int Ship::getMaxHealth() const
 {
 	return ((ShipTemplate*) m_template)->getHealth();
+}
+
+int Ship::getExperienceValue() const
+{
+	return ((ShipTemplate*) m_template)->getExperienceValue();
+}
+
+void Ship::killedShip(Ship* ship)
+{
+	
 }
 
 } // entities

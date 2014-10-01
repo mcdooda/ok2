@@ -24,6 +24,8 @@ class PlayerShip : public Ship
 		
 		virtual void die(arena::Arena* arena, float time);
 		
+		virtual void killedShip(Ship* ship);
+		
 	protected:
 		void fitInArena(arena::Arena* arena);
 		bool isInvincible(float time);

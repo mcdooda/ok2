@@ -7,13 +7,14 @@ load.shipSkills('enemy1',
 )
 
 ship {
-	name      = 'enemy1',
-	speed     = 250,
-	health    = 50,
-	texture   = 'rsrc/images/units/enemies/enemy1/texture.png',
-	heightmap = 'rsrc/images/units/enemies/enemy1/heightmap.png',
-	skills    = {
-		{'enemy1', nil}
+	name       = 'enemy1',
+	speed      = 250,
+	health     = 50,
+	experience = 10,
+	texture    = 'rsrc/images/units/enemies/enemy1/texture.png',
+	heightmap  = 'rsrc/images/units/enemies/enemy1/heightmap.png',
+	levels     = {
+		{0, 'enemy1', nil}
 	},
 	pop       = function(ship)
 		local targets = arena.getShips(ALLY)

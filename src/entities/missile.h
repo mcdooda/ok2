@@ -18,6 +18,12 @@ class Missile : public Entity
 		virtual bool isMissile() const { return true; }
 		
 		int getDamage() const;
+		
+		inline void setShipId(int shipId) { m_shipId = shipId; }
+		inline int getShipId() const { return m_shipId; }
+		
+	private:
+		int m_shipId;
 };
 
 } // entities

@@ -1,3 +1,4 @@
+#include <iostream>
 #include "playership.h"
 #include "lua/entity.h"
 
@@ -155,6 +156,7 @@ void PlayerShip::setLevel(unsigned int level)
 {
 	if (level != m_level)
 	{
+		std::cout << "setLevel(" << level << ")" << std::endl;
 		m_level = level;
 		setTemplateSkills(level);
 	}
@@ -213,6 +215,17 @@ void PlayerShip::die(arena::Arena* arena, float time)
 bool PlayerShip::isInvincible(float time)
 {
 	return time - m_lastDeath < 2.f;
+}
+
+void PlayerShip::killedShip(Ship* ship)
+{
+	m_experience += ship->getExperienceValue();
+	
+	ShipTemplate* shipTemplate = (ShipTemplate*) m_template;
+	unsigned int maxLevel = shipTemplate->getMaxLevel();
+	
+	while (m_level < maxLevel && m_experience > shipTemplate->getLevelExperience(m_level + 1))
+		setLevel(m_level + 1);
 }
 
 } // entities

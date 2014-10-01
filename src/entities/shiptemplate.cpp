@@ -15,13 +15,24 @@ ShipTemplate::~ShipTemplate()
 
 }
 
-void ShipTemplate::addSkillTemplates(skills::SkillTemplate* primarySkillName, skills::SkillTemplate* secondarySkillName)
+unsigned int ShipTemplate::getMaxLevel() const
 {
+	return m_levelsExperience.size();
+}
+
+void ShipTemplate::addLevel(unsigned int levelExperience, skills::SkillTemplate* primarySkillName, skills::SkillTemplate* secondarySkillName)
+{
+	m_levelsExperience.push_back(levelExperience);
 	m_primarySkillTemplates.push_back(primarySkillName);
 	m_secondarySkillTemplates.push_back(secondarySkillName);
 }
 
-skills::SkillTemplate* ShipTemplate::getPrimarySkillTemplate(unsigned int level)
+unsigned int ShipTemplate::getLevelExperience(unsigned int level) const
+{
+	return m_levelsExperience[level - 1];
+}
+
+skills::SkillTemplate* ShipTemplate::getPrimarySkillTemplate(unsigned int level) const
 {
 	if (level - 1 < m_primarySkillTemplates.size())
 		return m_primarySkillTemplates[level - 1];
@@ -30,7 +41,7 @@ skills::SkillTemplate* ShipTemplate::getPrimarySkillTemplate(unsigned int level)
 		return m_primarySkillTemplates.back();
 }
 
-skills::SkillTemplate* ShipTemplate::getSecondarySkillTemplate(unsigned int level)
+skills::SkillTemplate* ShipTemplate::getSecondarySkillTemplate(unsigned int level) const
 {
 	if (level - 1 < m_secondarySkillTemplates.size())
 		return m_secondarySkillTemplates[level - 1];

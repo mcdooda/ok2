@@ -9,13 +9,14 @@ load.shipSkills('enemy3',
 local pi16 = math.pi / 16
 
 ship {
-	name      = 'enemy3',
-	speed     = 200,
-	health    = 150,
-	texture   = 'rsrc/images/units/enemies/enemy3/texture.png',
-	heightmap = 'rsrc/images/units/enemies/enemy3/heightmap.png',
-	skills    = {
-		{'enemy3', nil}
+	name       = 'enemy3',
+	speed      = 200,
+	health     = 150,
+	experience = 30,
+	texture    = 'rsrc/images/units/enemies/enemy3/texture.png',
+	heightmap  = 'rsrc/images/units/enemies/enemy3/heightmap.png',
+	levels     = {
+		{0, 'enemy3', nil}
 	},
 	pop       = function(ship)
 		local data = ship:data()

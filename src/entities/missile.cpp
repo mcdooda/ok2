@@ -6,7 +6,8 @@ namespace game
 namespace entities
 {
 
-Missile::Missile() : Entity()
+Missile::Missile() : Entity(),
+	m_shipId(0)
 {
 	
 }

@@ -263,13 +263,16 @@ void GameState::update(Game* game)
 			for (std::set<entities::Missile*>::iterator it2 = collidingMissiles.begin(); it2 != collidingMissiles.end(); it2++)
 			{
 				entities::Missile* missile = *it2;
-				
+				int shooterId = missile->getShipId();
 				ship->dealDamage(missile, time);
-				
 				missile->die(m_arena, time);
 				
 				if (ship->isDead())
 				{
+					entities::Ship* shooter = (entities::Ship*) m_arena->getEntityById(shooterId);
+					if (shooter != NULL)
+						shooter->killedShip(ship);
+					
 					ship->die(m_arena, time);
 					break;
 				}
