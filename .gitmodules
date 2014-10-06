@@ -1,3 +1,3 @@
 [submodule "flat"]
 	path = flat
-	url = git@github.com:mcdooda/flat-engine.git
+	url = https://github.com/mcdooda/flat-engine.git
