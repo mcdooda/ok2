@@ -1,3 +1,4 @@
+#include <iostream>
 #include "templates.h"
 #include "../entities/shiptemplate.h"
 

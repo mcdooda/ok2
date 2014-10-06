@@ -1,9 +1,13 @@
 load.shipMissiles('pink',
-	'pink1'
+	'pink1',
+	'pink2',
+	'pink3'
 )
 
 load.shipSkills('pink',
-	'pink1', 'specialpink1'
+	'pink1', 'specialpink1',
+	'pink2', 'specialpink2',
+	'pink3', 'specialpink3'
 )
 
 ship {
@@ -14,6 +18,8 @@ ship {
 	heightmap = 'rsrc/images/units/ships/pink/heightmap.png',
 	bumpmap   = 'rsrc/images/units/ships/pink/bumpmap.png',
 	levels    = {
-		{0, 'pink1', 'specialpink1'}
+		{0, 'pink1', 'specialpink1'},
+		{100, 'pink2', 'specialpink2'},
+		{1000, 'pink3', 'specialpink3'}
 	}
 }

@@ -16,7 +16,7 @@ int load(lua_State* L, std::string filename)
 	
 	if (status != LUA_YIELD && status != LUA_OK)
 	{
-		std::cout << "invalid thread status 1: " << flat::lua::codeToString(status) << std::endl;
+		std::cerr << "invalid thread status 1: " << flat::lua::codeToString(status) << std::endl;
 		lua_error(L1);
 	}
 	
@@ -35,7 +35,7 @@ bool resume(lua_State* L, int levelCoroutineRef)
 	
 		if (status != LUA_YIELD && status != LUA_OK)
 		{
-			std::cout << "invalid thread status 2: " << flat::lua::codeToString(status) << std::endl;
+			std::cerr << "invalid thread status 2: " << flat::lua::codeToString(status) << std::endl;
 			flat::lua::printStack(L);
 			lua_error(L1);
 		}

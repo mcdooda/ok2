@@ -3,7 +3,9 @@ load.shipMissiles('green',
 )
 
 load.shipSkills('green',
-	'green1', 'specialgreen1'
+	'green1', 'specialgreen1',
+	'green2', 'specialgreen2',
+	'green3', 'specialgreen3'
 )
 
 ship {
@@ -14,6 +16,8 @@ ship {
 	heightmap = 'rsrc/images/units/ships/green/heightmap.png',
 	bumpmap   = 'rsrc/images/units/ships/green/bumpmap.png',
 	levels    = {
-		{0, 'green1', 'specialgreen1'}
+		{0, 'green1', 'specialgreen1'},
+		{100, 'green2', 'specialgreen2'},
+		{1000, 'green3', 'specialgreen3'}
 	}
 }

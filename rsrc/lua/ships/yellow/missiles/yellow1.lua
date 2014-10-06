@@ -4,9 +4,9 @@ missile {
 	damage  = 25,
 	texture = 'rsrc/images/missiles/special3.png',
 	update  = function(missile, time, dt)
-		local rz = -0.15
-		if missile:data().i == 1 then
-			rz = 0.15
+		local rz = 0.15
+		if missile:data().i % 2 == 0 then
+			rz = -0.15
 		end
 		missile:setRotationZ(missile:getRotationZ() + rz * dt)
 	end

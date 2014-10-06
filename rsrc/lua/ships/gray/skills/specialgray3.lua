@@ -5,7 +5,7 @@ local pi2 = pi / 2
 local pi8 = pi / 8
 
 skill {
-	name     = 'specialgray1',
+	name     = 'specialgray3',
 	cooldown = 3,
 	trigger  = function(ship)
 		local data = ship:data()
@@ -14,6 +14,6 @@ skill {
 		if data.i % 2 == 0 then
 			angle = pi8
 		end
-		popShipMissiles(ship, 'gray1', 10, 20, 0, angle)
+		popShipMissiles(ship, 'gray1', 30, 20, 0, angle)
 	end
 }

@@ -1,5 +1,3 @@
-local cos = math.cos
-local sin = math.sin
 local mpi64 = -math.pi / 64
 
 skill {

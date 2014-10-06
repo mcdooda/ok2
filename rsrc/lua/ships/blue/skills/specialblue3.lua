@@ -4,8 +4,8 @@ local pi = math.pi
 local popShipMissiles = popShipMissiles
 
 skill {
-	name     = 'specialblue1',
-	cooldown = 3,
+	name     = 'specialblue3',
+	cooldown = 1,
 	trigger  = function(ship)
 		local sx = ship:getSpeedX()
 		local rz = ship:getRotationZ()
@@ -18,6 +18,6 @@ skill {
 				ship:setRotationZ(-t:getProgression() * pi * 2 + rz)
 			end)
 		end
-		popShipMissiles(ship, 'specialblue1', 20, 18, 30, pi)
+		popShipMissiles(ship, 'specialblue3', 20, 18, 30, pi)
 	end
 }

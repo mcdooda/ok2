@@ -1,6 +1,3 @@
-local cos = math.cos
-local sin = math.sin
-local pi = math.pi
 local popShipMissiles = popShipMissiles
 
 skill {

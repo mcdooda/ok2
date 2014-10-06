@@ -14,6 +14,7 @@ do
 	data.isLeftShip = true
 	data.rightShip = ship2
 	data.getShips = getShips
+	data.i = 1
 end
 
 do
@@ -21,6 +22,7 @@ do
 	data.isRightShip = true
 	data.leftShip = ship1
 	data.getShips = getShips
+	data.i = -1
 end
 
 
