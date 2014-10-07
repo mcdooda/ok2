@@ -7,7 +7,7 @@ namespace entities
 {
 
 PlayerShip::PlayerShip() : Ship(),
-	m_numLives(50),
+	m_numLives(2),
 	m_lastDeath(-2.f),
 	m_level(1),
 	m_experience(0)
@@ -207,6 +207,7 @@ void PlayerShip::die(arena::Arena* arena, float time)
 	else
 	{
 		// GAME OVER
+		arena->removeShip(this);
 	}
 }
 

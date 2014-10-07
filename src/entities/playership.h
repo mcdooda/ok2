@@ -26,6 +26,8 @@ class PlayerShip : public Ship
 		
 		virtual void killedShip(Ship* ship);
 		
+		virtual bool isPlayerShip() const { return true; }
+		
 	protected:
 		void fitInArena(arena::Arena* arena);
 		bool isInvincible(float time);

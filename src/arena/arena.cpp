@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "arena.h"
 
 namespace game
@@ -35,16 +36,24 @@ void Arena::addShip(entities::Ship* ship)
 {
 	Cell* cell = getEntityPositionCell(ship);
 	cell->addShip(ship);
-	m_ships[ship->getSide()].insert(ship);
+	entities::Entity::Side side = ship->getSide();
+	m_ships[side].insert(ship);
 	setEntityId(ship);
+	
+	if (ship->isPlayerShip())
+		m_playerShips[side].insert((entities::PlayerShip*) ship);
 }
 
 void Arena::removeShip(entities::Ship* ship)
 {
 	Cell* cell = ship->getCell();
 	cell->removeShip(ship);
-	m_ships[ship->getSide()].erase(ship);
+	entities::Entity::Side side = ship->getSide();
+	m_ships[side].erase(ship);
 	removeEntityId(ship);
+	
+	if (ship->isPlayerShip())
+		m_playerShips[side].erase((entities::PlayerShip*) ship);
 }
 
 void Arena::moveShip(entities::Ship* ship)
@@ -119,9 +128,12 @@ bool Arena::isEntityInside(entities::Entity* entity)
 	    && position.getY() > getMinY() - radius && position.getY() < getMaxY() + radius;
 }
 
-entities::Entity* Arena::getEntityById(int id)
+entities::Entity* Arena::getEntityById(int id) const
 {
-	std::map<int, entities::Entity*>::iterator it = m_entitiesById.find(id);
+	if (id == 0)
+		return NULL;
+		
+	std::map<int, entities::Entity*>::const_iterator it = m_entitiesById.find(id);
 	
 	if (it != m_entitiesById.end())
 		return it->second;
@@ -178,6 +190,22 @@ std::set<entities::Missile*> Arena::getCollidingMissiles(entities::Ship* ship) c
 flat::geometry::Vector2 Arena::getPlayerPopPosition() const
 {
 	return flat::geometry::Vector2(0, m_minY * 3.f / 4.f);
+}
+
+entities::PlayerShip* Arena::getRandomPlayerShip(entities::Entity::Side side, flat::random::Random* random) const
+{
+	entities::PlayerShip* playerShip = NULL;
+	
+	const std::set<entities::PlayerShip*>& sidePlayerShips = m_playerShips[side];
+	
+	if (!sidePlayerShips.empty())
+	{
+		std::set<entities::PlayerShip*>::iterator it = sidePlayerShips.begin();
+		std::advance(it, random->nextInt(0, sidePlayerShips.size() - 1));
+		playerShip = *it;
+	}
+	
+	return playerShip;
 }
 
 Cell* Arena::getEntityPositionCell(entities::Entity* entity)

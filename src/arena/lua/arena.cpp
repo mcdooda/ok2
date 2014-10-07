@@ -1,5 +1,6 @@
 #include "arena.h"
 #include "../../entities/lua/entity.h"
+#include "../../entities/playership.h"
 
 namespace game
 {
@@ -8,7 +9,7 @@ namespace arena
 namespace lua
 {
 
-void open(lua_State* L, Arena* arena)
+void open(lua_State* L, Arena* arena, Game* game)
 {
 	static const luaL_Reg arena_f[] = {
 		{"getSize",              l_arena_getSize},
@@ -22,6 +23,7 @@ void open(lua_State* L, Arena* arena)
 		{"getShips",             l_arena_getShips},
 		{"getNumMissiles",       l_arena_getNumMissiles},
 		{"getNumShips",          l_arena_getNumShips},
+		{"getRandomPlayerShip",  l_arena_getRandomPlayerShip},
 		
 		{"getEntityById",        l_arena_getEntityById},
 		{NULL, NULL}
@@ -30,15 +32,21 @@ void open(lua_State* L, Arena* arena)
 	luaL_newlibtable(L, arena_f);
 	
 	// upvalue
+	lua_pushlightuserdata(L, game);
 	lua_pushlightuserdata(L, arena);
 	
-	luaL_setfuncs(L, arena_f, 1);
+	luaL_setfuncs(L, arena_f, 2);
 	lua_setglobal(L, "arena");
+}
+
+Game* getGame(lua_State* L)
+{
+	return (Game*) lua_touserdata(L, lua_upvalueindex(1));
 }
 
 Arena* getArena(lua_State* L)
 {
-	return (Arena*) lua_touserdata(L, lua_upvalueindex(1));
+	return (Arena*) lua_touserdata(L, lua_upvalueindex(2));
 }
 
 entities::Entity::Side checkSide(lua_State* L, int index)
@@ -142,18 +150,22 @@ int l_arena_getNumShips(lua_State* L)
 	return 1;
 }
 
+int l_arena_getRandomPlayerShip(lua_State* L)
+{
+	Game* game = getGame(L);
+	Arena* arena = getArena(L);
+	entities::Entity::Side side = checkSide(L, 1);
+	entities::PlayerShip* playerShip = arena->getRandomPlayerShip(side, game->random);
+	entities::lua::pushEntity(L, playerShip);
+	return 1;
+}
+
 int l_arena_getEntityById(lua_State* L)
 {
 	Arena* arena = getArena(L);
 	int id = luaL_checkint(L, 1);
 	entities::Entity* entity = arena->getEntityById(id);
-	
-	if (entity != NULL)
-		entities::lua::pushEntity(L, entity);
-		
-	else
-		lua_pushnil(L);
-		
+	entities::lua::pushEntity(L, entity);
 	return 1;
 }
 

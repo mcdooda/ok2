@@ -11,8 +11,9 @@ namespace arena
 namespace lua
 {
 
-void open(lua_State* L, Arena* arena);
+void open(lua_State* L, Arena* arena, Game* game);
 
+Game* getGame(lua_State* L);
 Arena* getArena(lua_State* L);
 entities::Entity::Side checkSide(lua_State* L, int index);
 
@@ -27,6 +28,7 @@ int l_arena_getMissiles(lua_State* L);
 int l_arena_getShips(lua_State* L);
 int l_arena_getNumMissiles(lua_State* L);
 int l_arena_getNumShips(lua_State* L);
+int l_arena_getRandomPlayerShip(lua_State* L);
 
 int l_arena_getEntityById(lua_State* L);
 

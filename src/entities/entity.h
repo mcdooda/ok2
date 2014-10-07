@@ -78,6 +78,7 @@ class Entity
 		
 		virtual bool isShip() const { return false; }
 		virtual bool isMissile() const { return false; }
+		virtual bool isPlayerShip() const { return false; }
 		
 		inline Side getSide() const { return m_side; }
 		inline void setSide(Side side) { m_side = side; }

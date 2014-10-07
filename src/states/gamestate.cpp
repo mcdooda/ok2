@@ -88,7 +88,7 @@ void GameState::loadLuaLibraries(Game* game)
 {
 	lua_State* L = game->luaState;
 	entities::lua::open(L);
-	arena::lua::open(L, m_arena);
+	arena::lua::open(L, m_arena, game);
 	timers::lua::open(L, this, game);
 	lua::templates::open(L, this, game);
 	lua::pop::open(L, this, game);

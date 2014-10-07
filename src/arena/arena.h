@@ -9,6 +9,7 @@ namespace game
 namespace entities
 {
 class Missile;
+class PlayerShip;
 }
 
 namespace arena
@@ -40,7 +41,7 @@ class Arena
 		inline int getNumShips(entities::Entity::Side side) const { return m_ships[side].size(); }
 		inline int getNumMissiles(entities::Entity::Side side) const { return m_missiles[side].size(); }
 		
-		entities::Entity* getEntityById(int id);
+		entities::Entity* getEntityById(int id) const;
 		
 		std::set<entities::Missile*> getCollidingMissiles(entities::Ship* ship) const;
 		
@@ -52,6 +53,8 @@ class Arena
 		inline const flat::geometry::Vector2& getCenter() const { return m_center; }
 		
 		flat::geometry::Vector2 getPlayerPopPosition() const;
+		
+		entities::PlayerShip* getRandomPlayerShip(entities::Entity::Side side, flat::random::Random* random) const;
 		
 	private:
 		Cell* getEntityPositionCell(entities::Entity* entity);
@@ -72,6 +75,7 @@ class Arena
 		float m_cellSize;
 		
 		std::set<entities::Ship*> m_ships[entities::Entity::NUM_SIDES];
+		std::set<entities::PlayerShip*> m_playerShips[entities::Entity::NUM_SIDES];
 		std::set<entities::Missile*> m_missiles[entities::Entity::NUM_SIDES];
 		
 		std::map<int, entities::Entity*> m_entitiesById;

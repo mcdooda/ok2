@@ -17,10 +17,13 @@ ship {
 		{0, 'enemy1', nil}
 	},
 	pop       = function(ship)
-		local targets = arena.getShips(ALLY)
-		local target = targets[math.random(1, #targets)]
-		ship:data().targetId = target:getId()
-		ship:follow(target)
+		local target = arena.getRandomPlayerShip(ALLY)
+		if target then
+			ship:data().targetId = target:getId()
+			ship:follow(target)
+		else
+			ship:data().targetId = 0
+		end
 	end,
 	update    = function(ship)
 		local targetId = ship:data().targetId

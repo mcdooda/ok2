@@ -62,10 +62,15 @@ void open(lua_State* L)
 
 void pushEntity(lua_State* L, Entity* entity)
 {
-	Entity** entityPointer = (Entity**) lua_newuserdata(L, sizeof(Entity*));
-	*entityPointer = entity;
-	luaL_getmetatable(L, "OK2.Ship");
-	lua_setmetatable(L, -2);
+	if (entity != NULL)
+	{
+		Entity** entityPointer = (Entity**) lua_newuserdata(L, sizeof(Entity*));
+		*entityPointer = entity;
+		luaL_getmetatable(L, "OK2.Ship");
+		lua_setmetatable(L, -2);
+	}
+	else
+		lua_pushnil(L);
 }
 
 Entity* getEntity(lua_State* L, int index)
