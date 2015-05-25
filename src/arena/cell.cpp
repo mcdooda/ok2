@@ -24,7 +24,7 @@ void Cell::addShip(entities::Ship* ship)
 
 void Cell::removeShip(entities::Ship* ship)
 {
-	ship->setCell(NULL);
+	ship->setCell(nullptr);
 	assertValidSide(ship->getSide());
 	m_ships[ship->getSide()].erase(ship);
 }
@@ -38,7 +38,7 @@ void Cell::addMissile(entities::Missile* missile)
 
 void Cell::removeMissile(entities::Missile* missile)
 {
-	missile->setCell(NULL);
+	missile->setCell(nullptr);
 	assertValidSide(missile->getSide());
 	m_missiles[missile->getSide()].erase(missile);
 }

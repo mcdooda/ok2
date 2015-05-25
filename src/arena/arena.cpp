@@ -11,17 +11,17 @@ Arena::Arena(const flat::geometry::Vector2& size, float cellSize) :
 	m_cellSize(cellSize),
 	m_nextEntityId(1)
 {
-	m_numCellsX = ceil(size.getX() / cellSize);
-	m_numCellsY = ceil(size.getY() / cellSize);
+	m_numCellsX = ceil(size.x / cellSize);
+	m_numCellsY = ceil(size.y / cellSize);
 	
 	m_cells = new Cell*[m_numCellsX];
 	for (int x = 0; x < m_numCellsX; x++)
 		m_cells[x] = new Cell[m_numCellsY];
 		
-	m_minX = -size.getX() / 2.f;
-	m_minY = -size.getY() / 2.f;
-	m_maxX =  size.getX() / 2.f;
-	m_maxY =  size.getY() / 2.f;
+	m_minX = -size.x / 2.f;
+	m_minY = -size.y / 2.f;
+	m_maxX =  size.x / 2.f;
+	m_maxY =  size.y / 2.f;
 }
 
 Arena::~Arena()
@@ -64,7 +64,7 @@ void Arena::moveShip(entities::Ship* ship)
 	{
 		oldCell->removeShip(ship);
 		
-		if (newCell != NULL)
+		if (newCell != nullptr)
 			newCell->addShip(ship);
 	}
 }
@@ -93,7 +93,7 @@ void Arena::moveMissile(entities::Missile* missile)
 	{
 		oldCell->removeMissile(missile);
 		
-		if (newCell != NULL)
+		if (newCell != nullptr)
 			newCell->addMissile(missile);
 	}
 }
@@ -118,20 +118,20 @@ void Arena::moveEntity(entities::Entity* entity)
 
 bool Arena::isEntityInside(entities::Entity* entity)
 {
-	if (entity->getCell() == NULL)
+	if (entity->getCell() == nullptr)
 		return true;
 		
 	const flat::geometry::Vector2& position = entity->getPosition();
 	float radius = entity->getRadius();
 	
-	return position.getX() > getMinX() - radius && position.getX() < getMaxX() + radius
-	    && position.getY() > getMinY() - radius && position.getY() < getMaxY() + radius;
+	return position.x > getMinX() - radius && position.x < getMaxX() + radius
+	    && position.y > getMinY() - radius && position.y < getMaxY() + radius;
 }
 
 entities::Entity* Arena::getEntityById(int id) const
 {
 	if (id == 0)
-		return NULL;
+		return nullptr;
 		
 	std::map<int, entities::Entity*>::const_iterator it = m_entitiesById.find(id);
 	
@@ -139,7 +139,7 @@ entities::Entity* Arena::getEntityById(int id) const
 		return it->second;
 		
 	else
-		return NULL;
+		return nullptr;
 }
 
 std::set<entities::Missile*> Arena::getCollidingMissiles(entities::Ship* ship) const
@@ -152,10 +152,10 @@ std::set<entities::Missile*> Arena::getCollidingMissiles(entities::Ship* ship) c
 	
 	static const float missileMaxRadius = 30.f;
 	
-	int minX = getCellX(position.getX() - radius - missileMaxRadius);
-	int maxX = getCellX(position.getX() + radius + missileMaxRadius);
-	int minY = getCellY(position.getY() - radius - missileMaxRadius);
-	int maxY = getCellY(position.getY() + radius + missileMaxRadius);
+	int minX = getCellX(position.x - radius - missileMaxRadius);
+	int maxX = getCellX(position.x + radius + missileMaxRadius);
+	int minY = getCellY(position.y - radius - missileMaxRadius);
+	int maxY = getCellY(position.y + radius + missileMaxRadius);
 	
 	int j = 0;
 	
@@ -194,7 +194,7 @@ flat::geometry::Vector2 Arena::getPlayerPopPosition() const
 
 entities::PlayerShip* Arena::getRandomPlayerShip(entities::Entity::Side side, flat::random::Random* random) const
 {
-	entities::PlayerShip* playerShip = NULL;
+	entities::PlayerShip* playerShip = nullptr;
 	
 	const std::set<entities::PlayerShip*>& sidePlayerShips = m_playerShips[side];
 	
@@ -211,15 +211,15 @@ entities::PlayerShip* Arena::getRandomPlayerShip(entities::Entity::Side side, fl
 Cell* Arena::getEntityPositionCell(entities::Entity* entity)
 {
 	const flat::geometry::Vector2& position = entity->getPosition();
-	int x = getCellX(position.getX());
-	int y = getCellY(position.getY());
+	int x = getCellX(position.x);
+	int y = getCellY(position.y);
 	return &m_cells[x][y];
 }
 
 bool Arena::collides(entities::Entity* a, entities::Entity* b) const
 {
 	float collisionDistance = (a->getHitRadius() + b->getHitRadius()) / 2;
-	return (a->getPosition() - b->getPosition()).distanceSquared() < collisionDistance * collisionDistance;
+	return (a->getPosition() - b->getPosition()).lengthSquared() < collisionDistance * collisionDistance;
 }
 
 int Arena::getCellX(float x) const

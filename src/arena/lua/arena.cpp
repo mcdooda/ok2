@@ -26,7 +26,7 @@ void open(lua_State* L, Arena* arena, Game* game)
 		{"getRandomPlayerShip",  l_arena_getRandomPlayerShip},
 		
 		{"getEntityById",        l_arena_getEntityById},
-		{NULL, NULL}
+		{nullptr, nullptr}
 	};
 	
 	luaL_newlibtable(L, arena_f);
@@ -60,22 +60,22 @@ int l_arena_getSize(lua_State* L)
 {
 	Arena* arena = getArena(L);
 	const flat::geometry::Vector2& size = arena->getSize();
-	lua_pushnumber(L, size.getX());
-	lua_pushnumber(L, size.getY());
+	lua_pushnumber(L, size.x);
+	lua_pushnumber(L, size.y);
 	return 2;
 }
 
 int l_arena_getWidth(lua_State* L)
 {
 	Arena* arena = getArena(L);
-	lua_pushnumber(L, arena->getSize().getX());
+	lua_pushnumber(L, arena->getSize().x);
 	return 1;
 }
 
 int l_arena_getHeight(lua_State* L)
 {
 	Arena* arena = getArena(L);
-	lua_pushnumber(L, arena->getSize().getY());
+	lua_pushnumber(L, arena->getSize().y);
 	return 1;
 }
 
@@ -93,8 +93,8 @@ int l_arena_getPlayerPopPosition(lua_State* L)
 {
 	Arena* arena = getArena(L);
 	flat::geometry::Vector2 playerPopPosition = arena->getPlayerPopPosition();
-	lua_pushnumber(L, playerPopPosition.getX());
-	lua_pushnumber(L, playerPopPosition.getY());
+	lua_pushnumber(L, playerPopPosition.x);
+	lua_pushnumber(L, playerPopPosition.y);
 	return 2;
 }
 

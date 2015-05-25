@@ -15,7 +15,7 @@ void open(lua_State* L, states::GameState* gameState, Game* game)
 		{"ship",    l_ship},
 		{"missile", l_missile},
 		{"skill",   l_skill},
-		{NULL, NULL}
+		{nullptr, nullptr}
 	};
 	registerGameStateClosures(L, gameState, game, funcs);
 }
@@ -106,7 +106,7 @@ int l_ship(lua_State* L)
 			unsigned int levelExperience = luaL_checkint(L, -1);
 		
 			lua_rawgeti(L, -2, 2);
-			skills::SkillTemplate* primarySkillTemplate = NULL;
+			skills::SkillTemplate* primarySkillTemplate = nullptr;
 			if (!lua_isnil(L, -1))
 			{
 				std::string primarySkillName = luaL_checkstring(L, -1);
@@ -114,7 +114,7 @@ int l_ship(lua_State* L)
 			}
 		
 			lua_rawgeti(L, -3, 3);
-			skills::SkillTemplate* secondarySkillTemplate = NULL;
+			skills::SkillTemplate* secondarySkillTemplate = nullptr;
 			if (!lua_isnil(L, -1))
 			{
 				std::string secondarySkillName = luaL_checkstring(L, -1);

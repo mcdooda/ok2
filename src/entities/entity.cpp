@@ -8,11 +8,11 @@ namespace entities
 {
 
 Entity::Entity() :
-	m_sprite(NULL),
+	m_sprite(nullptr),
 	m_dataRef(LUA_NOREF),
-	m_cell(NULL),
+	m_cell(nullptr),
 	m_enteredArena(false),
-	m_side(NONE),
+	m_side(Side::NONE),
 	m_id(0)
 {
 	
@@ -32,14 +32,14 @@ void Entity::setTemplate(EntityTemplate* entityTemplate)
 void Entity::setRotationZ(float rotationZ)
 {
 	m_sprite->setRotationZ(rotationZ);
-	m_speed = flat::geometry::Vector2(m_sprite->getRotation().getZ()) * m_template->getSpeed();
+	m_speed = flat::geometry::Vector2(m_sprite->getRotation().z) * m_template->getSpeed();
 }
 
 void Entity::follow(Entity* entity)
 {
 	const flat::geometry::Vector2& position = getPosition();
 	const flat::geometry::Vector2& entityPosition = entity->getPosition();
-	float rotationZ = atan2f(entityPosition.getY() - position.getY(), entityPosition.getX() - position.getX());
+	float rotationZ = atan2f(entityPosition.y - position.y, entityPosition.x - position.x);
 	setRotationZ(rotationZ);
 }
 

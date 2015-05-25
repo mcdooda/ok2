@@ -22,14 +22,14 @@ void open(lua_State* L, states::GameState* gameState, Game* game)
 		{"getProgression", l_Timer_getProgression},
 		{"stop",           l_Timer_stop},
 		{"isStopped",      l_Timer_isStopped},
-		{NULL, NULL}
+		{nullptr, nullptr}
 	};
 	
 	luaL_setfuncs(L, timer_m, 0);
 	
 	static const luaL_Reg funcs[] = {
 		{"timer", l_timer},
-		{NULL, NULL}
+		{nullptr, nullptr}
 	};
 	game::lua::registerGameStateClosures(L, gameState, game, funcs);
 	

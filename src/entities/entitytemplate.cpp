@@ -21,7 +21,7 @@ void EntityTemplate::setSprite(flat::util::Sprite* sprite)
 {
 	m_sprite = sprite;
 	const flat::geometry::Vector2& textureSize = m_sprite->getTexture()->getSize();
-	m_radius = (textureSize.getX() + textureSize.getY()) / 4.f;
+	m_radius = (textureSize.x + textureSize.y) / 4.f;
 }
 
 } // entities

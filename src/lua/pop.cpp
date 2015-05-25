@@ -15,7 +15,7 @@ void open(lua_State* L, states::GameState* gameState, Game* game)
 		{"popShip",         l_popShip},
 		{"popMissile",      l_popMissile},
 		{"popShipMissiles", l_popShipMissiles},
-		{NULL, NULL}
+		{nullptr, nullptr}
 	};
 	registerGameStateClosures(L, gameState, game, funcs);
 	
@@ -46,7 +46,7 @@ int l_popShip(lua_State* L)
 	Game* game = (Game*) lua_touserdata(L, lua_upvalueindex(2));
 	float time = game->time->getTime();
 	
-	entities::Ship* ship = NULL;
+	entities::Ship* ship = nullptr;
 	if (isPlayerShip)
 		ship = new entities::PlayerShip();
 	
@@ -92,7 +92,7 @@ int l_popShipMissiles(lua_State* L)
 	entities::Entity::Side side = ship->getSide();
 	int shipId = ship->getId();
 	
-	float shipRotationZ = ship->getRotation().getZ();
+	float shipRotationZ = ship->getRotation().z;
 	const flat::geometry::Matrix4& shipModelMatrix = ship->getModelMatrix();
 	
 	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));

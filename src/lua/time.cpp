@@ -11,7 +11,7 @@ void open(lua_State* L, Game* game)
 {
 	const luaL_Reg funcs[] = {
 		{"getTime", l_getTime},
-		{NULL, NULL}
+		{nullptr, nullptr}
 	};
 	registerGameClosures(L, game, funcs);
 }

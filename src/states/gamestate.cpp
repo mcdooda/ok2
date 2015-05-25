@@ -50,7 +50,7 @@ void GameState::initGraphics(Game* game)
 	m_view.updateProjection(m_arena->getSize());
 	
 	// frame buffer
-	m_frameBuffer.setSize(m_arena->getSize() * (game->video->window->getDesktopSize().getY() / m_arena->getSize().getY()));
+	m_frameBuffer.setSize(m_arena->getSize() * (game->video->window->getDesktopSize().y / m_arena->getSize().y));
 	const flat::video::Texture& screenTexture = m_frameBuffer.addTexture("screen");
 	
 	// height map pass
@@ -141,7 +141,7 @@ entities::Ship* GameState::addShip(const std::string& name, const flat::geometry
 {
 	entities::Ship* ship;
 	
-	if (existingShip != NULL)
+	if (existingShip != nullptr)
 		ship = existingShip;
 		
 	else
@@ -149,7 +149,7 @@ entities::Ship* GameState::addShip(const std::string& name, const flat::geometry
 	
 	entities::ShipTemplate* shipTemplate = m_shipTemplates[name];
 	
-	if (shipTemplate == NULL)
+	if (shipTemplate == nullptr)
 	{
 		std::cerr << name << " ship does not exist" << std::endl;
 		::exit(1);
@@ -171,7 +171,7 @@ entities::Missile* GameState::addMissile(const std::string& name, const flat::ge
 	
 	entities::MissileTemplate* missileTemplate = m_missileTemplates[name];
 	
-	if (missileTemplate == NULL)
+	if (missileTemplate == nullptr)
 	{
 		std::cerr << name << " missile does not exist" << std::endl;
 		::exit(1);
@@ -270,7 +270,7 @@ void GameState::update(Game* game)
 				if (ship->isDead())
 				{
 					entities::Ship* shooter = (entities::Ship*) m_arena->getEntityById(shooterId);
-					if (shooter != NULL)
+					if (shooter != nullptr)
 						shooter->killedShip(ship);
 					
 					ship->die(m_arena, time);

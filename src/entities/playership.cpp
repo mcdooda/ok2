@@ -34,16 +34,16 @@ bool PlayerShip::update(Game* game, float time, float elapsedTime, arena::Arena*
 	flat::geometry::Vector2 direction;
 	
 	if (leftPressed && !rightPressed)
-		direction.setX(-1.f);
+		direction.x = -1.f;
 	
 	else if (rightPressed && !leftPressed)
-		direction.setX(1.f);
+		direction.x = 1.f;
 	
 	if (upPressed && !downPressed)
-		direction.setY(1.f);
+		direction.y = 1.f;
 	
 	else if (downPressed && !upPressed)
-		direction.setY(-1.f);
+		direction.y = -1.f;
 		
 	direction = direction.normalize();
 	
@@ -59,57 +59,57 @@ bool PlayerShip::update(Game* game, float time, float elapsedTime, arena::Arena*
 	
 	flat::geometry::Vector3 rotation = m_sprite->getRotation();
 	
-	if (direction.getX() == 0.f)
+	if (direction.x == 0.f)
 	{
-		if (rotation.getY() > epsilon)
+		if (rotation.y > epsilon)
 		{
-			rotation.setY(rotation.getY() - elapsedTime * slowRotationSpeed);
-			if (rotation.getY() < 0.f)
-				rotation.setY(0.f);
+			rotation.y = rotation.y - elapsedTime * slowRotationSpeed;
+			if (rotation.y < 0.f)
+				rotation.y = 0.f;
 		}
-		else if (rotation.getY() < -epsilon)
+		else if (rotation.y < -epsilon)
 		{
-			rotation.setY(rotation.getY() + elapsedTime * slowRotationSpeed);
-			if (rotation.getY() > 0.f)
-				rotation.setY(0.f);
+			rotation.y = rotation.y + elapsedTime * slowRotationSpeed;
+			if (rotation.y > 0.f)
+				rotation.y = 0.f;
 		}
 	}
 	else
 	{
-		rotation.setY(rotation.getY() + elapsedTime * direction.getX() * fastRotationSpeed);
+		rotation.y = rotation.y + elapsedTime * direction.x * fastRotationSpeed;
 		
-		if (rotation.getY() < -pi6)
-			rotation.setY(-pi6);
+		if (rotation.y < -pi6)
+			rotation.y = -pi6;
 			
-		else if (rotation.getY() > pi6)
-			rotation.setY(pi6);
+		else if (rotation.y > pi6)
+			rotation.y = pi6;
 	}
 	
-	if (direction.getY() == 0.f)
+	if (direction.y == 0.f)
 	{
-		if (rotation.getX() > epsilon)
+		if (rotation.x > epsilon)
 		{
-			rotation.setX(rotation.getX() - elapsedTime * slowRotationSpeed);
+			rotation.x = rotation.x - elapsedTime * slowRotationSpeed;
 			
-			if (rotation.getX() < 0.f)
-				rotation.setX(0.f);
+			if (rotation.x < 0.f)
+				rotation.x = 0.f;
 		}
-		else if (rotation.getX() < -epsilon)
+		else if (rotation.x < -epsilon)
 		{
-			rotation.setX(rotation.getX() + elapsedTime * slowRotationSpeed);
-			if (rotation.getX() > 0.f)
-				rotation.setX(0.f);
+			rotation.x = rotation.x + elapsedTime * slowRotationSpeed;
+			if (rotation.x > 0.f)
+				rotation.x = 0.f;
 		}
 	}
 	else
 	{
-		rotation.setX(rotation.getX() - elapsedTime * direction.getY() * fastRotationSpeed);
+		rotation.x = rotation.x - elapsedTime * direction.y * fastRotationSpeed;
 		
-		if (rotation.getX() < -pi6)
-			rotation.setX(-pi6);
+		if (rotation.x < -pi6)
+			rotation.x = -pi6;
 			
-		else if (rotation.getX() > pi6)
-			rotation.setX(pi6);
+		else if (rotation.x > pi6)
+			rotation.x = pi6;
 	}
 	
 	m_sprite->setRotation(rotation);
@@ -125,7 +125,7 @@ bool PlayerShip::update(Game* game, float time, float elapsedTime, arena::Arena*
 	
 	if (primaryFirePressed)
 	{
-		if (m_primarySkill != NULL && m_primarySkill->isReady(time))
+		if (m_primarySkill != nullptr && m_primarySkill->isReady(time))
 			m_primarySkill->trigger(game, this, time);
 	}
 	
@@ -133,7 +133,7 @@ bool PlayerShip::update(Game* game, float time, float elapsedTime, arena::Arena*
 	
 	if (secondaryFirePressed)
 	{
-		if (m_secondarySkill != NULL && m_secondarySkill->isReady(time))
+		if (m_secondarySkill != nullptr && m_secondarySkill->isReady(time))
 			m_secondarySkill->trigger(game, this, time);
 	}
 	
@@ -174,17 +174,17 @@ void PlayerShip::fitInArena(arena::Arena* arena)
 	int minY = arena->getMinY() + radius;
 	int maxY = arena->getMaxY() - radius;
 	
-	if (position.getX() < minX)
-		position.setX(minX);
+	if (position.x < minX)
+		position.x = minX;
 		
-	else if (position.getX() > maxX)
-		position.setX(maxX);
+	else if (position.x > maxX)
+		position.x = maxX;
 		
-	if (position.getY() < minY)
-		position.setY(minY);
+	if (position.y < minY)
+		position.y = minY;
 		
-	else if (position.getY() > maxY)
-		position.setY(maxY);
+	else if (position.y > maxY)
+		position.y = maxY;
 		
 	setPosition(position);
 }

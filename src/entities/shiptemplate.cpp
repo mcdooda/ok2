@@ -41,7 +41,7 @@ skills::SkillTemplate* ShipTemplate::getPrimarySkillTemplate(unsigned int level)
 		return m_primarySkillTemplates.back();
 		
 	else
-		return NULL;
+		return nullptr;
 }
 
 skills::SkillTemplate* ShipTemplate::getSecondarySkillTemplate(unsigned int level) const
@@ -53,7 +53,7 @@ skills::SkillTemplate* ShipTemplate::getSecondarySkillTemplate(unsigned int leve
 		return m_secondarySkillTemplates.back();
 		
 	else
-		return NULL;
+		return nullptr;
 }
 
 } // entities

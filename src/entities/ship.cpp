@@ -7,8 +7,8 @@ namespace entities
 {
 
 Ship::Ship() : Entity(),
-	m_primarySkill(NULL),
-	m_secondarySkill(NULL)
+	m_primarySkill(nullptr),
+	m_secondarySkill(nullptr)
 {
 	
 }
@@ -36,13 +36,13 @@ void Ship::setTemplateSkills(unsigned int level)
 
 void Ship::setSkill(skills::Skill*& skill, skills::SkillTemplate* skillTemplate)
 {
-	if (skillTemplate != NULL)
+	if (skillTemplate != nullptr)
 		skill = new skills::Skill(skillTemplate);
 		
 	else
 	{
 		delete skill;
-		skill = NULL;
+		skill = nullptr;
 	}
 }
 
@@ -50,19 +50,17 @@ bool Ship::update(Game* game, float time, float elapsedTime, arena::Arena* arena
 {
 	bool remove = Entity::update(game, time, elapsedTime, arena);
 	
-	if (m_primarySkill != NULL && m_primarySkill->isReady(time))
+	if (m_primarySkill != nullptr && m_primarySkill->isReady(time))
 		m_primarySkill->trigger(game, this, time);
 		
-	if (m_secondarySkill != NULL && m_secondarySkill->isReady(time))
+	if (m_secondarySkill != nullptr && m_secondarySkill->isReady(time))
 		m_secondarySkill->trigger(game, this, time);
 		
 	static const float blinkDuration = 0.07f;
 	if (m_lastHit > time - blinkDuration)
 	{
-		float gray;
-		gray = (m_lastHit - time) / blinkDuration;
-		flat::video::Color color(gray);
-		m_sprite->setColor(color);
+		GLfloat gray = (m_lastHit - time) / blinkDuration;
+		m_sprite->setColor(flat::video::Color(gray));
 	}
 	else
 		m_sprite->setColor(flat::video::Color::WHITE);
@@ -74,10 +72,10 @@ void Ship::setPopTime(float popTime)
 {
 	Entity::setPopTime(popTime);
 	
-	if (m_primarySkill != NULL)
+	if (m_primarySkill != nullptr)
 		m_primarySkill->setLastTriggeredTime(popTime);
 		
-	if (m_secondarySkill != NULL)
+	if (m_secondarySkill != nullptr)
 		m_secondarySkill->setLastTriggeredTime(popTime);
 		
 	m_lastHit = popTime - 1.f;

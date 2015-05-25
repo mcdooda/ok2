@@ -29,7 +29,7 @@ class GameState : public flat::state::State
 		
 		skills::SkillTemplate* getSkillTemplate(const std::string& skillName);
 		
-		entities::Ship* addShip(const std::string& name, const flat::geometry::Vector2& position, float rotationZ, entities::Entity::Side side, entities::Ship* ship1 = NULL);
+		entities::Ship* addShip(const std::string& name, const flat::geometry::Vector2& position, float rotationZ, entities::Entity::Side side, entities::Ship* ship1 = nullptr);
 		entities::Missile* addMissile(const std::string& name, const flat::geometry::Vector2& position, float rotationZ, entities::Entity::Side side);
 		
 		void addTimer(timers::Timer* timer);

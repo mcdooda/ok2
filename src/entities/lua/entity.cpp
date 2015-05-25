@@ -52,7 +52,7 @@ void open(lua_State* L)
 		// lua data
 		{"data",                l_Entity_data},
 		
-		{NULL, NULL}
+		{nullptr, nullptr}
 	};
 	
 	luaL_setfuncs(L, entitylib_m, 0);
@@ -62,7 +62,7 @@ void open(lua_State* L)
 
 void pushEntity(lua_State* L, Entity* entity)
 {
-	if (entity != NULL)
+	if (entity != nullptr)
 	{
 		Entity** entityPointer = (Entity**) lua_newuserdata(L, sizeof(Entity*));
 		*entityPointer = entity;
@@ -133,9 +133,9 @@ int l_Entity_getRotation(lua_State* L)
 {
 	Entity* entity = getEntity(L);
 	const flat::geometry::Vector3& rotation = entity->getRotation();
-	lua_pushnumber(L, rotation.getX());
-	lua_pushnumber(L, rotation.getY());
-	lua_pushnumber(L, rotation.getZ());
+	lua_pushnumber(L, rotation.x);
+	lua_pushnumber(L, rotation.y);
+	lua_pushnumber(L, rotation.z);
 	return 3;
 }
 
@@ -143,7 +143,7 @@ int l_Entity_getRotationX(lua_State* L)
 {
 	Entity* entity = getEntity(L);
 	const flat::geometry::Vector3& rotation = entity->getRotation();
-	lua_pushnumber(L, rotation.getX());
+	lua_pushnumber(L, rotation.x);
 	return 1;
 }
 
@@ -151,7 +151,7 @@ int l_Entity_getRotationY(lua_State* L)
 {
 	Entity* entity = getEntity(L);
 	const flat::geometry::Vector3& rotation = entity->getRotation();
-	lua_pushnumber(L, rotation.getY());
+	lua_pushnumber(L, rotation.y);
 	return 1;
 }
 
@@ -159,7 +159,7 @@ int l_Entity_getRotationZ(lua_State* L)
 {
 	Entity* entity = getEntity(L);
 	const flat::geometry::Vector3& rotation = entity->getRotation();
-	lua_pushnumber(L, rotation.getZ());
+	lua_pushnumber(L, rotation.z);
 	return 1;
 }
 
@@ -200,8 +200,8 @@ int l_Entity_getPosition(lua_State* L)
 {
 	Entity* entity = getEntity(L);
 	const flat::geometry::Vector2& position = entity->getPosition();
-	lua_pushnumber(L, position.getX());
-	lua_pushnumber(L, position.getY());
+	lua_pushnumber(L, position.x);
+	lua_pushnumber(L, position.y);
 	return 2;
 }
 
@@ -209,7 +209,7 @@ int l_Entity_getPositionX(lua_State* L)
 {
 	Entity* entity = getEntity(L);
 	const flat::geometry::Vector2& position = entity->getPosition();
-	lua_pushnumber(L, position.getX());
+	lua_pushnumber(L, position.x);
 	return 1;
 }
 
@@ -217,7 +217,7 @@ int l_Entity_getPositionY(lua_State* L)
 {
 	Entity* entity = getEntity(L);
 	const flat::geometry::Vector2& position = entity->getPosition();
-	lua_pushnumber(L, position.getY());
+	lua_pushnumber(L, position.y);
 	return 1;
 }
 
@@ -228,8 +228,8 @@ int l_Entity_getAbsolutePosition(lua_State* L)
 	float y = luaL_checknumber(L, 3);
 	flat::geometry::Vector2 relativePosition(x, y);
 	flat::geometry::Vector2 absolutePosition = entity->getAbsolutePosition(relativePosition);
-	lua_pushnumber(L, absolutePosition.getX());
-	lua_pushnumber(L, absolutePosition.getY());
+	lua_pushnumber(L, absolutePosition.x);
+	lua_pushnumber(L, absolutePosition.y);
 	return 2;
 }
 
@@ -237,8 +237,8 @@ int l_Entity_getSpeed(lua_State* L)
 {
 	Entity* entity = getEntity(L);
 	const flat::geometry::Vector2& speed = entity->getSpeed();
-	lua_pushnumber(L, speed.getX());
-	lua_pushnumber(L, speed.getY());
+	lua_pushnumber(L, speed.x);
+	lua_pushnumber(L, speed.y);
 	return 2;
 }
 
@@ -246,7 +246,7 @@ int l_Entity_getSpeedX(lua_State* L)
 {
 	Entity* entity = getEntity(L);
 	const flat::geometry::Vector2& speed = entity->getSpeed();
-	lua_pushnumber(L, speed.getX());
+	lua_pushnumber(L, speed.x);
 	return 1;
 }
 
@@ -254,7 +254,7 @@ int l_Entity_getSpeedY(lua_State* L)
 {
 	Entity* entity = getEntity(L);
 	const flat::geometry::Vector2& speed = entity->getSpeed();
-	lua_pushnumber(L, speed.getY());
+	lua_pushnumber(L, speed.y);
 	return 1;
 }
 
