@@ -1,5 +1,5 @@
-#ifndef GAME_MENUSTATE_H
-#define GAME_MENUSTATE_H
+#ifndef GAME_SELECTSHIPSTATE_H
+#define GAME_SELECTSHIPSTATE_H
 
 #include <flat.h>
 #include <memory>
@@ -11,9 +11,11 @@ namespace game
 namespace states
 {
 
-class MenuState : public flat::state::State
+class SelectShipState : public flat::state::State
 {
 	public:
+		SelectShipState(std::unique_ptr<flat::audio::Music>&& music);
+		
 		virtual void enter(flat::state::Agent* agent);
 		virtual void execute(flat::state::Agent* agent);
 		virtual void exit(flat::state::Agent* agent);
@@ -24,8 +26,6 @@ class MenuState : public flat::state::State
 		
 	private:
 		std::unique_ptr<flat::audio::Music> m_music;
-		std::shared_ptr<const flat::video::FileTexture> m_logoTexture;
-		flat::util::Sprite* m_logoSprite;
 		
 		flat::video::Program m_program;
 		flat::util::RenderSettings m_programRenderSettings;
@@ -34,7 +34,7 @@ class MenuState : public flat::state::State
 } // states
 } // game
 
-#endif // GAME_MENUSTATE_H
+#endif // GAME_SELECTSHIPSTATE_H
 
 
 

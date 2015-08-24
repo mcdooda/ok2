@@ -31,14 +31,14 @@ void open(lua_State* L, states::GameState* gameState, Game* game)
 		{"timer", l_timer},
 		{nullptr, nullptr}
 	};
-	game::lua::registerGameStateClosures(L, gameState, game, funcs);
+	game::lua::registerGameStateClosures(L, game, gameState, funcs);
 	
 	lua_pop(L, 1);
 }
 
 void pushTimer(lua_State* L, Timer* timer)
 {
-	Timer** timerPointer = (Timer**) lua_newuserdata(L, sizeof(Timer*));
+	Timer** timerPointer = static_cast<Timer**>(lua_newuserdata(L, sizeof(Timer*)));
 	*timerPointer = timer;
 	luaL_getmetatable(L, "OK2.Timer");
 	lua_setmetatable(L, -2);
@@ -46,17 +46,7 @@ void pushTimer(lua_State* L, Timer* timer)
 
 Timer* getTimer(lua_State* L, int index)
 {
-	return *(Timer**) luaL_checkudata(L, index, "OK2.Timer");;
-}
-
-Game* getGame(lua_State* L)
-{
-	return (Game*) lua_touserdata(L, lua_upvalueindex(2));
-}
-
-states::GameState* getGameState(lua_State* L)
-{
-	return (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
+	return *static_cast<Timer**>(luaL_checkudata(L, index, "OK2.Timer"));
 }
 
 void triggerTimerUpdateFunction(lua_State* L, Timer* timer)
@@ -110,10 +100,10 @@ int l_timer(lua_State* L)
 	timer->setUpdateFunctionRef(updateFunctionRef);
 	timer->setEndFunctionRef(endFunctionRef);
 	
-	Game* game = getGame(L);
+	Game* game = game::lua::getGame(L);
 	timer->setBeginTime(game->time->getTime());
 	
-	states::GameState* gameState = getGameState(L);
+	states::GameState* gameState = game::lua::getGameState(L);
 	gameState->addTimer(timer);
 	
 	return 0;

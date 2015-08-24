@@ -1,22 +1,21 @@
 #include "../game.h"
-#include "menustate.h"
 #include "selectshipstate.h"
+#include "gamestate.h"
 
 namespace game
 {
 namespace states
 {
 
-void MenuState::enter(flat::state::Agent* agent)
+SelectShipState::SelectShipState(std::unique_ptr<flat::audio::Music>&& music)
+	: m_music(std::move(music))
 {
-	Game* game = static_cast<Game*>(agent);
 	
-	m_music.reset(game->audio->loadMusic("rsrc/sounds/music/a_war_without_weapons.ogg"));
-	m_music->play();
-	
-	m_logoTexture = game->video->getTexture("rsrc/images/logo.png");
-	m_logoSprite = new flat::util::Sprite();
-	m_logoSprite->setTexture(m_logoTexture);
+}
+
+void SelectShipState::enter(flat::state::Agent* agent)
+{
+	//Game* game = static_cast<Game*>(agent);
 	
 	m_program.load("rsrc/shaders/sprite.frag", "rsrc/shaders/sprite.vert");
 	
@@ -28,28 +27,28 @@ void MenuState::enter(flat::state::Agent* agent)
 	m_programRenderSettings.uvAttribute                 = m_program.getAttribute("uv");
 }
 
-void MenuState::execute(flat::state::Agent* agent)
+void SelectShipState::execute(flat::state::Agent* agent)
 {
 	Game* game = static_cast<Game*>(agent);
 	update(game);
 	draw(game);
 	
 	if (game->input->keyboard->isJustPressed(K(SPACE)))
-		game->getStateMachine()->setState(new SelectShipState(std::move(m_music)));
+		game->getStateMachine()->setState(new GameState());
 }
 
-void MenuState::exit(flat::state::Agent* agent)
+void SelectShipState::exit(flat::state::Agent* agent)
 {
-	delete m_logoSprite;
+	
 }
 
-void MenuState::update(Game* game)
+void SelectShipState::update(Game* game)
 {
 	const flat::geometry::Vector2& windowSize = game->video->window->getSize();
-	m_logoSprite->setPosition(windowSize / 2.f + flat::geometry::Vector2(0, sin(game->time->getTime() * 1.5f) * 10.f));
+	(void)windowSize;
 }
 
-void MenuState::draw(Game* game)
+void SelectShipState::draw(Game* game)
 {
 	m_program.use(game->video->window);
 	
@@ -57,8 +56,6 @@ void MenuState::draw(Game* game)
 	game->video->clear();
 	
 	m_programRenderSettings.viewProjectionMatrixUniform.setMatrix4(game->interfaceView.getViewProjectionMatrix());
-	
-	m_logoSprite->draw(m_programRenderSettings, game->interfaceView.getViewMatrix());
 }
 
 } // states

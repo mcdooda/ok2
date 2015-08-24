@@ -17,7 +17,7 @@ void open(lua_State* L, states::GameState* gameState, Game* game)
 		{"skill",   l_skill},
 		{nullptr, nullptr}
 	};
-	registerGameStateClosures(L, gameState, game, funcs);
+	registerGameStateClosures(L, game, gameState, funcs);
 }
 	
 int l_ship(lua_State* L)
@@ -40,17 +40,17 @@ int l_ship(lua_State* L)
 	std::string texture = luaL_checkstring(L, -1);
 	
 	lua_getfield(L, 1, "heightmap");
-	std::string heightmap;
+	std::string heightMapFileName;
 	if (!lua_isnil(L, -1))
 	{
-		heightmap = luaL_checkstring(L, -1);
+		heightMapFileName = luaL_checkstring(L, -1);
 	}
 	
 	lua_getfield(L, 1, "bumpmap");
-	std::string bumpmap;
+	std::string bumpMapFileName;
 	if (!lua_isnil(L, -1))
 	{
-		bumpmap = luaL_checkstring(L, -1);
+		bumpMapFileName = luaL_checkstring(L, -1);
 	}
 	
 	lua_getfield(L, 1, "pop");
@@ -73,25 +73,29 @@ int l_ship(lua_State* L)
 	
 	flat::util::Sprite* shipSprite;
 	
-	if (heightmap != "")
+	if (heightMapFileName != "")
 		shipSprite = new flat::util::HeightMap();
 		
 	else
 		shipSprite = new flat::util::Sprite();
 	
-	shipSprite->setTexture(new flat::video::FileTexture(texture));
+	Game* game = getGame(L);
 	
-	if (heightmap != "")
+	shipSprite->setTexture(game->video->getTexture(texture));
+	
+	if (heightMapFileName != "")
 	{
-		((flat::util::HeightMap*) shipSprite)->setHeightMap(new flat::video::FileTexture(heightmap));
+		flat::util::HeightMap* shipHeightMap = static_cast<flat::util::HeightMap*>(shipSprite);
 		
-		if (bumpmap != "")
-			((flat::util::HeightMap*) shipSprite)->setBumpMap(new flat::video::FileTexture(bumpmap));
+		shipHeightMap->setHeightMap(game->video->getTexture(heightMapFileName));
+		
+		if (bumpMapFileName != "")
+			shipHeightMap->setBumpMap(game->video->getTexture(bumpMapFileName));
 	}
 	
 	shipTemplate->setSprite(shipSprite);
 	
-	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
+	states::GameState* gameState = getGameState(L);
 	
 	lua_getfield(L, 1, "levels");
 	if (!lua_isnil(L, -1))
@@ -146,7 +150,7 @@ int l_missile(lua_State* L)
 	int damage = luaL_checkint(L, -1);
 	
 	lua_getfield(L, 1, "texture");
-	std::string texture = luaL_checkstring(L, -1);
+	std::string textureFileName = luaL_checkstring(L, -1);
 	
 	lua_getfield(L, 1, "pop");
 	int popFunctionRef = LUA_NOREF;
@@ -160,7 +164,8 @@ int l_missile(lua_State* L)
 
 	flat::util::Sprite* missileSprite = new flat::util::Sprite();
 	
-	missileSprite->setTexture(new flat::video::FileTexture(texture));
+	Game* game = getGame(L);
+	missileSprite->setTexture(game->video->getTexture(textureFileName));
 	
 	entities::MissileTemplate* missileTemplate = new entities::MissileTemplate();
 	missileTemplate->setName(name);
@@ -171,7 +176,7 @@ int l_missile(lua_State* L)
 	
 	missileTemplate->setSprite(missileSprite);
 	
-	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
+	states::GameState* gameState = getGameState(L);
 	gameState->addMissileTemplate(missileTemplate);
 	
 	return 0;
@@ -196,7 +201,7 @@ int l_skill(lua_State* L)
 	skillTemplate->setCooldown(cooldown);
 	skillTemplate->setTriggerFunctionRef(triggerFunctionRef);
 	
-	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
+	states::GameState* gameState = getGameState(L);
 	gameState->addSkillTemplate(skillTemplate);
 	
 	return 0;

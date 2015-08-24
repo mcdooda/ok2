@@ -15,7 +15,10 @@ namespace lua
 {
 
 void registerGameClosures(lua_State* L, Game* game, const luaL_Reg* funcs);
-void registerGameStateClosures(lua_State* L, states::GameState* gameState, Game* game, const luaL_Reg* funcs);
+void registerGameStateClosures(lua_State* L, Game* game, states::GameState* gameState, const luaL_Reg* funcs);
+
+Game* getGame(lua_State* L);
+states::GameState* getGameState(lua_State* L);
 
 } // lua
 } // game

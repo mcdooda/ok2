@@ -17,7 +17,7 @@ void open(lua_State* L, states::GameState* gameState, Game* game)
 		{"popShipMissiles", l_popShipMissiles},
 		{nullptr, nullptr}
 	};
-	registerGameStateClosures(L, gameState, game, funcs);
+	registerGameStateClosures(L, game, gameState, funcs);
 	
 	lua_pushinteger(L, entities::Entity::ALLY);
 	lua_setglobal(L, "ALLY");
@@ -42,8 +42,8 @@ int l_popShip(lua_State* L)
 	entities::Entity::Side side = checkSide(L, 5);
 	int isPlayerShip = lua_toboolean(L, 6);
 	
-	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
-	Game* game = (Game*) lua_touserdata(L, lua_upvalueindex(2));
+	states::GameState* gameState = getGameState(L);
+	Game* game = getGame(L);
 	float time = game->time->getTime();
 	
 	entities::Ship* ship = nullptr;
@@ -67,8 +67,8 @@ int l_popMissile(lua_State* L)
 	float rotationZ = luaL_checknumber(L, 4);
 	entities::Entity::Side side = checkSide(L, 5);
 	
-	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
-	Game* game = (Game*) lua_touserdata(L, lua_upvalueindex(2));
+	states::GameState* gameState = getGameState(L);
+	Game* game = getGame(L);
 	float time = game->time->getTime();
 	
 	entities::Missile* missile = gameState->addMissile(name, flat::geometry::Vector2(x, y), rotationZ, side);
@@ -95,8 +95,8 @@ int l_popShipMissiles(lua_State* L)
 	float shipRotationZ = ship->getRotation().z;
 	const flat::geometry::Matrix4& shipModelMatrix = ship->getModelMatrix();
 	
-	states::GameState* gameState = (states::GameState*) lua_touserdata(L, lua_upvalueindex(1));
-	Game* game = (Game*) lua_touserdata(L, lua_upvalueindex(2));
+	states::GameState* gameState = getGameState(L);
+	Game* game = getGame(L);
 	float time = game->time->getTime();
 	
 	if (numMissiles == 1)

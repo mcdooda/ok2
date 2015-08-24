@@ -1,6 +1,7 @@
 #include "arena.h"
 #include "../../entities/lua/entity.h"
 #include "../../entities/playership.h"
+#include "../../lua/lua.h"
 
 namespace game
 {
@@ -39,14 +40,9 @@ void open(lua_State* L, Arena* arena, Game* game)
 	lua_setglobal(L, "arena");
 }
 
-Game* getGame(lua_State* L)
-{
-	return (Game*) lua_touserdata(L, lua_upvalueindex(1));
-}
-
 Arena* getArena(lua_State* L)
 {
-	return (Arena*) lua_touserdata(L, lua_upvalueindex(2));
+	return static_cast<Arena*>(lua_touserdata(L, lua_upvalueindex(2)));
 }
 
 entities::Entity::Side checkSide(lua_State* L, int index)
@@ -152,7 +148,7 @@ int l_arena_getNumShips(lua_State* L)
 
 int l_arena_getRandomPlayerShip(lua_State* L)
 {
-	Game* game = getGame(L);
+	Game* game = game::lua::getGame(L);
 	Arena* arena = getArena(L);
 	entities::Entity::Side side = checkSide(L, 1);
 	entities::PlayerShip* playerShip = arena->getRandomPlayerShip(side, game->random);

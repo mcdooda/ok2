@@ -13,7 +13,6 @@ namespace lua
 
 void open(lua_State* L, Arena* arena, Game* game);
 
-Game* getGame(lua_State* L);
 Arena* getArena(lua_State* L);
 entities::Entity::Side checkSide(lua_State* L, int index);
 

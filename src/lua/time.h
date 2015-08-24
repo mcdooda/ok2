@@ -12,8 +12,6 @@ namespace time
 
 void open(lua_State* L, Game* game);
 
-Game* getGame(lua_State* L);
-
 int l_getTime(lua_State* L);
 
 } // time

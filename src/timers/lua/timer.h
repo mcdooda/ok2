@@ -15,9 +15,6 @@ void open(lua_State* L, states::GameState* gameState, Game* game);
 void pushTimer(lua_State* L, Timer* timer);
 Timer* getTimer(lua_State* L, int index = 1);
 
-Game* getGame(lua_State* L);
-states::GameState* getGameState(lua_State* L);
-
 void triggerTimerUpdateFunction(lua_State* L, Timer* timer);
 void triggerTimerEndFunction(lua_State* L, Timer* timer);
 

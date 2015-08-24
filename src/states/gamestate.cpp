@@ -17,11 +17,11 @@ namespace states
 
 void GameState::enter(flat::state::Agent* agent)
 {
-	Game* game = (Game*) agent;
+	Game* game = static_cast<Game*>(agent);
 	
 	static const float arenaWidth = 600;
 	static const float arenaHeight = 1080;
-	flat::geometry::Vector2 arenaSize = flat::geometry::Vector2(arenaWidth, arenaHeight);
+	flat::geometry::Vector2 arenaSize(arenaWidth, arenaHeight);
 	m_arena = new arena::Arena(arenaSize, 10);
 	
 	initMusic(game);
@@ -194,7 +194,7 @@ void GameState::addTimer(timers::Timer* timer)
 
 void GameState::execute(flat::state::Agent* agent)
 {
-	Game* game = (Game*) agent;
+	Game* game = static_cast<Game*>(agent);
 	update(game);
 	draw(game);
 }
@@ -269,7 +269,7 @@ void GameState::update(Game* game)
 				
 				if (ship->isDead())
 				{
-					entities::Ship* shooter = (entities::Ship*) m_arena->getEntityById(shooterId);
+					entities::Ship* shooter = static_cast<entities::Ship*>(m_arena->getEntityById(shooterId));
 					if (shooter != nullptr)
 						shooter->killedShip(ship);
 					
