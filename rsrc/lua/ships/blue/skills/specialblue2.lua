@@ -10,11 +10,11 @@ skill {
 		local sx = ship:getSpeedX()
 		local rz = ship:getRotationZ()
 		if sx < 0 then
-			timer(0.5, function(t)
+			timer(1.0, function(t)
 				ship:setRotationZ(t:getProgression() * pi * 2 + rz)
 			end)
 		elseif sx > 0 then
-			timer(0.5, function(t)
+			timer(1.0, function(t)
 				ship:setRotationZ(-t:getProgression() * pi * 2 + rz)
 			end)
 		end

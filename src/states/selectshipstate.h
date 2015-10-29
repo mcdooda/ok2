@@ -24,8 +24,18 @@ class SelectShipState : public flat::state::State
 		void update(Game* game);
 		void draw(Game* game);
 		
+		void buildUi(Game* game);
+
+		void updateUi(Game* game);
+		void onShipIconClicked(flat::sharp::ui::Widget* widget, bool& eventHandled);
+
+		void drawUi();
+		
 	private:
 		std::unique_ptr<flat::audio::Music> m_music;
+		
+		std::unique_ptr<flat::sharp::ui::RootWidget> m_ui;
+		std::vector<flat::sharp::ui::Widget*> m_shipIcons;
 		
 		flat::video::Program m_program;
 		flat::util::RenderSettings m_programRenderSettings;

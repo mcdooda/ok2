@@ -9,7 +9,7 @@ namespace states
 
 void MenuState::enter(flat::state::Agent* agent)
 {
-	Game* game = static_cast<Game*>(agent);
+	Game* game = agent->to<Game>();
 	
 	m_music.reset(game->audio->loadMusic("rsrc/sounds/music/a_war_without_weapons.ogg"));
 	m_music->play();
@@ -30,7 +30,7 @@ void MenuState::enter(flat::state::Agent* agent)
 
 void MenuState::execute(flat::state::Agent* agent)
 {
-	Game* game = static_cast<Game*>(agent);
+	Game* game = agent->to<Game>();
 	update(game);
 	draw(game);
 	

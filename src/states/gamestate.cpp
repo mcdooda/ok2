@@ -17,7 +17,7 @@ namespace states
 
 void GameState::enter(flat::state::Agent* agent)
 {
-	Game* game = static_cast<Game*>(agent);
+	Game* game = agent->to<Game>();
 	
 	static const float arenaWidth = 600;
 	static const float arenaHeight = 1080;
@@ -111,10 +111,7 @@ void GameState::updateLevel(Game* game)
 	lua_State* L = game->luaState;
 	bool levelFinished = lua::level::resume(L, m_levelCoroutineRef);
 	if (levelFinished)
-	{
 		lua::level::destroyLevelState(L, m_levelCoroutineRef);
-		m_levelCoroutineRef = LUA_NOREF;
-	}
 }
 
 void GameState::addShipTemplate(entities::ShipTemplate* shipTemplate)
@@ -194,7 +191,7 @@ void GameState::addTimer(timers::Timer* timer)
 
 void GameState::execute(flat::state::Agent* agent)
 {
-	Game* game = static_cast<Game*>(agent);
+	Game* game = agent->to<Game>();
 	update(game);
 	draw(game);
 }
@@ -214,9 +211,8 @@ void GameState::update(Game* game)
 		// creates a copy before iterating
 		std::set<entities::Ship*> ships(m_arena->getShips(side));
 		
-		for (std::set<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
+		for (entities::Ship* ship : ships)
 		{
-			entities::Ship* ship = *it;
 			bool remove = ship->update(game, time, elapsedTime, m_arena);
 			if (remove)
 			{
@@ -234,9 +230,8 @@ void GameState::update(Game* game)
 		// creates a copy before iterating
 		std::set<entities::Missile*> missiles(m_arena->getMissiles(side));
 		
-		for (std::set<entities::Missile*>::iterator it = missiles.begin(); it != missiles.end(); it++)
+		for (entities::Missile* missile : missiles)
 		{
-			entities::Missile* missile = *it;
 			bool remove = missile->update(game, time, elapsedTime, m_arena);
 			if (remove)
 			{
@@ -254,15 +249,12 @@ void GameState::update(Game* game)
 		// creates a copy before iterating
 		std::set<entities::Ship*> ships(m_arena->getShips(side));
 		
-		for (std::set<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
+		for (entities::Ship* ship : ships)
 		{
-			entities::Ship* ship = *it;
+			std::set<entities::Missile*> collidingMissiles = m_arena->getCollidingMissiles(ship);
 			
-			std::set<entities::Missile*> collidingMissiles = m_arena->getCollidingMissiles(*it);
-			
-			for (std::set<entities::Missile*>::iterator it2 = collidingMissiles.begin(); it2 != collidingMissiles.end(); it2++)
+			for (entities::Missile* missile : collidingMissiles)
 			{
-				entities::Missile* missile = *it2;
 				int shooterId = missile->getShipId();
 				ship->dealDamage(missile, time);
 				missile->die(m_arena, time);
@@ -299,8 +291,8 @@ void GameState::draw(Game* game)
 		
 		const std::set<entities::Missile*>& missiles = m_arena->getMissiles(side);
 	
-		for (std::set<entities::Missile*>::iterator it = missiles.begin(); it != missiles.end(); it++)
-			(*it)->draw(m_spriteRenderSettings, m_view.getViewMatrix());
+		for (entities::Missile* missile : missiles)
+			missile->draw(m_spriteRenderSettings, m_view.getViewMatrix());
 	}
 		
 	// heightmaps
@@ -314,8 +306,8 @@ void GameState::draw(Game* game)
 		
 		const std::set<entities::Ship*>& ships = m_arena->getShips(side);
 	
-		for (std::set<entities::Ship*>::iterator it = ships.begin(); it != ships.end(); it++)
-			(*it)->draw(m_heightMapRenderSettings, m_view.getViewMatrix());
+		for (entities::Ship* ship : ships)
+			ship->draw(m_heightMapRenderSettings, m_view.getViewMatrix());
 	}
 	
 	// final texture
@@ -338,18 +330,16 @@ void GameState::updateTimers(Game* game)
 	std::set<timers::Timer*> stoppedTimers;
 	std::set<timers::Timer*> timers = m_timers; // allows timers to add new timers!
 	
-	for (std::set<timers::Timer*>::iterator it = timers.begin(); it != timers.end(); it++)
+	for (timers::Timer* timer : timers)
 	{
-		timers::Timer* timer = *it;
 		timer->updateTime(time);
 		timers::lua::triggerTimerUpdateFunction(L, timer);
 		if (timer->isStopped() || timer->isFinished())
 			stoppedTimers.insert(timer);
 	}
 	
-	for (std::set<timers::Timer*>::iterator it = stoppedTimers.begin(); it != stoppedTimers.end(); it++)
+	for (timers::Timer* timer : stoppedTimers)
 	{
-		timers::Timer* timer = *it;
 		m_timers.erase(timer);
 		timers::lua::triggerTimerEndFunction(L, timer);
 		timers::lua::destroyTimerState(L, timer);
@@ -359,8 +349,8 @@ void GameState::updateTimers(Game* game)
 
 void GameState::exit(flat::state::Agent* agent)
 {
-	delete m_arena;
-	delete m_music;
+	FLAT_DELETE(m_arena);
+	FLAT_DELETE(m_music);
 }
 
 } // states

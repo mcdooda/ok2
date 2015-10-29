@@ -9,7 +9,7 @@ namespace states
 
 void GlobalState::enter(flat::state::Agent* agent)
 {
-	game::Game* game = static_cast<game::Game*>(agent);
+	game::Game* game = agent->to<game::Game>();
 	game->video->window->setTitle("Ocean's Keeper 2");
 	game->video->window->hideCursor();
 	
@@ -20,7 +20,7 @@ void GlobalState::enter(flat::state::Agent* agent)
 
 void GlobalState::execute(flat::state::Agent* agent)
 {
-	game::Game* game = static_cast<game::Game*>(agent);
+	game::Game* game = agent->to<game::Game>();
 	
 	if (game->input->keyboard->isJustPressed(K(ESCAPE)))
 		game->stop();
@@ -34,7 +34,7 @@ void GlobalState::execute(flat::state::Agent* agent)
 
 void GlobalState::exit(flat::state::Agent* agent)
 {
-	game::Game* game = static_cast<game::Game*>(agent);
+	game::Game* game = agent->to<game::Game>();
 	
 	flat::lua::close(game->luaState);
 }
