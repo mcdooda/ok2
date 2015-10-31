@@ -19,9 +19,11 @@ namespace states
 class GameState : public flat::state::State
 {
 	public:
-		virtual void enter(flat::state::Agent* agent);
-		virtual void execute(flat::state::Agent* agent);
-		virtual void exit(flat::state::Agent* agent);
+		GameState(const char* shipName);
+
+		void enter(flat::state::Agent* agent) override;
+		void execute(flat::state::Agent* agent) override;
+		void exit(flat::state::Agent* agent) override;
 		
 		void addShipTemplate(entities::ShipTemplate* shipTemplate);
 		void addMissileTemplate(entities::MissileTemplate* missileTemplate);
@@ -54,6 +56,9 @@ class GameState : public flat::state::State
 		std::map<std::string, entities::ShipTemplate*> m_shipTemplates;
 		std::map<std::string, entities::MissileTemplate*> m_missileTemplates;
 		std::map<std::string, skills::SkillTemplate*> m_skillTemplates;
+
+		// ship to load
+		std::string m_shipName;
 		
 		// ARENA
 		arena::Arena* m_arena;

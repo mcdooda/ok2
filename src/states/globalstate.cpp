@@ -21,12 +21,6 @@ void GlobalState::enter(flat::state::Agent* agent)
 void GlobalState::execute(flat::state::Agent* agent)
 {
 	game::Game* game = agent->to<game::Game>();
-	
-	if (game->input->keyboard->isJustPressed(K(ESCAPE)))
-		game->stop();
-		
-	if (game->input->keyboard->isJustPressed(K(P)))
-		game->time->togglePause();
 		
 	if (game->input->window->isResized())
 		resetViews(game);

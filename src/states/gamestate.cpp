@@ -9,11 +9,18 @@
 #include "../lua/level.h"
 #include "../lua/time.h"
 #include "gamestate.h"
+#include "menustate.h"
 
 namespace game
 {
 namespace states
 {
+
+GameState::GameState(const char* shipName) :
+	m_shipName(shipName)
+{
+
+}
 
 void GameState::enter(flat::state::Agent* agent)
 {
@@ -29,11 +36,7 @@ void GameState::enter(flat::state::Agent* agent)
 	
 	loadLuaLibraries(game);
 	
-	std::string shipName = game->argGetString(1);
-	if (shipName == "")
-		shipName = "blue";
-		
-	loadShip(game, shipName);
+	loadShip(game, m_shipName);
 	
 	loadLevel(game);
 }
@@ -194,6 +197,12 @@ void GameState::execute(flat::state::Agent* agent)
 	Game* game = agent->to<Game>();
 	update(game);
 	draw(game);
+
+	if (game->input->keyboard->isJustPressed(K(P)))
+		game->time->togglePause();
+
+	if (game->input->keyboard->isJustPressed(K(ESCAPE)))
+		game->getStateMachine()->setNewState<MenuState>();
 }
 
 void GameState::update(Game* game)

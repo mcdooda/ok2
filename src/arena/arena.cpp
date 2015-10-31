@@ -27,9 +27,9 @@ Arena::Arena(const flat::geometry::Vector2& size, float cellSize) :
 Arena::~Arena()
 {
 	for (int x = 0; x < m_numCellsX; x++)
-		delete m_cells[x];
+		FLAT_DELETE_ARRAY(m_cells[x]);
 		
-	delete m_cells;
+	FLAT_DELETE_ARRAY(m_cells);
 }
 
 void Arena::addShip(entities::Ship* ship)

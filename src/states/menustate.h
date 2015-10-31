@@ -14,9 +14,12 @@ namespace states
 class MenuState : public flat::state::State
 {
 	public:
-		virtual void enter(flat::state::Agent* agent);
-		virtual void execute(flat::state::Agent* agent);
-		virtual void exit(flat::state::Agent* agent);
+		MenuState();
+		MenuState(std::unique_ptr<flat::audio::Music>&& music);
+
+		void enter(flat::state::Agent* agent) override;
+		void execute(flat::state::Agent* agent) override;
+		void exit(flat::state::Agent* agent) override;
 		
 	private:
 		void update(Game* game);

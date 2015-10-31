@@ -7,12 +7,26 @@ namespace game
 namespace states
 {
 
+MenuState::MenuState()
+{
+
+}
+
+MenuState::MenuState(std::unique_ptr<flat::audio::Music>&& music) :
+	m_music(std::move(music))
+{
+
+}
+
 void MenuState::enter(flat::state::Agent* agent)
 {
 	Game* game = agent->to<Game>();
 	
-	m_music.reset(game->audio->loadMusic("rsrc/sounds/music/a_war_without_weapons.ogg"));
-	m_music->play();
+	if (!m_music.get())
+	{
+		m_music.reset(game->audio->loadMusic("rsrc/sounds/music/a_war_without_weapons.ogg"));
+		m_music->play();
+	}
 	
 	m_logoTexture = game->video->getTexture("rsrc/images/logo.png");
 	m_logoSprite = new flat::util::Sprite();
@@ -33,9 +47,9 @@ void MenuState::execute(flat::state::Agent* agent)
 	Game* game = agent->to<Game>();
 	update(game);
 	draw(game);
-	
+
 	if (game->input->keyboard->isJustPressed(K(SPACE)))
-		game->getStateMachine()->setState(new SelectShipState(std::move(m_music)));
+			game->getStateMachine()->setNewStateMove<SelectShipState>(std::move(m_music));
 }
 
 void MenuState::exit(flat::state::Agent* agent)
@@ -45,6 +59,9 @@ void MenuState::exit(flat::state::Agent* agent)
 
 void MenuState::update(Game* game)
 {
+	if (game->input->keyboard->isJustPressed(K(ESCAPE)))
+		game->stop();
+
 	const flat::geometry::Vector2& windowSize = game->video->window->getSize();
 	m_logoSprite->setPosition(windowSize / 2.f + flat::geometry::Vector2(0, sin(game->time->getTime() * 1.5f) * 10.f));
 }

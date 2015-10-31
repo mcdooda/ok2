@@ -16,9 +16,9 @@ class SelectShipState : public flat::state::State
 	public:
 		SelectShipState(std::unique_ptr<flat::audio::Music>&& music);
 		
-		virtual void enter(flat::state::Agent* agent);
-		virtual void execute(flat::state::Agent* agent);
-		virtual void exit(flat::state::Agent* agent);
+		void enter(flat::state::Agent* agent) override;
+		void execute(flat::state::Agent* agent) override;
+		void exit(flat::state::Agent* agent) override;
 		
 	private:
 		void update(Game* game);
