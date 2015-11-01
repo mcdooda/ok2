@@ -1,5 +1,6 @@
 #include <iostream>
 #include "entity.h"
+#include "../playership.h"
 
 namespace game
 {
@@ -44,10 +45,11 @@ void open(lua_State* L)
 		{"getSpeedX",           l_Entity_getSpeedX},
 		{"getSpeedY",           l_Entity_getSpeedY},
 		
-		// side
+		// misc
 		{"getSide",             l_Entity_getSide},
 		{"getId",               l_Entity_getId},
 		{"getPopTime",          l_Entity_getPopTime},
+		{"getNumLives",         l_Entity_getNumLives},
 		
 		// lua data
 		{"data",                l_Entity_data},
@@ -276,6 +278,18 @@ int l_Entity_getPopTime(lua_State* L)
 {
 	Entity* entity = getEntity(L);
 	lua_pushnumber(L, entity->getPopTime());
+	return 1;
+}
+
+int l_Entity_getNumLives(lua_State* L)
+{
+	Entity* entity = getEntity(L);
+	unsigned int numLives = 1;
+	if (PlayerShip* playerShip = dynamic_cast<PlayerShip*>(entity))
+	{
+		numLives = playerShip->getNumLives();
+	}
+	lua_pushunsigned(L, numLives);
 	return 1;
 }
 

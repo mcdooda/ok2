@@ -11,7 +11,7 @@ void GlobalState::enter(flat::state::Agent* agent)
 {
 	game::Game* game = agent->to<game::Game>();
 	game->video->window->setTitle("Ocean's Keeper 2");
-	game->video->window->hideCursor();
+	//game->video->window->hideCursor();
 	
 	resetViews(game);
 	

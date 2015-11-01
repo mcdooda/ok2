@@ -13,9 +13,9 @@ class Missile : public Entity
 {
 	public:
 		Missile();
-		virtual ~Missile();
+		~Missile() override;
 		
-		virtual bool isMissile() const { return true; }
+		bool isMissile() const override { return true; }
 		
 		int getDamage() const;
 		

@@ -12,21 +12,23 @@ class PlayerShip : public Ship
 {
 	public:
 		PlayerShip();
-		virtual ~PlayerShip();
+		~PlayerShip() override;
 		
-		virtual bool update(Game* game, float time, float elapsedTime, arena::Arena* arena);
+		bool update(Game* game, float time, float elapsedTime, arena::Arena* arena) override;
 		
 		void setLevel(unsigned int level);
 		
-		virtual float getHitRadius() const;
+		float getHitRadius() const override;
 		
-		virtual void dealDamage(Missile* missile, float time);
+		void dealDamage(Missile* missile, float time) override;
 		
-		virtual void die(arena::Arena* arena, float time);
+		void die(arena::Arena* arena, float time) override;
 		
-		virtual void killedShip(Ship* ship);
+		void killedShip(Ship* ship) override;
 		
-		virtual bool isPlayerShip() const { return true; }
+		bool isPlayerShip() const override { return true; }
+
+		inline unsigned int getNumLives() const { return m_numLives; }
 		
 	protected:
 		void fitInArena(arena::Arena* arena);

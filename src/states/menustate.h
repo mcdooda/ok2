@@ -24,11 +24,18 @@ class MenuState : public flat::state::State
 	private:
 		void update(Game* game);
 		void draw(Game* game);
+
+		void buildUi(Game* game);
+
+		void updateUi(Game* game);
+
+		void drawUi();
 		
 	private:
 		std::unique_ptr<flat::audio::Music> m_music;
-		std::shared_ptr<const flat::video::FileTexture> m_logoTexture;
-		flat::util::Sprite* m_logoSprite;
+
+		std::unique_ptr<flat::sharp::ui::RootWidget> m_ui;
+		flat::sharp::ui::Widget* m_logo;
 		
 		flat::video::Program m_program;
 		flat::util::RenderSettings m_programRenderSettings;

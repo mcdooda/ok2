@@ -16,7 +16,7 @@ ship {
 	levels     = {
 		{0, 'enemy1', nil}
 	},
-	pop       = function(ship)
+	pop        = function(ship)
 		local target = arena.getRandomPlayerShip(ALLY)
 		if target then
 			ship:data().targetId = target:getId()
@@ -25,9 +25,15 @@ ship {
 			ship:data().targetId = 0
 		end
 	end,
-	update    = function(ship)
+	update     = function(ship)
 		local targetId = ship:data().targetId
 		local target = arena.getEntityById(targetId)
+		if not target then
+			target = arena.getRandomPlayerShip(ALLY)
+			if target then
+				ship:data().targetId = target:getId()
+			end
+		end
 		if target then
 			ship:follow(target)
 		end

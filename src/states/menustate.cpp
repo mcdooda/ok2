@@ -28,11 +28,9 @@ void MenuState::enter(flat::state::Agent* agent)
 		m_music->play();
 	}
 	
-	m_logoTexture = game->video->getTexture("rsrc/images/logo.png");
-	m_logoSprite = new flat::util::Sprite();
-	m_logoSprite->setTexture(m_logoTexture);
+	buildUi(game);
 	
-	m_program.load("rsrc/shaders/sprite.frag", "rsrc/shaders/sprite.vert");
+	m_program.load("rsrc/shaders/ui.frag", "rsrc/shaders/ui.vert");
 	
 	m_programRenderSettings.textureUniform              = m_program.getUniform("objectTexture");
 	m_programRenderSettings.colorUniform                = m_program.getUniform("color");
@@ -54,7 +52,7 @@ void MenuState::execute(flat::state::Agent* agent)
 
 void MenuState::exit(flat::state::Agent* agent)
 {
-	delete m_logoSprite;
+
 }
 
 void MenuState::update(Game* game)
@@ -62,8 +60,7 @@ void MenuState::update(Game* game)
 	if (game->input->keyboard->isJustPressed(K(ESCAPE)))
 		game->stop();
 
-	const flat::geometry::Vector2& windowSize = game->video->window->getSize();
-	m_logoSprite->setPosition(windowSize / 2.f + flat::geometry::Vector2(0, sin(game->time->getTime() * 1.5f) * 10.f));
+	updateUi(game);
 }
 
 void MenuState::draw(Game* game)
@@ -75,7 +72,39 @@ void MenuState::draw(Game* game)
 	
 	m_programRenderSettings.viewProjectionMatrixUniform.setMatrix4(game->interfaceView.getViewProjectionMatrix());
 	
-	m_logoSprite->draw(m_programRenderSettings, game->interfaceView.getViewMatrix());
+	drawUi();
+}
+
+void MenuState::buildUi(Game* game)
+{
+	flat::sharp::ui::WidgetFactory widgetFactory(*game);
+
+	flat::sharp::ui::RootWidget* ui = widgetFactory.makeRoot();
+
+	m_logo = widgetFactory.makeImage("rsrc/images/logo.png");
+	m_logo->setPositionPolicy(flat::sharp::ui::Widget::PositionPolicy::CENTER);
+	ui->addChild(m_logo);
+
+	ui->fullLayout();
+
+	m_ui.reset(ui);
+}
+
+void MenuState::updateUi(Game* game)
+{
+	flat::sharp::ui::RootWidget* ui = m_ui.get();
+
+	m_logo->setPosition(flat::geometry::Vector2(0, sin(game->time->getTime() * 1.5f) * 10.f));
+
+	if (game->input->window->isResized())
+		ui->fullLayout();
+
+	ui->updateInput();
+}
+
+void MenuState::drawUi()
+{
+	m_ui->draw(m_programRenderSettings);
 }
 
 } // states

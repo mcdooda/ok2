@@ -23,15 +23,15 @@ class Ship : public Entity
 {
 	public:
 		Ship();
-		virtual ~Ship();
+		~Ship() override;
 		
-		virtual void setTemplate(EntityTemplate* entityTemplate);
+		void setTemplate(EntityTemplate* entityTemplate) override;
 		
-		virtual bool update(Game* game, float time, float elapsedTime, arena::Arena* arena);
+		bool update(Game* game, float time, float elapsedTime, arena::Arena* arena) override;
 		
-		virtual void setPopTime(float popTime);
+		void setPopTime(float popTime) override;
 		
-		virtual bool isShip() const { return true; }
+		bool isShip() const override { return true; }
 		
 		virtual void dealDamage(Missile* missile, float time);
 		

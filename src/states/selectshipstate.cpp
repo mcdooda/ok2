@@ -93,7 +93,7 @@ void SelectShipState::buildUi(Game* game)
 			shipsContainer->addChild(iconContainer);
 
 			const char* shipName = shipNames[i];
-			shipIcon->onClick.connect([game, shipName](flat::sharp::ui::Widget*, bool& eventHandled){
+			shipIcon->click.on([game, shipName](flat::sharp::ui::Widget*, bool& eventHandled){
 				game->getStateMachine()->setNewState<GameState>(shipName);
 				eventHandled = true;
 			});
@@ -115,9 +115,6 @@ void SelectShipState::updateUi(Game *game)
 		ui->fullLayout();
 
 	ui->updateInput();
-
-	if (game->input->mouse->isPressed(M(LEFT)))
-		ui->handleClick();
 }
 
 void SelectShipState::onShipIconClicked(flat::sharp::ui::Widget* widget, bool& eventHandled)

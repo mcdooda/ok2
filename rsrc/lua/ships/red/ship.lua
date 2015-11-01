@@ -36,9 +36,13 @@ ship {
 			if distance < dx then
 				local cx = (rx + lx) / 2
 				if cx < 0 then
-					rightShip:setPositionX(lx + dx)
+					if leftShip:getNumLives() > 0 then
+						rightShip:setPositionX(lx + dx)
+					end
 				else
-					leftShip:setPositionX(rx - dx)
+					if rightShip:getNumLives() > 0 then
+						leftShip:setPositionX(rx - dx)
+					end
 				end
 			end
 		end
